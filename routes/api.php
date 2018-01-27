@@ -50,7 +50,8 @@ $api->version('v1',[
 		'expires' => config('api.rate_limits.access.expires'),
 	], function ($api) {
 		// 游客可以访问的接口
-
+		$api->get('menus', 'MenusController@index')
+			->name('api.menus.index');
 		// 需要 token 验证的接口
 		$api->group(['middleware' => 'api.auth'], function($api) {
 			// 当前登录用户信息

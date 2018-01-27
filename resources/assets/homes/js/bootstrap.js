@@ -22,7 +22,8 @@ try {
  */
 
 window.axios = require('axios');
-
+window.axios.defaults.baseURI = 'http://api.one.com';
+window.axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

@@ -179,6 +179,7 @@ return [
 
 	    App\Providers\EasySmsServiceProvider::class,
 	    Spatie\Permission\PermissionServiceProvider::class,
+	    Barryvdh\Cors\ServiceProvider::class,
     ],
 
     /*
