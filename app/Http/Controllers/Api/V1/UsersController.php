@@ -4,10 +4,21 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\V1\UserRequest;
+use App\Models\User;
 use App\Transformers\UserTransformer;
+use Dingo\Api\Http\Request;
 
 class UsersController extends Controller
 {
+	public function index(Request $request)
+	{
+		$conditions = [];
+		if ($request->username) {
+			$conditions[] = ['username', 'like', '%' . $request->username . '%'];
+		}
+		return $this->response->paginator(User::where($conditions)->paginate(10),new UserTransformer());
+	}
+
 	public function store(UserRequest $request)
 	{
 		$verifyData = \Cache::get($request->verification_key);
@@ -22,10 +33,9 @@ class UsersController extends Controller
 		}
 
 		$user = User::create([
-			'name' => $request->username,
 			'username' => $request->username,
 			'mobile' => $verifyData['mobile'],
-			'password' => bcrypt($request->password),
+			'password' => bcrypt($request->password)
 		]);
 
 		// 清除验证码缓存

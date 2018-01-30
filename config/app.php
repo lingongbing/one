@@ -180,6 +180,8 @@ return [
 	    App\Providers\EasySmsServiceProvider::class,
 	    Spatie\Permission\PermissionServiceProvider::class,
 	    Barryvdh\Cors\ServiceProvider::class,
+	    Spatie\Permission\PermissionServiceProvider::class,
+	    Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -194,7 +196,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -228,7 +229,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+	    'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

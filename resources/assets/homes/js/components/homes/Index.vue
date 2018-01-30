@@ -1,27 +1,30 @@
 <template>
 	<div>
-		<mt-swipe class="mt-swipe">
-			<mt-swipe-item style="background-color: #8eb4cb;">
-				<h1>1</h1>
-			</mt-swipe-item>
-			<mt-swipe-item style="background-color: #2ab27b;">
-				<h1>2</h1>
-			</mt-swipe-item>
-			<mt-swipe-item style="background-color: #636b6f;">
-				<h1>3</h1>
+		<mt-swipe class="mt-swipe" :show-indicators="false" :speed="500">
+			<mt-swipe-item v-for="(item,index) in carousels" :key="index">
+				<a :href="item.link">
+					<img :src="item.image">
+				</a>
 			</mt-swipe-item>
 		</mt-swipe>
 	</div>
 </template>
 
 <script>
-	import {Swipe, SwipeItem} from 'mint-ui';
 	export default {
-		components: {
-			Swipe,
-			SwipeItem,
+		data() {
+			return {
+				carousels: {}
+			}
 		},
-		name: "index"
+		created() {
+			window.axios.get('/carousels').then(response => {
+				this.carousels = response.data.data;
+			}).catch(error => {
+				console.log(error.response.data);
+			})
+		},
+		
 	}
 </script>
 

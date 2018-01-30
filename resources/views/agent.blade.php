@@ -7,7 +7,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('/homes/css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('/admins/css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -16,6 +16,6 @@
 </div>
 
 <!-- Scripts -->
-<script src="{{ asset('/homes/js/app.js') }}"></script>
+<script src="{{ mix('/admins/js/app.js') }}"></script>
 </body>
 </html>

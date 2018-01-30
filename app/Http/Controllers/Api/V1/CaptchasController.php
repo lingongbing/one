@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
 use Gregwar\Captcha\CaptchaBuilder;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\V1\CaptchaRequest;
@@ -13,6 +12,11 @@ class CaptchasController extends Controller
 	{
 		$key = 'captcha-'.str_random(15);
 		$mobile = $request->mobile;
+
+		$captchaBuilder->setInterpolation(false);
+		$captchaBuilder->setDistortion(true);
+		$captchaBuilder->setIgnoreAllEffects(true);
+		$captchaBuilder->setBackgroundColor(0,0,0);
 
 		$captcha = $captchaBuilder->build();
 		$expiredAt = now()->addMinutes(2);

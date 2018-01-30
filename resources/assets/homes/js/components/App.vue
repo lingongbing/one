@@ -4,34 +4,7 @@
 			<span slot="left">Laravel</span>
 			<span slot="right">Message</span>
 		</mt-header>
-		<mt-navbar :class="{ 'mt-navbar' : sub_menu!='home'}" v-model="sub_menu">
-			<mt-tab-item v-for="(menu,index) in menus" :key="index" :id="menu.key"
-			             v-show="menu.parent_id && main_menu == menu.parent_id">{{ menu.name }}
-			</mt-tab-item>
-		</mt-navbar>
-		<tab-container class="tab-container" v-model="sub_menu" swipeable>
-			<mt-tab-container-item id="home">
-				<home-index></home-index>
-			</mt-tab-container-item>
-			<mt-tab-container-item id="trading">
-				<order-index :state=1></order-index>
-			</mt-tab-container-item>
-			<mt-tab-container-item id="has_been_completed">
-				<order-index :state=2></order-index>
-			</mt-tab-container-item>
-			<mt-tab-container-item id="integral_exchange">
-				<integral-exchange></integral-exchange>
-			</mt-tab-container-item>
-			<mt-tab-container-item id="integral_query">
-				<integral-query></integral-query>
-			</mt-tab-container-item>
-			<mt-tab-container-item id="personal_info">
-				<personal-info></personal-info>
-			</mt-tab-container-item>
-			<mt-tab-container-item id="skin_info">
-				<skin-info></skin-info>
-			</mt-tab-container-item>
-		</tab-container>
+		<router-view class="router-view"></router-view>
 		<mt-tabbar v-model="main_menu" fixed>
 			<mt-tab-item id="home">
 				<img slot="icon" src="http://localhost/storage/public/lVidFXGxpGcYB2lBsA2HqLtupJu4JsgFWhMaFh3v.jpeg">
@@ -47,21 +20,9 @@
 
 <script>
 	import {TabContainer, TabContainerItem} from 'mint-ui';
-	import HomeIndex from './homes/Index';
-	import OrderIndex from './orders/Index';
-	import IntegralQuery from './integrals/Query';
-	import IntegralExchange from './integrals/Exchange';
-	import PersonalInfo from './personals/Info';
-	import SkinInfo from './skins/Info';
-	
+
 	export default {
 		components: {
-			PersonalInfo,
-			SkinInfo,
-			IntegralQuery,
-			IntegralExchange,
-			HomeIndex,
-			OrderIndex,
 			TabContainer,
 			TabContainerItem
 		},
@@ -73,6 +34,9 @@
 			}
 		},
 		watch: {
+			'$router' (to) {
+				console.log(to);
+			},
 			main_menu: function () {
 				if (this.main_menu === 'home') {
 					this.sub_menu = 'home';
@@ -84,17 +48,22 @@
 						break;
 					}
 				}
+			},
+			sub_menu: function () {
+				if (this.sub_menu === 'home') {
+					this.$router.push({name: 'home'});
+				}
+				if (this.sub_menu === 'trading') {
+					this.$router.push({name: 'orders', params : {state : 1}});
+				}
 			}
 		},
 		created() {
 			this.getMenus();
 		},
-		mounted() {
-			console.log('Component mounted.')
-		},
 		methods: {
 			getMenus: function () {
-				window.axios.get('http://api.one.com/menus').then(response => {
+				window.axios.get('/menus').then(response => {
 					this.menus = response.data.data;
 				}).catch(error => {
 					console.log(error.response);
@@ -105,11 +74,7 @@
 </script>
 
 <style scoped>
-	.mt-navbar {
-		margin-top: 40px;
-	}
-	
-	.tab-container {
-		margin-top: 40px;
+	.router-view {
+		margin-top: 50px;
 	}
 </style>

@@ -29,6 +29,11 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+	public function order()
+	{
+		return $this->hasMany('App\Models\Order');
+    }
+
 	// Rest omitted for brevity
 
 	/**

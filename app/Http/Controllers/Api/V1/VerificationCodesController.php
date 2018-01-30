@@ -29,16 +29,14 @@ class VerificationCodesController extends Controller
 		$code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
 
 		try {
-			$result = $easySms->send($mobile, [
+			$easySms->send($mobile, [
 				'template' => 'SMS_102315001',
 				'data' => [
 					'code' => 6379
 				],
 			]);
-		} catch (\GuzzleHttp\Exception\ClientException $exception) {
-			$response = $exception->getResponse();
-			$result = json_decode($response->getBody()->getContents(), true);
-			return $this->response->errorInternal($result['msg'] ?? '短信发送异常');
+		} catch (\Overtrue\EasySms\Exceptions\NoGatewayAvailableException $exception) {
+			return $this->response->errorInternal($exception->results['aliyun']['exception']->getMessage());
 		}
 
 		$key = 'verificationCode_'.str_random(15);
@@ -48,6 +46,7 @@ class VerificationCodesController extends Controller
 
 		return $this->response->array([
 			'key' => $key,
+			'code' => $code,
 			'expired_at' => $expiredAt->toDateTimeString(),
 		])->setStatusCode(201);
 	}

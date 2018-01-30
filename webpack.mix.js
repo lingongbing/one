@@ -12,6 +12,9 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/homes/js/app.js', 'public/homes/js')
-    .sass('resources/assets/homes/sass/app.scss', 'public/homes/css');
+    .sass('resources/assets/homes/sass/app.scss', 'public/homes/css').version();
+
+mix.js('resources/assets/admins/js/app.js', 'public/admins/js')
+    .sass('resources/assets/admins/sass/app.scss', 'public/admins/css').version();
 
 mix.browserSync('one.com');

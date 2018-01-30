@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\V1\AuthorizationRequest;
@@ -14,7 +13,7 @@ class AuthorizationsController extends Controller
 		$credentials['username'] = $request->username;
 		$credentials['password'] = $request->password;
 
-		if (!$token = \Auth::guard('api')->attempt($credentials)) {
+		if (!$token = Auth::guard('api')->attempt($credentials)) {
 			return $this->response->errorUnauthorized('用户名或密码错误');
 		}
 

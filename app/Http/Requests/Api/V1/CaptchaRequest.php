@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Dingo\Api\Http\FormRequest;
 
 class CaptchaRequest extends FormRequest
 {
@@ -24,7 +24,7 @@ class CaptchaRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'phone' => 'required|regex:/^1[34578]\d{9}$/|unique:users',
+			'mobile' => 'required|regex:/^1[34578]\d{9}$/|unique:users',
 		];
 	}
 }

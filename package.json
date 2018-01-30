@@ -19,11 +19,15 @@
         "laravel-mix": "^1.0",
         "lodash": "^4.17.4",
         "popper.js": "^1.12.9",
-        "vue": "^2.5.7"
+        "vue": "^2.5.7",
+        "bootstrap-sass": "^3.3.7"
     },
     "dependencies": {
+        "@xkeshi/vue-countdown": "^0.5.0",
         "mint-ui": "^2.2.13",
+        "vee-validate": "^2.0.3",
         "vue-router": "^3.0.1",
+        "vue-select": "^2.4.0",
         "vuex": "^3.0.1"
     }
 }

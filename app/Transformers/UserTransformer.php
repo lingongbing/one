@@ -12,6 +12,7 @@ class UserTransformer extends TransformerAbstract
 		return [
 			'id' => $user->id,
 			'name' => $user->name,
+			'role' => count($user->getRoleNames()) ? $user->getRoleNames()[0] : false,
 			'avatar' => $user->avatar,
 			'username' => $user->username,
 			'created_at' => $user->created_at,

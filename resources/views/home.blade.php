@@ -1,23 +1,21 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-@section('content')
-<div class="container">
-    <div class="row mt-5">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <!-- Styles -->
+    <link href="{{ mix('/homes/css/app.css') }}" rel="stylesheet">
+</head>
+<body>
 
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="app">
+    <app></app>
 </div>
-@endsection
+
+<!-- Scripts -->
+<script src="{{ mix('/homes/js/app.js') }}"></script>
+</body>
+</html>
