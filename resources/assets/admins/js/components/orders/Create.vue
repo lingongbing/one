@@ -139,8 +139,9 @@
 								for (let index in error.response.data.errors) {
 									this.messages[index] = error.response.data.errors[index][0];
 								}
+							}else {
+								this.messages.message = error.response.data.message;
 							}
-							this.messages.message = '创建失败';
 						});
 					}
 				});

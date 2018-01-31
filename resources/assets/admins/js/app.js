@@ -16,6 +16,8 @@ import * as rules from './rules';
 Validator.extend('mobile',rules.mobile);
 Validator.extend('mobileIsExist',rules.mobileIsExist);
 Validator.extend('usernameIsExist',rules.usernameIsExist);
+Validator.extend('unique_mobile',rules.unique_mobile);
+Validator.extend('unique_username',rules.unique_username);
 Vue.use(VeeValidate);
 //状态
 import Vuex from 'vuex'

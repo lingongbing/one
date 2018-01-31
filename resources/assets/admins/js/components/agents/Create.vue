@@ -4,18 +4,18 @@
 			<h3 class="panel-title">新增代理</h3>
 		</div>
 		<div class="panel-body">
-			<div class="alert alert-info" v-for="(message,index) in messages" v-show="message[0]">
-				<button type="button" class="close" @click="messages[index] = {}">
+			<div class="alert alert-info" v-for="(message,index) in messages" v-show="message" v-if="messages">
+				<button type="button" class="close" @click="messages[index] = false">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				{{ message[0] }}
+				{{ message }}
 			</div>
 			<form class="form-horizontal" v-on:submit.prevent="onSubmit">
 				<div class="form-group">
 					<div class="col-sm-offset-1 col-sm-10">
 						<input type="text" class="form-control" v-model="username" name="username" id="username"
 						       placeholder="登陆账号"
-						       v-validate data-vv-rules="required|uniqueUsername" data-vv-as="登陆账号">
+						       v-validate data-vv-rules="required|unique_username" data-vv-as="登陆账号">
 						<span class="help-block" v-show="errors.has('username')">{{ errors.first('username') }}</span>
 					</div>
 				</div>
@@ -23,7 +23,7 @@
 					<div class="col-sm-offset-1 col-sm-10">
 						<input type="password" class="form-control" v-model="password" name="password" id="password"
 						       placeholder="密码"
-						       v-validate data-vv-rules="required" data-vv-as="密码">
+						       v-validate data-vv-rules="required|min:6" data-vv-as="密码">
 						<span class="help-block" v-show="errors.has('password')">{{ errors.first('password') }}</span>
 					</div>
 				</div>
@@ -73,15 +73,14 @@
 					<div class="col-sm-offset-1 col-sm-10">
 						<input type="text" class="form-control" v-model="mobile" name="mobile" id="mobile"
 						       placeholder="手机号码"
-						       v-validate data-vv-rules="required|phone" data-vv-as="手机号码">
+						       v-validate data-vv-rules="required|mobile|unique_mobile" data-vv-as="手机号码">
 						<span class="help-block" v-show="errors.has('mobile')">{{ errors.first('mobile') }}</span>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-1 col-sm-10">
 						<input type="text" class="form-control" v-model="wechat" name="wechat" id="wechat"
-						       placeholder="微信号"
-						       v-validate data-vv-rules="required" data-vv-as="微信号">
+						       placeholder="微信号" v-validate data-vv-rules="required" data-vv-as="微信号">
 						<span class="help-block" v-show="errors.has('wechat')">{{ errors.first('wechat') }}</span>
 					</div>
 				</div>
@@ -118,26 +117,20 @@
 				level_index: 0,
 				home_management: false,
 				img_url: '',
-				messages: {},
+				messages: {
+					message: '',
+					name: '',
+					mobile: '',
+					wechat: '',
+					username: '',
+					password: '',
+					introduction: '',
+					level: '',
+					avatar: ''
+				},
 			}
 		},
 		created() {
-			this.$validator.extend('phone', {
-				getMessage: '手机号码不正确',
-				validate: value => {
-					return value.length == 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)
-				}
-			});
-			this.$validator.extend('uniqueUsername', {
-				getMessage: '账号已存在',
-				validate: value => {
-					return axios.get('/confirmed-username/' + value).then(response => {
-						return true;
-					}).catch(error => {
-						return false;
-					})
-				}
-			});
 			this.getLevels();
 		},
 		methods: {
@@ -156,20 +149,24 @@
 						if (this.home_management) {
 							formData.append('is_home_management', true);
 						}
-						axios.post('/user', formData).then(response => {
-							this.messages = {'message' : { 0 : response.data.message}};
+						window.axios.post('agents', formData).then(response => {
+							this.messages.message = '创建成功';
 						}).catch(error => {
-							this.messages = error.response.data.errors;
-						})
+							if (error.response.status == 422) {
+								for (let index in error.response.data.errors) {
+									this.messages[index] = error.response.data.errors[index][0];
+								}
+							}else {
+								this.messages.message = error.response.data.message;
+							}
+						});
 					}
 				});
 			},
 			getLevels: function () {
-				axios.get('/config/agent_set').then(response => {
-					this.levels = response.data;
+				window.axios.get('levels').then(response => {
+					this.levels = response.data.data;
 					this.level = this.levels[this.level_index].name
-				}).catch(error => {
-					console.log(error.response.data);
 				});
 			},
 			changeLevel: function () {
@@ -181,10 +178,10 @@
 				formData.append('width', 200);
 				formData.append('height', 200);
 				formData.append('img', event.target.files[0]);
-				axios.post('/upload', formData).then(response => {
-					this.img_url = response.data;
+				window.axios.post('upload', formData).then(response => {
+					this.img_url = response.data.path;
 				}).catch(error => {
-					console.log(error.response.data);
+					this.messages.message = error.response.data.message;
 				});
 			},
 		}

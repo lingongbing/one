@@ -16,8 +16,8 @@
 					<div class="form-group">
 						<input type="text" class="form-control" v-model="params.order_no" @change="getOrders(paginate.current_page)" placeholder="输入订单号查询">
 						<input type="text" class="form-control" v-model="params.courier_order_no" @change="getOrders(paginate.current_page)" placeholder="输入快递单号查询">
-						<input type="text" class="form-control" v-model="params.name" @change="getOrders(paginate.current_page)" placeholder="输入客户姓名查询">
-						<input type="text" class="form-control" v-model="params.goods_name" @change="getOrders(paginate.current_page)" placeholder="输入商品名称查询">
+						<!--<input type="text" class="form-control" v-model="params.name" @change="getOrders(paginate.current_page)" placeholder="输入客户姓名查询">-->
+						<!--<input type="text" class="form-control" v-model="params.goods_name" @change="getOrders(paginate.current_page)" placeholder="输入商品名称查询">-->
 					</div>
 				</div>
 				<hr>
@@ -27,8 +27,8 @@
 						<th><input type="checkbox" v-model="checked" @click="checkedAll"></th>
 						<th>订单号</th>
 						<th>快递单号</th>
-						<th>商品名称</th>
 						<th>客户姓名</th>
+						<th>商品名称</th>
 						<th>商品数量</th>
 						<th>商品总价(以分为单位)</th>
 						<th>快递公司</th>
@@ -41,8 +41,8 @@
 						<td><input type="checkbox" v-model="checkboxModel" :value="item.id"></td>
 						<td>{{ item.order_no }}</td>
 						<td>{{ item.courier_order_no }}</td>
-						<td>{{ item.goods_name }}</td>
 						<td>{{ item.name }}</td>
+						<td>{{ item.goods_name }}</td>
 						<td>{{ item.goods_number }}</td>
 						<td>{{ item.goods_total_price }}</td>
 						<td>{{ item.courier_company }}</td>
@@ -93,9 +93,9 @@
 				},
 				params: {
 					page: 1,
-					name: '',
+					// name: '',
 					order_no: '',
-					goods_name: '',
+					// goods_name: '',
 					courier_order_no: '',
 					state: this.$route.params.state,
 				},
@@ -122,7 +122,7 @@
 		methods: {
 			getOrders: function (page) {
 				this.params.page = page;
-				axios.get('/orders', {params: this.params}).then(response => {
+				axios.get('orders', {params: this.params}).then(response => {
 					this.orders = response.data.data;
 					this.paginate.current_page = response.data.current_page;
 					this.paginate.prev_page_url = response.data.prev_page_url;
@@ -140,19 +140,19 @@
 				}
 			},
 			deleteOrder: function () {
-				this.checkboxModel.forEach(function (value) {
-					axios.delete('/orders/'+value).then(response => {
-						this.messages.message = response.data.message;
+				this.checkboxModel.forEach(function (value,index) {
+					axios.delete('orders/'+value).then(response => {
+						if  (++index === this.checkboxModel.length) {
+							this.getOrders(this.paginate.current_page);
+							this.messages.message = response.data.message;
+						}
 					}).catch(error => {
 						this.messages.message = error.response.data.message;
 					});
 				},this);
-				if (this.checkboxModel.length) {
-					this.getOrders(this.paginate.current_page);
-				}
 			},
 			updateState: function (id,state) {
-				axios.patch('/orders/'+id, {state:state}).then(response => {
+				axios.patch('orders/'+id, {state:state}).then(response => {
 					this.getOrders(this.paginate.current_page);
 					this.messages.message = response.data.message;
 				})

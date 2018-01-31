@@ -31,17 +31,13 @@
 					<tfoot class="text-center">
 						<tr>
 							<td colspan="3">
-								<nav aria-label="Page navigation">
-									<ul class="pagination">
-										<li :class="{'disabled': page.current_page == 1}" @click="getAgent(page.current_page-1)">
-											<a href="javascript:void(0);" aria-label="Previous">
-												<span aria-hidden="true">&laquo;</span>
-											</a>
+								<nav aria-label="...">
+									<ul class="pager">
+										<li v-show="paginate.prev_page_url" @click="getAgent(--paginate.current_page)">
+											<a href="javascript:;">Previous</a>
 										</li>
-										<li :class="{'disabled': page.current_page == page.last_page}" @click="getAgent(page.current_page+1)">
-											<a href="javascript:void(0);" aria-label="Next">
-												<span aria-hidden="true">&raquo;</span>
-											</a>
+										<li v-show="paginate.next_page_url" @click="getAgent(++paginate.current_page)">
+											<a href="javascript:;">Next</a>
 										</li>
 									</ul>
 								</nav>
@@ -80,24 +76,27 @@
 					page:1,
 					username:'',
 				},
+				paginate: {
+					current_page: 1,
+					prev_page_url: '',
+					next_page_url: '',
+				},
 			}
 		},
 		created() {
-			this.getAgent(1);
+			this.getAgent();
 		},
 		methods: {
 			getAgent: function (page) {
-				if (page < 1 || page > this.page.last_page)
-				{
-					return;
-				}
 				this.params.page = page;
-				axios.get('/agent', {
+				window.axios.get('agents', {
 					params:this.params
 				}).then(response => {
-					if (response.data.data[0])
-					{
-						this.setData(response.data);
+					this.agents = response.data.data;
+					this.paginate.current_page = response.data.meta.pagination.current_page;
+					if (response.data.meta.pagination.links) {
+						this.paginate.prev_page_url = response.data.meta.pagination.links.previous;
+						this.paginate.next_page_url = response.data.meta.pagination.links.next;
 					}
 				}).catch(error => {
 

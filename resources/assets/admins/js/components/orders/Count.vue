@@ -16,15 +16,25 @@
 	export default {
 		data() {
 			return {
-				completed_count:0,
-				uncompleted_count:0
+				completed_count: 0,
+				uncompleted_count: 0
 			}
 		},
 		created() {
-			axios.get('/order-count').then(response => {
-				this.completed_count = response.data.data.completed_count;
-				this.uncompleted_count = response.data.data.uncompleted_count;
-			})
+			window.axios.get('counts/orders', {
+				params: {
+					state: 2
+				}
+			}).then(response => {
+				this.completed_count = response.data.count;
+			});
+			window.axios.get('counts/orders', {
+				params: {
+					state: 1
+				}
+			}).then(response => {
+				this.uncompleted_count = response.data.count;
+			});
 		}
 	}
 </script>

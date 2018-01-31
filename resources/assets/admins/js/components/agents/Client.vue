@@ -19,19 +19,13 @@
 			<tfoot class="text-center">
 			<tr>
 				<td colspan="3">
-					<nav aria-label="Page navigation">
-						<ul class="pagination">
-							<li :class="{'disabled': pages.current_page == 1}"
-							    @click="--params.page,getItems(pages.current_page -1)">
-								<a href="javascript:void(0);" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-								</a>
+					<nav aria-label="...">
+						<ul class="pager">
+							<li v-show="paginate.prev_page_url" @click="getItems(--paginate.current_page)">
+								<a href="javascript:;">Previous</a>
 							</li>
-							<li :class="{'disabled': pages.current_page == pages.last_page}"
-							    @click="++params.page,getItems(pages.current_page +1)">
-								<a href="javascript:void(0);" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-								</a>
+							<li v-show="paginate.next_page_url" @click="getItems(++paginate.current_page)">
+								<a href="javascript:;">Next</a>
 							</li>
 						</ul>
 					</nav>
@@ -62,7 +56,12 @@
 				params: {
 					page: 1,
 					username: '',
-				}
+				},
+				paginate: {
+					current_page: 1,
+					prev_page_url: '',
+					next_page_url: '',
+				},
 			}
 		},
 		watch: {
@@ -75,23 +74,18 @@
 		},
 		methods: {
 			getItems: function (page) {
-				if (page < 1 || page > this.pages.last_page)
-				{
-					return;
-				}
 				this.params.page = page;
-				axios.get('/agent-of-client/' + this.user_id, {
+				this.params.parent_id = this.user_id;
+				window.axios.get('users', {
 					params: this.params
 				}).then(response => {
-					this.setData(response.data);
-				}).catch(error => {
-
+					this.items = response.data.data;
+					this.paginate.current_page = response.data.meta.pagination.current_page;
+					if (response.data.meta.pagination.links) {
+						this.paginate.prev_page_url = response.data.meta.pagination.links.previous;
+						this.paginate.next_page_url = response.data.meta.pagination.links.next;
+					}
 				});
-			},
-			setData: function (data) {
-				this.items = data.data;
-				this.pages.last_page = data.last_page;
-				this.pages.current_page = data.current_page;
 			}
 		}
 	}

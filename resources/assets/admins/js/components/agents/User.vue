@@ -48,7 +48,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-10">
 				<input type="text" class="form-control" v-model="mobile" name="mobile" v-validate data-vv-rules="required|phone"
-				       data-vv-as="手机" placeholder="手机">
+				       data-vv-as="手机" placeholder="手机" disabled>
 				<span class="help-block" v-show="errors.has('mobile')">{{ errors.first('mobile') }}</span>
 			</div>
 		</div>
@@ -111,18 +111,16 @@
 		methods: {
 			showAgent: function () {
 				this.resetUserData();
-				axios.get('/agent/' + this.user_id).then(response => {
+				window.axios.get('agents/' + this.user_id).then(response => {
 					this.setUserData(response.data);
-				}).catch(error => {
-
 				});
 			},
 			onSubmit: function () {
 				this.$validator.validateAll().then(result => {
 					if (result) {
-						axios.patch('/agent/' + this.user_id, {
+						axios.patch('agents/' + this.user_id, {
 							name: this.name,
-							mobile: this.mobile,
+							// mobile: this.mobile,
 							wechat: this.wechat,
 							introduction: this.introduction,
 							level: this.level,
@@ -152,11 +150,9 @@
 				this.home_management = data.home_management;
 			},
 			getLevels: function () {
-				axios.get('/config/agent_set').then(response => {
-					this.levels = response.data;
+				window.axios.get('levels').then(response => {
+					this.levels = response.data.data;
 					this.changeLevel();
-				}).catch(error => {
-					console.log(error.response.data);
 				});
 			},
 			uploadImg: function (event) {
@@ -165,7 +161,7 @@
 				formData.append('width', 200);
 				formData.append('height', 200);
 				formData.append('img', event.target.files[0]);
-				axios.post('/upload', formData).then(response => {
+				window.axios.post('upload', formData).then(response => {
 					this.avatar = response.data;
 				}).catch(error => {
 					console.log(error.response.data);

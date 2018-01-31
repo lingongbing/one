@@ -106,9 +106,9 @@
 						</router-link>
 					</li>
 					<li>
-						<a href="#">
-							<router-link :to="{ name: 'index', params: { userId: 123 }}" tag="span">首页内容管理</router-link>
-						</a>
+						<router-link :to="{ name: 'homes-contents'}" tag="a">
+							<span>首页内容管理</span>
+						</router-link>
 					</li>
 					<li>
 						<a href="#">

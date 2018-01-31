@@ -23,14 +23,23 @@ class OrdersRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id' => 'required|exists:users,id',
-            'goods_id' => 'required|exists:goods,id',
-            'goods_number' => 'required|numeric',
-            'goods_total_price' => 'required|numeric',
-            'courier_company' => 'required',
-	        'courier_order_no' => 'required|numeric|unique:orders'
-        ];
+    	switch ($this->method()) {
+		    case 'POST':
+			    return [
+				    'user_id' => 'required|exists:users,id',
+				    'goods_id' => 'required|exists:goods,id',
+				    'goods_number' => 'required|numeric',
+				    'goods_total_price' => 'required|numeric',
+				    'courier_company' => 'required',
+				    'courier_order_no' => 'required|numeric|unique:orders'
+			    ];
+			    break;
+		    case 'PATCH':
+			    return [
+				    'state' => 'required'
+			    ];
+			    break;
+	    }
     }
 
 	public function attributes()

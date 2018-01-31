@@ -13,6 +13,9 @@ class UsersController extends Controller
 	public function index(Request $request)
 	{
 		$conditions = [];
+		if ($request->parent_id) {
+			$conditions[] = ['parent_id','=',$request->parent_id];
+		}
 		if ($request->username) {
 			$conditions[] = ['username', 'like', '%' . $request->username . '%'];
 		}

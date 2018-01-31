@@ -128,6 +128,12 @@ const routes = [
 		component: require('./components/homes/Swipe'),
 		meta: {authenticate: true,home_management:true},
 	},
+	{
+		path: '/homes-contents',
+		name: 'homes-contents',
+		component: require('./components/homes/Content'),
+		meta: {authenticate: true,home_management:true},
+	},
 ];
 
 const router = new VueRouter({

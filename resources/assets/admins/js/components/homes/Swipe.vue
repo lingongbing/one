@@ -73,7 +73,7 @@
 		},
 		methods: {
 			getCarousels: function () {
-				axios.get('/carousels').then(response => {
+				window.axios.get('carousels').then(response => {
 					this.carousels = response.data.data;
 				});
 			},
@@ -85,23 +85,23 @@
 				if (this.image) {
 					params.image = this.image;
 				}
-				axios.post('/carousels',params).then(response => {
+				window.axios.post('carousels',params).then(response => {
 					this.getCarousels();
 					this.alert_class = 'alert-success';
-					this.alert_message = response.data.message;
+					this.alert_message = '创建成功';
 				}).catch(error => {
 					this.alert_class = 'alert-danger';
-					this.alert_message = error.response.data.error;
+					this.alert_message = error.response.data.message;
 				});
 			},
 			deleteCarousel: function (carousel) {
-				axios.delete('/carousels/'+carousel).then(response => {
+				window.axios.delete('carousels/'+carousel).then(response => {
 					this.getCarousels();
 					this.alert_class = 'alert-success';
-					this.alert_message = response.data.message;
+					this.alert_message = '删除成功';
 				}).catch(error => {
 					this.alert_class = 'alert-danger';
-					this.alert_message = error.response.data.error;
+					this.alert_message = error.response.data.message;
 				});
 			},
 			uploadImg: function (event) {
@@ -111,9 +111,7 @@
 				formData.append('height', '200');
 				formData.append('image', event.target.files[0]);
 				axios.post('/upload', formData).then(response => {
-					this.image = response.data;
-				}).catch(error => {
-					console.log(error.response.data);
+					this.image = response.data.path;
 				});
 			},
 		}

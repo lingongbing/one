@@ -4,23 +4,42 @@
 			<h3 class="panel-title">代理级别</h3>
 		</div>
 		<div class="panel-body">
-			<form class="form-horizontal" v-on:submit.prevent="onSubmit">
-				<div class="form-group" v-for="(item,index) in items">
-					<div class="col-sm-offset-1 col-sm-8">
-						<input type="text" class="form-control" v-model="item['name']" placeholder="级别名称">
+			<div class="alert alert-info" v-for="(message,index) in messages" v-show="message" v-if="messages">
+				<button type="button" class="close" @click="messages[index] = false">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				{{ message }}
+			</div>
+			<div class="col-md-6">
+				<table class="table table-hover">
+					<thead>
+					<tr>
+						<th>名称</th>
+						<th>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="item in levels">
+						<td>{{ item.name }}</td>
+						<td>
+							<button type="submit" class="btn btn-default" @click="deleteLevel(item.id)">删除</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<form class="form-horizontal" v-on:submit.prevent="onSubmit">
+					<div class="form-group">
+						<input type="text" class="form-control" v-model="name" placeholder="级别名称">
 					</div>
-					<div class="col-sm-2">
-						<button type="button" class="btn btn-default btn-block" @click="deleteLevel(index)">删除级别
-						</button>
+					<div class="form-group">
+						<div class="col-sm-offset-1 col-sm-10">
+							<button type="submit" class="btn btn-default">添加</button>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-1 col-sm-10">
-						<button type="submit" class="btn btn-default">保存</button>
-						<button type="button" class="btn btn-default" @click="addLevel()">添加</button>
-					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 </template>
@@ -29,9 +48,12 @@
 	export default {
 		data() {
 			return {
-				items: [],
-				// alert_class:'',
-				// alert_message: {},
+				name: '',
+				levels: [],
+				messages: {
+					name: '',
+					message: ''
+				},
 			}
 		},
 		created() {
@@ -39,37 +61,35 @@
 		},
 		methods: {
 			getItems: function () {
-				axios.get('/config/agent_set').then(response => {
-					this.items = response.data;
-				}).catch(error => {
-					console.log(error.response.data);
+				window.axios.get('levels').then(response => {
+					this.levels = response.data.data;
 				});
 			},
 			onSubmit: function () {
-				const formData = new FormData();
-				formData.append('_method', 'PATCH');
-				formData.append('name', 'agent_set');
-				if (Array.isArray(this.items)) {
-					this.items.forEach(function (item, index) {
-						formData.append(`options[${index}][name]`, item.name);
-					});
-				}
-				axios.post('/config', formData).then(response => {
-					this.items = response.data.data;
-					this.alert_class = 'alert-success';
-					this.alert_message = response.data.message;
+				axios.post('levels', {name:this.name}).then(response => {
+					this.getItems();
 				}).catch(error => {
-					this.alert_class = 'alert-danger';
-					this.alert_message = error.response.data;
+					if (error.response.status == 422) {
+						for (let index in error.response.data.errors) {
+							this.messages[index] = error.response.data.errors[index][0];
+						}
+					}else {
+						this.messages.message = error.response.data.message;
+					}
 				});
 			},
-			addLevel: function () {
-				let item = new Array();
-				item['name'] = '';
-				this.items.push(item);
-			},
-			deleteLevel: function (index) {
-				this.items.splice(index, 1);
+			deleteLevel: function (level) {
+				window.axios.delete('levels/'+level).then(response => {
+					this.getItems();
+				}).catch(error => {
+					if (error.response.status == 422) {
+						for (let index in error.response.data.errors) {
+							this.messages[index] = error.response.data.errors[index][0];
+						}
+					}else {
+						this.messages.message = error.response.data.message;
+					}
+				});
 			},
 		}
 	}

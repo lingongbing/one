@@ -13,14 +13,30 @@ class OrdersController extends Controller
 {
 	public function index(Request $request)
 	{
-		$user = User::find(1);
-		$user = $user->order;
-		return $this->response->array([
-			'order' => $user
-		]);
-//		$orders = Order::with('user','good')->paginate(10);
+		$conditions = [];
+		if (!$request->user()->hasRole('admin')) {
+			$conditions[] = ['creator_user_id', $request->user()->id];
+		}
+		if ($request->state) {
+			$conditions[] = ['state','=',$request->state];
+		}
+		if ($request->order_no) {
+			$conditions[] = ['order_no','=',$request->order_no];
+		}
+		if ($request->courier_order_no) {
+			$conditions[] = ['courier_order_no','=',$request->courier_order_no];
+		}
+		$orders = Order::with('user','good')->where($conditions)->paginate(10);
+		return $this->response->paginator($orders,new OrderTransformer());
+	}
 
-//		return $this->response->paginator($orders,new OrderTransformer());
+	public function update(OrdersRequest $request,$order) // 隐式绑定不生效
+	{
+		$order = Order::find($order);
+		$this->authorize('update',$order);
+
+		$order->update($request->all());
+		return $this->response->item($order,new OrderTransformer());
 	}
 
 	public function store(OrdersRequest $request, Order $order)
@@ -36,5 +52,15 @@ class OrdersController extends Controller
 		$order->save();
 
 		return $this->response->created();
+	}
+
+
+	public function destroy($order) // 隐式绑定不生效
+	{
+		$order = Order::find($order);
+		$this->authorize('update',$order);
+		$order->delete();
+
+		return $this->response->noContent();
 	}
 }

@@ -11,8 +11,15 @@ class OrderTransformer extends TransformerAbstract
 	{
 		return [
 			'id' => $order->id,
-			'user_name' => $order->user(),
-			'goods_name' => $order->good()
+			'name' => $order->user->name ? $order->user->name : $order->user->username,
+			'order_no' => $order->order_no,
+			'goods_name' => $order->good->name,
+			'courier_order_no' => $order->courier_order_no,
+			'goods_number' => $order->goods_number,
+			'goods_total_price' => $order->goods_total_price,
+			'courier_company' => $order->courier_company,
+			'created_at' => $order->created_at->format('Y-m-d H:i:s'),
+			'state' => $order->state
 		];
 	}
 }

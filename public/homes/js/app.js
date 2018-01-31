@@ -2055,35 +2055,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			menus: {},
-			sub_menu: 'home',
 			main_menu: 'home'
 		};
 	},
 
 	watch: {
-		'$router': function $router(to) {
-			console.log(to);
+		'$route': function $route() {
+			this.changeMainMenu();
 		},
-
 		main_menu: function main_menu() {
-			if (this.main_menu === 'home') {
-				this.sub_menu = 'home';
-				return;
-			}
-			for (var index in this.menus) {
-				if (this.main_menu == this.menus[index].parent_id) {
-					this.sub_menu = this.menus[index].key;
-					break;
-				}
-			}
-		},
-		sub_menu: function sub_menu() {
-			if (this.sub_menu === 'home') {
-				this.$router.push({ name: 'home' });
-			}
-			if (this.sub_menu === 'trading') {
-				this.$router.push({ name: 'orders', params: { state: 1 } });
-			}
+			this.changeRouter();
 		}
 	},
 	created: function created() {
@@ -2094,11 +2075,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		getMenus: function getMenus() {
 			var _this = this;
 
-			window.axios.get('/menus').then(function (response) {
+			window.axios.get('menus').then(function (response) {
 				_this.menus = response.data.data;
-			}).catch(function (error) {
-				console.log(error.response);
+				_this.changeMainMenu();
 			});
+		},
+		changeMainMenu: function changeMainMenu() {
+			switch (this.$route.name) {
+				case 'home':
+					this.main_menu = 'home';
+					break;
+				case 'orders':
+					this.main_menu = 'buy_record';
+					break;
+			}
+		},
+		changeRouter: function changeRouter() {
+			switch (this.main_menu) {
+				case 'home':
+					this.$router.push({ name: 'home' });
+					break;
+				case 'buy_record':
+					this.$router.push({ name: 'orders' });
+					break;
+			}
 		}
 	}
 });
@@ -2191,21 +2191,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
-			carousels: {}
+			homes: {},
+			carousels: {},
+			loading: false,
+			pagination: {
+				total_pages: 1,
+				current_page: 0
+			}
 		};
 	},
 	created: function created() {
 		var _this = this;
 
-		window.axios.get('/carousels').then(function (response) {
+		this.getHomes();
+		window.axios.get('carousels').then(function (response) {
 			_this.carousels = response.data.data;
-		}).catch(function (error) {
-			console.log(error.response.data);
 		});
+	},
+
+	methods: {
+		getHomes: function getHomes() {
+			var _this2 = this;
+
+			if (this.pagination.total_pages > this.pagination.current_page) {
+				window.axios.get('homes', {
+					params: {
+						page: ++this.pagination.current_page
+					}
+				}).then(function (response) {
+					var data = {};
+					for (var index in response.data.data) {
+						data[response.data.data[index].id] = response.data.data[index];
+					}
+					var new_data = {};
+					Object.assign(new_data, _this2.homes, data);
+					_this2.homes = new_data;
+					_this2.pagination = response.data.meta.pagination;
+				});
+			}
+		}
 	}
 });
 
@@ -6355,7 +6393,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.router-view[data-v-0449ba42] {\n\tmargin-top: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.router-view[data-v-0449ba42] {\n\tmargin-top: 40px;\n\tmargin-bottom: 60px;\n}\n", ""]);
 
 // exports
 
@@ -6400,7 +6438,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.mt-swipe[data-v-18e31e35] {\n\theight: 200px;\n}\n", ""]);
+exports.push([module.i, "\n.mt-swipe[data-v-18e31e35] {\n\theight: 200px;\n}\nul[data-v-18e31e35] {\n\tbackground-color: #eaeaea;\n}\nli[data-v-18e31e35] {\n\tmargin: 10px 0 0 0;\n}\n", ""]);
 
 // exports
 
@@ -64759,7 +64797,7 @@ var render = function() {
           _vm._v(" "),
           _vm._l(_vm.menus, function(menu, index) {
             return !menu.parent_id
-              ? _c("mt-tab-item", { key: index, attrs: { id: menu.id } }, [
+              ? _c("mt-tab-item", { key: index, attrs: { id: menu.key } }, [
                   _c("img", {
                     attrs: {
                       slot: "icon",
@@ -65395,6 +65433,32 @@ var render = function() {
           return _c("mt-swipe-item", { key: index }, [
             _c("a", { attrs: { href: item.link } }, [
               _c("img", { attrs: { src: item.image } })
+            ])
+          ])
+        })
+      ),
+      _vm._v(" "),
+      _c(
+        "ul",
+        {
+          directives: [
+            {
+              name: "infinite-scroll",
+              rawName: "v-infinite-scroll",
+              value: _vm.getHomes,
+              expression: "getHomes"
+            }
+          ],
+          staticClass: "list-group",
+          attrs: {
+            "infinite-scroll-disabled": "loading",
+            "infinite-scroll-distance": "10"
+          }
+        },
+        _vm._l(_vm.homes, function(home) {
+          return _c("li", [
+            _c("a", { attrs: { href: home.link } }, [
+              _c("img", { attrs: { src: home.image } })
             ])
           ])
         })
@@ -80544,7 +80608,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 window.axios = __WEBPACK_IMPORTED_MODULE_0_axios___default.a;
-window.axios.defaults.baseURL = 'http://api.one.com';
+window.axios.defaults.baseURL = '/api';
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken() && __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType()) {

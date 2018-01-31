@@ -1,10 +1,3 @@
-export const mobile = {
-	getMessage:'必须是11位手机号码',
-	validate(value) {
-		return value.length == 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)
-	}
-};
-
 export const mobileIsExist = {
 	getMessage:'手机号码已经存在',
 	validate(value) {
@@ -20,6 +13,43 @@ export const usernameIsExist = {
 	getMessage:'账号已经存在',
 	validate(value) {
 		return axios.get('/confirmed-username/' + value).then(result => {
+			return true;
+		}).catch(result => {
+			return false;
+		})
+	}
+};
+
+export const mobile = {
+	getMessage:'格式错误',
+	validate(value) {
+		return /^1[34578]\d{9}$/.test(value)
+	}
+};
+
+export const unique_mobile = {
+	getMessage:'手机 已经存在',
+	validate(value) {
+		return window.axios.get('/confirmed',{
+			params:{
+				mobile:value
+			}
+		}).then(result => {
+			return true;
+		}).catch(result => {
+			return false;
+		})
+	}
+};
+
+export const unique_username = {
+	getMessage:'账号 已经存在',
+	validate(value) {
+		return window.axios.get('/confirmed',{
+			params:{
+				username:value
+			}
+		}).then(result => {
 			return true;
 		}).catch(result => {
 			return false;

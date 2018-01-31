@@ -12,7 +12,7 @@ class CarouselTransformer extends TransformerAbstract
 		return [
 			'id' => $carousel->id,
 			'link' => $carousel->link,
-			'image' => url($carousel->image)
+			'image' => $carousel->image
 		];
 	}
 }
