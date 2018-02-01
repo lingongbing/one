@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
     	$this->call(SkinBelongTableSeeder::class);
     	$this->call(SkinCategoryTableSeeder::class);
     	$this->call(UserTableSeeder::class);
+    	$this->call(MarketTableSeeder::class);
     }
 }

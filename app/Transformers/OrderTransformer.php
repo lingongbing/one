@@ -19,6 +19,7 @@ class OrderTransformer extends TransformerAbstract
 			'goods_total_price' => $order->goods_total_price,
 			'courier_company' => $order->courier_company,
 			'created_at' => $order->created_at->format('Y-m-d H:i:s'),
+			'goods_image' => $order->good->image,
 			'state' => $order->state
 		];
 	}

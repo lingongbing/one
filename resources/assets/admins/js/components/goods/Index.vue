@@ -153,7 +153,7 @@
 			uploadImg: function (event) {
 				let formData = new FormData();
 				formData.append('key', 'img');
-				formData.append('width', 200);
+				formData.append('width', 420);
 				formData.append('height', 200);
 				formData.append('img', event.target.files[0]);
 				axios.post('/upload', formData).then(response => {

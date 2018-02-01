@@ -26,7 +26,7 @@ class OrdersController extends Controller
 		if ($request->courier_order_no) {
 			$conditions[] = ['courier_order_no','=',$request->courier_order_no];
 		}
-		$orders = Order::with('user','good')->where($conditions)->paginate(10);
+		$orders = Order::with('user','good')->where($conditions)->paginate(8);
 		return $this->response->paginator($orders,new OrderTransformer());
 	}
 
@@ -36,6 +36,12 @@ class OrdersController extends Controller
 		$this->authorize('update',$order);
 
 		$order->update($request->all());
+		return $this->response->item($order,new OrderTransformer());
+	}
+
+	public function show($order) // 隐式绑定不生效
+	{
+		$order = Order::find($order);
 		return $this->response->item($order,new OrderTransformer());
 	}
 

@@ -13,7 +13,7 @@
 		    infinite-scroll-distance="10">
 			<li v-for="home in homes">
 				<a :href="home.link">
-					<img :src="home.image">
+					<img :src="home.image" style="width: 100%;">
 				</a>
 			</li>
 		</ul>

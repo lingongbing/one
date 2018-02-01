@@ -74,6 +74,12 @@ $api->version('v1',[
 			// 统计订单
 			$api->get('counts/orders', 'CountsController@orders')
 				->name('api.counts.order');
+			// 显示订单
+			$api->get('orders/{order}','OrdersController@show')
+				->name('api.orders.show');
+			// 快递查询
+			$api->get('couriers/{courier}','CouriersController@show')
+				->name('api.couriers.show');
 		});
 		// 首页管理权限接口
 		$api->group(['middleware' => ['api.auth','role:admin|role:home_management']], function($api) {
@@ -116,6 +122,12 @@ $api->version('v1',[
 			// 更新代理
 			$api->patch('agents/{agent}','AgentsController@update')
 				->name('api.agents.update');
+			// 阿里云市场列表
+			$api->get('aliyuns/markets/{market}','Aliyuns\MarketsController@show')
+				->name('api.aliyuns.markets.show');
+			// 阿里云市场更新
+			$api->patch('aliyuns/markets/{market}','Aliyuns\MarketsController@update')
+				->name('api.aliyuns.markets.patch');
 		});
 	});
 });

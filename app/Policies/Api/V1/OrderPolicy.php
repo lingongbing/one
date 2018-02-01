@@ -42,7 +42,7 @@ class OrderPolicy
      */
     public function update(User $user, Order $order)
     {
-        return $user->hasRole('admin') || $order->creator_user_id = $user->id;
+        return $user->hasRole('admin') || $order->creator_user_id === $user->id || $order->user_id === $user->id;
     }
 
     /**

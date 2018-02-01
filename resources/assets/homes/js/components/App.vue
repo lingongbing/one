@@ -59,6 +59,9 @@
 					case 'orders':
 						this.main_menu = 'buy_record';
 						break;
+					case 'orders-show':
+						this.main_menu = 'buy_record';
+						break;
 				}
 			},
 			changeRouter: function () {
@@ -67,7 +70,12 @@
 						this.$router.push({name: 'home'});
 						break;
 					case 'buy_record':
-						this.$router.push({name: 'orders'});
+						if (this.$route.name == 'orders-show')
+						{
+							this.$router.push(this.$route.fullPath);
+						}else {
+							this.$router.push({name: 'orders'});
+						}
 						break;
 				}
 			}

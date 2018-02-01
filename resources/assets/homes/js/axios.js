@@ -25,7 +25,9 @@ window.axios.interceptors.response.use(
 					// 返回 401 清除token信息并跳转到登录页面
 					if (store.getters.authenticate) {
 						window.axios.put('authorizations/current').then(response => {
-							console.log(response);
+							JWT.setToken(response.data.access_token);
+							JWT.setTokenType(response.data.token_type);
+							window.axios.defaults.headers.common['Authorization'] = JWT.getTokenType() + ' ' + JWT.getToken();
 						})
 					}else {
 						router.push({name : 'authorizations'});

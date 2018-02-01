@@ -40,23 +40,21 @@
 		},
 		methods: {
 			getConfig: function () {
-				axios.get('/config/aliyun_kdi').then(response => {
+				window.axios.get('aliyuns/markets/kdi').then(response => {
 					this.app_code = response.data.app_code;
 				});
+				
 			},
 			onSubmit: function () {
-				axios.patch('/config', {
-					name:'aliyun_kdi',
-					options: {
-						app_code : this.app_code,
-					}
+				axios.patch('aliyuns/markets/kdi', {
+					app_code: this.app_code
 				}).then(response => {
-					this.app_code = response.data.data.app_code;
+					this.app_code = response.data.app_code;
 					this.alert_class = 'alert-success';
-					this.alert_message = response.data.message;
+					this.alert_message = '保存成功';
 				}).catch(error => {
 					this.alert_class = 'alert-danger';
-					this.alert_message = error.response.data.error;
+					this.alert_message = '保存失败';
 				});
 			},
 		}

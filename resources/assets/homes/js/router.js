@@ -28,6 +28,12 @@ const routes = [
 		name: 'user-create',
 		component: require('./components/users/Create'),
 	},
+	{
+		path: '/orders/:order',
+		name: 'orders-show',
+		component: require('./components/orders/Show'),
+		meta: {authorizations: true},
+	},
 ];
 
 const router = new VueRouter({

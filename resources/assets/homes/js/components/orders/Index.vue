@@ -4,7 +4,7 @@
 			<mt-tab-item id="trading">正在交易</mt-tab-item>
 			<mt-tab-item id="has_been_completed">已经完成</mt-tab-item>
 		</mt-navbar>
-		<mt-loadmore :top-method="getOrders" :bottom-method="getOrders" :bottom-all-loaded="allLoaded">
+		<mt-loadmore v-if="orders" :top-method="getOrders" :bottom-method="getOrders" :bottom-all-loaded="allLoaded">
 			<div class="table table-dark table-responsive-sm">
 				<thead>
 					<tr>
@@ -14,7 +14,9 @@
 				</thead>
 				<tbody>
 					<tr v-for="order in orders">
-						<th scope="row">{{ order.goods_name }}</th>
+						<th scope="row">
+							<router-link :to="{ name: 'orders-show', params:{order:order.id} }" tag="span">{{ order.goods_name }}</router-link>
+						</th>
 						<th scope="row">{{ order.created_at }}</th>
 					</tr>
 				</tbody>
@@ -27,6 +29,7 @@
 	export default {
 		data() {
 			return {
+				state: 1,
 				orders: {},
 				loading: false,
 				allLoaded: false,
@@ -37,16 +40,31 @@
 				}
 			}
 		},
+		watch: {
+			selected:function () {
+				if (this.selected === 'trading') {
+					this.state = 1;
+				} else {
+					this.state = 2;
+				}
+			},
+			state:function () {
+				this.orders = {};
+				this.pagination.total_pages = 1;
+				this.pagination.current_page = 0;
+				this.getOrders();
+			}
+		},
 		created() {
-			this.getOrders(1);
+			this.getOrders();
 		},
 		methods:{
-			getOrders:function (state) {
+			getOrders:function () {
 				if (this.pagination.total_pages > this.pagination.current_page)
 				{
 					window.axios.get('orders',{
 						params:{
-							state:state,
+							state:this.state,
 							page:++this.pagination.current_page
 						}
 					}).then(response => {
@@ -57,7 +75,8 @@
 						let new_data ={};
 						Object.assign(new_data,this.orders,data);
 						this.orders = new_data;
-						this.pagination = response.data.meta.pagination;
+						this.pagination.total_pages = response.data.meta.pagination.total_pages;
+						this.pagination.current_page = response.data.meta.pagination.current_page;
 					});
 				}
 			}
