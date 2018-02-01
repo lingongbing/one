@@ -28,12 +28,7 @@
 			LeftMenu,HeaderMenu
 		},
 		mounted() {
-			if (this.$store.getters.authenticate)
-			{
-				axios.get('/user').then(response => {
-					this.$store.dispatch('setAuthUser',response.data);
-				})
-			}
+
 		}
 	}
 </script>

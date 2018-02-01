@@ -25,7 +25,7 @@ $api->version('v1',[
 			->name('api.authorizations.store');
 		// 刷新token
 		$api->put('authorizations/current', 'AuthorizationsController@update')
-			->name('api.authorizations.update');
+			->name('api.authorizations.update')->middleware();
 		// 删除token
 		$api->delete('authorizations/current', 'AuthorizationsController@destroy')
 			->name('api.authorizations.destroy');

@@ -2260,9 +2260,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	name: "trading"
+	data: function data() {
+		return {
+			orders: {},
+			loading: false,
+			allLoaded: false,
+			selected: 'trading',
+			pagination: {
+				total_pages: 1,
+				current_page: 0
+			}
+		};
+	},
+	created: function created() {
+		this.getOrders(1);
+	},
+
+	methods: {
+		getOrders: function getOrders(state) {
+			var _this = this;
+
+			if (this.pagination.total_pages > this.pagination.current_page) {
+				window.axios.get('orders', {
+					params: {
+						state: state,
+						page: ++this.pagination.current_page
+					}
+				}).then(function (response) {
+					var data = {};
+					for (var index in response.data.data) {
+						data[response.data.data[index].id] = response.data.data[index];
+					}
+					var new_data = {};
+					Object.assign(new_data, _this.orders, data);
+					_this.orders = new_data;
+					_this.pagination = response.data.meta.pagination;
+				});
+			}
+		}
+	}
 });
 
 /***/ }),
@@ -6453,7 +6510,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -65486,7 +65543,69 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n\t购买记录\n")])
+  return _c(
+    "div",
+    [
+      _c(
+        "mt-navbar",
+        {
+          model: {
+            value: _vm.selected,
+            callback: function($$v) {
+              _vm.selected = $$v
+            },
+            expression: "selected"
+          }
+        },
+        [
+          _c("mt-tab-item", { attrs: { id: "trading" } }, [_vm._v("正在交易")]),
+          _vm._v(" "),
+          _c("mt-tab-item", { attrs: { id: "has_been_completed" } }, [
+            _vm._v("已经完成")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "mt-loadmore",
+        {
+          attrs: {
+            "top-method": _vm.getOrders,
+            "bottom-method": _vm.getOrders,
+            "bottom-all-loaded": _vm.allLoaded
+          }
+        },
+        [
+          _c("div", { staticClass: "table table-dark table-responsive-sm" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("商品名称")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("创建时间")])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.orders, function(order) {
+                return _c("tr", [
+                  _c("th", { attrs: { scope: "row" } }, [
+                    _vm._v(_vm._s(order.goods_name))
+                  ]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "row" } }, [
+                    _vm._v(_vm._s(order.created_at))
+                  ])
+                ])
+              })
+            )
+          ])
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -80602,6 +80721,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__ = __webpack_require__("./resources/assets/homes/js/helpers/jwt.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_index__ = __webpack_require__("./resources/assets/homes/js/stores/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_mutation_types__ = __webpack_require__("./resources/assets/homes/js/stores/mutation-types.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__router__ = __webpack_require__("./resources/assets/homes/js/router.js");
+
 
 
 
@@ -80615,6 +80736,25 @@ if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken() && 
 	window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 	__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].commit(__WEBPACK_IMPORTED_MODULE_3__stores_mutation_types__["a" /* AUTHENTICATE */]);
 }
+
+window.axios.interceptors.response.use(function (response) {
+	return response;
+}, function (error) {
+	if (error.response) {
+		switch (error.response.status) {
+			case 401:
+				// 返回 401 清除token信息并跳转到登录页面
+				if (__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].getters.authenticate) {
+					window.axios.put('authorizations/current').then(function (response) {
+						console.log(response);
+					});
+				} else {
+					__WEBPACK_IMPORTED_MODULE_4__router__["a" /* default */].push({ name: 'authorizations' });
+				}
+		}
+	}
+	return Promise.reject(error); // 返回接口返回的错误信息
+});
 
 /***/ }),
 
@@ -81102,6 +81242,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mutation_types__ = __webpack_require__("./resources/assets/homes/js/stores/mutation-types.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__ = __webpack_require__("./resources/assets/homes/js/helpers/jwt.js");
+var _mutations;
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -81111,9 +81253,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 	state: {
 		authenticate: false
 	},
-	mutations: _defineProperty({}, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */], function (state) {
+	mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */], function (state) {
 		state.authenticate = true;
-	}),
+	}), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */], function (state) {
+		state.authenticate = false;
+	}), _mutations),
 	getters: {
 		authenticate: function authenticate(state) {
 			return state.authenticate;
@@ -81129,7 +81273,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 				window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */]);
 			});
-		}
+		},
+		unauthenticate: function unauthenticate(_ref2) {
+			var commit = _ref2.commit;
+
+			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeToken();
+			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeTokenType();
+			window.axios.defaults.headers.common['Authorization'] = false;
+			commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */]);
+		},
+		refreshToken: function refreshToken() {}
 	}
 });
 
@@ -81140,7 +81293,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTHENTICATE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNAUTHENTICATE; });
 var AUTHENTICATE = 'AUTHENTICATE';
+var UNAUTHENTICATE = 'UNAUTHENTICATE';
 
 /***/ }),
 

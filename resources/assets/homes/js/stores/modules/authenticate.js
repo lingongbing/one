@@ -1,4 +1,4 @@
-import {AUTHENTICATE} from "../mutation-types";
+import {AUTHENTICATE,UNAUTHENTICATE} from "../mutation-types";
 import JWT from '../../helpers/jwt';
 
 export default {
@@ -9,6 +9,9 @@ export default {
 		[AUTHENTICATE] (state) {
 			state.authenticate = true;
 		},
+		[UNAUTHENTICATE] (state) {
+			state.authenticate = false;
+		}
 	},
 	getters: {
 		authenticate: state => {
@@ -21,8 +24,17 @@ export default {
 				JWT.setToken(response.data.access_token);
 				JWT.setTokenType(response.data.token_type);
 				window.axios.defaults.headers.common['Authorization'] = JWT.getTokenType() + ' ' + JWT.getToken();
-				commit(AUTHENTICATE)
+				commit(AUTHENTICATE);
 			});
+		},
+		unauthenticate({commit}) {
+			JWT.removeToken();
+			JWT.removeTokenType();
+			window.axios.defaults.headers.common['Authorization'] = false;
+			commit(UNAUTHENTICATE);
+		},
+		refreshToken() {
+
 		}
 	}
 }
