@@ -53,6 +53,50 @@ class UsersController extends Controller
 			->setStatusCode(201);
 	}
 
+	public function update(UserRequest $request)
+	{
+		$user = $this->user();
+
+		if ($request->verification_key && $request->verification_code) {
+			$verifyData = \Cache::get($request->verification_key);
+
+			if (!$verifyData) {
+				return $this->response->error('验证码已失效', 422);
+			}
+
+			if (!hash_equals($verifyData['code'], $request->verification_code)) {
+				// 返回401
+				return $this->response->errorUnauthorized('验证码错误');
+			}
+
+			$user->mobile = $verifyData['mobile'];
+		}
+
+		if ($request->password) {
+			$user->password = bcrypt($request->password);
+		}
+
+		if ($request->name) {
+			$user->name = $request->name;
+		}
+
+		if ($request->avatar) {
+			$user->avatar = $request->avatar;
+		}
+
+		if ($request->wechat) {
+			$user->wechat = $request->wechat;
+		}
+
+		if ($request->address) {
+			$user->address = $request->address;
+		}
+
+		$user->save();
+
+		return $this->response->item($user,new UserTransformer());
+	}
+
 	public function me()
 	{
 		return $this->response->item($this->user(), new UserTransformer());

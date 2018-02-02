@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
 	protected $fillable = [
-		'name', 'email', 'password','username','level','avatar','mobile','introduction','wechat'
+		'name', 'email', 'password','username','level','avatar','mobile','introduction','wechat','address'
 	];
 
     /**
@@ -54,5 +54,10 @@ class User extends Authenticatable implements JWTSubject
 	public function getJWTCustomClaims()
 	{
 		return [];
+	}
+
+	public function skin()
+	{
+		return $this->hasOne(UserSkin::class);
 	}
 }

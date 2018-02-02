@@ -48,6 +48,10 @@ $api->version('v1',[
 			->name('api.levels.index');
 		$api->get('homes', 'HomesController@index')
 			->name('api.homes.index');
+		$api->get('skins-belongs', 'SkinsBelongsController@index')
+			->name('api.skins.belongs.index');
+		$api->get('skins-categories', 'SkinsCategoriesController@index')
+			->name('api.skins.categories.index');
 		// 需要 token 验证的接口
 		$api->group(['middleware' => 'api.auth'], function($api) {
 			// 当前登录用户信息
@@ -80,6 +84,24 @@ $api->version('v1',[
 			// 快递查询
 			$api->get('couriers/{courier}','CouriersController@show')
 				->name('api.couriers.show');
+			// 更新用户
+			$api->patch('user','UsersController@update')
+				->name('api.user.update');
+			// 当前登陆用户的皮肤信息
+			$api->get('skin','UsersSkinsController@show')
+				->name('api.skins.show');
+			// 创建客户
+			$api->post('clients','ClientsController@store')
+				->name('api.clients.store');
+			// 创建客户皮肤信息
+			$api->post('users/{user}/skins','UsersSkinsController@store')
+				->name('api.users.skins.store');
+			// 更新客户皮肤信息
+			$api->patch('users/{user}/skins/{skin}','UsersSkinsController@patch')
+				->name('api.users.skins.patch');
+			// 获取客户皮肤信息
+			$api->get('users/{user}/skins','UsersSkinsController@index')
+				->name('api.users.skins.index');
 		});
 		// 首页管理权限接口
 		$api->group(['middleware' => ['api.auth','role:admin|role:home_management']], function($api) {

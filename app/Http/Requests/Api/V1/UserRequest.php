@@ -23,12 +23,22 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-	        'username' => 'required|string|max:255|unique:users',
-	        'password' => 'required|string',
-	        'verification_key' => 'required|string',
-	        'verification_code' => 'required|string',
-        ];
+        switch ($this->method()) {
+	        case 'POST':
+		        return [
+			        'username' => 'required|string|max:255|unique:users',
+			        'password' => 'required|string',
+			        'verification_key' => 'required|string',
+			        'verification_code' => 'required|string',
+		        ];
+		        break;
+	        case 'PATCH':
+	        	return [
+	        		'mobile' => 'regex:/^1[3456789]\d{9}$/|unique:users',
+	        		'password' => 'string|min:6',
+		        ];
+	        	break;
+        }
     }
 
 	public function attributes()

@@ -33,7 +33,7 @@
 			}
 		},
 		watch: {
-			'$route': function() {
+			'$route': function () {
 				this.changeMainMenu();
 			},
 			main_menu: function () {
@@ -51,8 +51,7 @@
 				});
 			},
 			changeMainMenu: function () {
-				switch (this.$route.name)
-				{
+				switch (this.$route.name) {
 					case 'home':
 						this.main_menu = 'home';
 						break;
@@ -62,6 +61,12 @@
 					case 'orders-show':
 						this.main_menu = 'buy_record';
 						break;
+					case 'users-show':
+						this.main_menu = 'personal';
+						break;
+					case 'skins-show':
+						this.main_menu = 'personal';
+						break;
 				}
 			},
 			changeRouter: function () {
@@ -70,11 +75,29 @@
 						this.$router.push({name: 'home'});
 						break;
 					case 'buy_record':
-						if (this.$route.name == 'orders-show')
-						{
-							this.$router.push(this.$route.fullPath);
-						}else {
-							this.$router.push({name: 'orders'});
+						switch (this.$route.name) {
+							case 'orders':
+								this.$router.push({name: 'orders'});
+								break;
+							case 'orders-show':
+								this.$router.push({name: 'orders-show'});
+								break;
+							default:
+								this.$router.push({name: 'orders'});
+								break;
+						}
+						break;
+					case 'personal':
+						switch (this.$route.name) {
+							case 'users-show':
+								this.$router.push({name: 'users-show'});
+								break;
+							case 'skins-show':
+								this.$router.push({name: 'skins-show'});
+								break;
+							default:
+								this.$router.push({name: 'users-show'});
+								break;
 						}
 						break;
 				}

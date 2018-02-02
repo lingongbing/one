@@ -148,10 +148,10 @@
 			}
 		},
 		created() {
-			axios.get('/skin-belong').then(response => {
+			window.axios.get('skins-belongs').then(response => {
 				this.skin_belongs = response.data.data;
 			});
-			axios.get('/skin-category').then(response => {
+			window.axios.get('skins-categories').then(response => {
 				this.skin_categories = response.data.data;
 			});
 		},
@@ -167,12 +167,7 @@
 			onSubmit: function () {
 				this.$validator.validateAll().then(result => {
 					if (result) {
-						let url = '/user-skin/' + this.user_id;
-						if (this.id)
-						{
-							url = '/user-skin/' + this.user_id + '/' + this.id;
-						}
-						axios.post(url, {
+						let skin = {
 							condition: this.condition,
 							check_time: this.check_time,
 							makeup_habits: this.makeup_habits,
@@ -180,9 +175,19 @@
 							characteristics: this.characteristics,
 							skin_category_id: this.skin_category_id,
 							skin_belong_id: this.skin_belong_id,
-							commonly_products: this.commonly_products,
-						}).then(response => {
-							this.messages.message = response.data.message;
+							commonly_products: this.commonly_products
+						};
+						
+						let request = {};
+						if (this.id)
+						{
+							request = window.axios.patch('users/'+this.user_id+'/skins/'+this.id,skin);
+						} else {
+							request = window.axios.post('users/'+this.user_id+'/skins',skin);
+						}
+						
+						request.then(response => {
+							this.message.message = '创建成功';
 						}).catch(error => {
 							if (error.response.status === 422) {
 								for (let index in error.response.data.errors) {
@@ -193,8 +198,8 @@
 					}
 				});
 			},
-			getUserSkin: function (user_id) {
-				axios.get('/user-skin/' + this.user_id).then(response => {
+			getUserSkin: function () {
+				window.axios.get('users/' + this.user_id + '/skins').then(response => {
 					this.id = response.data.data.id;
 					this.condition = response.data.data.condition;
 					this.check_time = response.data.data.check_time;
@@ -216,7 +221,7 @@
 					this.commonly_products = '';
 					this.skin_belongs_index = 0;
 					this.skin_categories_index = 0;
-					this.messages.message = error.response.data.error;
+					this.messages.message = error.response.data.message;
 				});
 			}
 		}

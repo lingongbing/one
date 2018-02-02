@@ -34,6 +34,18 @@ const routes = [
 		component: require('./components/orders/Show'),
 		meta: {authorizations: true},
 	},
+	{
+		path: '/users/show',
+		name: 'users-show',
+		component: require('./components/users/User'),
+		meta: {authorizations: true},
+	},
+	{
+		path: '/skins/show',
+		name: 'skins-show',
+		component: require('./components/skins/Skins'),
+		meta: {authorizations: true},
+	},
 ];
 
 const router = new VueRouter({

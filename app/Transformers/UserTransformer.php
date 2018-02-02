@@ -17,6 +17,7 @@ class UserTransformer extends TransformerAbstract
 			'avatar' => $user->avatar,
 			'wechat' => $user->wechat,
 			'mobile' => $user->mobile,
+			'address' => $user->address,
 			'username' => $user->username,
 			'created_at' => $user->created_at->format('Y-m-d H:i:s'),
 			'updated_at' => $user->updated_at->format('Y-m-d H:i:s'),

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests\Api\V1\AgentRequest;
 use App\Http\Controllers\Api\Controller;
-use App\Http\Requests\Api\V1\CaptchaRequest;
 use App\Models\User;
 use App\Transformers\AgentTransformer;
 use App\Transformers\UserTransformer;

@@ -10,7 +10,7 @@
 			<label class="col-sm-2 control-label">账号</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" v-model="username" name="username"
-				       placeholder="账号" v-validate data-vv-rules="required|usernameIsExist" data-vv-as="登陆账号">
+				       placeholder="账号" v-validate data-vv-rules="required|unique_username" data-vv-as="登陆账号">
 				<span class="help-block" v-show="errors.has('username')">{{ errors.first('username') }}</span>
 			</div>
 		</div>
@@ -51,7 +51,7 @@
 			<label class="col-sm-2 control-label">手机</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" v-model="mobile" name="mobile" placeholder="手机"
-				       v-validate data-vv-rules="required|mobile|mobileIsExist" data-vv-as="手机">
+				       v-validate data-vv-rules="required|mobile|unique_mobile" data-vv-as="手机">
 				<span class="help-block" v-show="errors.has('mobile')">{{ errors.first('mobile') }}</span>
 			</div>
 		</div>
@@ -123,7 +123,7 @@
 			onSubmit: function () {
 				this.$validator.validateAll().then(result => {
 					if (result) {
-						axios.post('/agent-of-client', {
+						axios.post('clients', {
 							name: this.name,
 							wechat: this.wechat,
 							mobile: this.mobile,
@@ -133,7 +133,7 @@
 							username: this.username,
 							password: this.password,
 						}).then(response => {
-							this.$emit("set_user_id",response.data.data.id);
+							this.$emit("set_user_id",response.data.id);
 							this.messages.message = response.data.message;
 						}).catch(error => {
 							if (error.response.status === 422)
@@ -153,8 +153,8 @@
 				formData.append('width', 200);
 				formData.append('height', 200);
 				formData.append('img', event.target.files[0]);
-				axios.post('/upload', formData).then(response => {
-					this.avatar = response.data;
+				axios.post('upload', formData).then(response => {
+					this.avatar = response.data.path;
 				}).catch(error => {
 					console.log(error.response.data);
 				});
