@@ -129,4 +129,7 @@
 	#captchaImageHelp {
 		width: 100%;
 	}
+	.needs-validation {
+		margin: 10px;
+	}
 </style>

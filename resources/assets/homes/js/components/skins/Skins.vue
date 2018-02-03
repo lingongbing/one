@@ -9,6 +9,7 @@
 				<show-skin></show-skin>
 			</mt-tab-container-item>
 			<mt-tab-container-item id="edit-skin">
+				<edit-skin></edit-skin>
 			</mt-tab-container-item>
 		</mt-tab-container>
 		<div class="container">
@@ -23,10 +24,11 @@
 </template>
 
 <script>
-	import ShowSkin from './ShowSkin'
+	import ShowSkin from './ShowSkin';
+	import EditSkin from './EditSkin';
 	export default {
 		components: {
-			ShowSkin,
+			ShowSkin,EditSkin
 		},
 		data() {
 			return {

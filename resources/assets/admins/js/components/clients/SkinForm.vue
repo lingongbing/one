@@ -53,7 +53,7 @@
 				<input type="text" v-model="commonly_products" id="commonly_products" name="commonly_products"
 				       class="form-control" v-validate data-vv-rules="required" data-vv-as="常用产品">
 				<span class="help-block"
-				      v-show="errors.has('commonly_products')">{{ errors.first('characteristics') }}</span>
+				      v-show="errors.has('commonly_products')">{{ errors.first('commonly_products') }}</span>
 			</div>
 		</div>
 		<div class="form-group">

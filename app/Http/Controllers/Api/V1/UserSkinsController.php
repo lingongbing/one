@@ -9,28 +9,25 @@ use App\Http\Controllers\Api\Controller;
 
 class UserSkinsController extends Controller
 {
-	public function show(Request $request,$user)
+	public function show(Request $request)
 	{
-		if ($user) {
-			$skin = UserSkin::where('user_id',$user)->first();
-		} else {
-			$skin = $request->user()->skin;
-		}
-
-		return $this->response->item($skin,new UserSkinTransformer());
+		$skin = UserSkin::where('user_id',$request->user()->id)->first();
+		return $this->response->item($skin, new UserSkinTransformer());
 	}
 
 	public function store(Request $request, UserSkin $skin, $user)
 	{
 		$skin->user_id          = $user;
-		$skin->condition        = $request->condition;
-		$skin->check_time       = $request->check_time;
-		$skin->makeup_habits    = $request->makeup_habits;
-		$skin->nursing_advice   = $request->nursing_advice;
-		$skin->characteristics  = $request->characteristics;
-		$skin->skin_category_id = $request->skin_category_id;
-		$skin->save();
+		$skin->create($request->all());
 
 		return $this->response->created();
+	}
+
+	public function update(Request $request)
+	{
+		$skin = UserSkin::where('user_id',$request->user()->id)->first();
+		$skin->update($request->all());
+
+		return $this->response->item($skin, new UserSkinTransformer());
 	}
 }

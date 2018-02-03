@@ -6204,11 +6204,148 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			user: {},
+			skin: {
+				condition: '皮肤特征',
+				check_time: '',
+				makeup_habits: '化妆习惯',
+				skin_belong_id: 0,
+				nursing_advice: '常用产品',
+				skin_category_id: 0,
+				characteristics: '护理建议',
+				commonly_products: '皮肤状态'
+			},
+			skin_belongs: {},
+			skin_categories: {},
+			message: ''
+		};
+	},
+	created: function created() {
+		var _this = this;
+
+		window.axios.get('skins-belongs').then(function (response) {
+			_this.skin_belongs = response.data.data;
+		});
+
+		window.axios.get('skins-categories').then(function (response) {
+			_this.skin_categories = response.data.data;
+		});
+
+		window.axios.get('user').then(function (response) {
+			_this.user = response.data;
+		});
+
+		window.axios.get('user/skin').then(function (response) {
+			_this.skin = response.data;
+		});
+	},
+
+	methods: {
+		onSubmit: function onSubmit() {
+			var _this2 = this;
+
+			this.$validator.validateAll().then(function (result) {
+				if (result) {
+					var request = {};
+					if (_this2.skin.id) {
+						request = window.axios.patch('user/skin', _this2.skin);
+					} else {
+						request = window.axios.post('user/skin', _this2.skin);
+					}
+
+					request.then(function (response) {
+						_this2.message = '修改成功';
+					}).catch(function (error) {
+						if (error.response.status === 422) {
+							_this2.messages = error.response.data.errors[index][0];
+						}
+					});
+				}
+			});
+		}
+	}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/homes/js/components/skins/ShowSkin.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6225,7 +6362,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	created: function created() {
 		var _this = this;
 
-		window.axios.get('skin').then(function (response) {
+		window.axios.get('user/skin').then(function (response) {
 			_this.skin = response.data;
 		});
 	}
@@ -6240,6 +6377,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ShowSkin__ = __webpack_require__("./resources/assets/homes/js/components/skins/ShowSkin.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ShowSkin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ShowSkin__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditSkin__ = __webpack_require__("./resources/assets/homes/js/components/skins/EditSkin.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditSkin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__EditSkin__);
 //
 //
 //
@@ -6264,11 +6403,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	components: {
-		ShowSkin: __WEBPACK_IMPORTED_MODULE_0__ShowSkin___default.a
+		ShowSkin: __WEBPACK_IMPORTED_MODULE_0__ShowSkin___default.a, EditSkin: __WEBPACK_IMPORTED_MODULE_1__EditSkin___default.a
 	},
 	data: function data() {
 		return {
@@ -9260,6 +9401,21 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-032eab9c\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\nform[data-v-032eab9c] {\n\tmargin: 10px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-04360922\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/admins/js/components/aliyuns/Sms.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9448,7 +9604,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -9838,7 +9994,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.mt-button[data-v-d7679c36] {\n\tmargin-top: 10px;\n\tpadding-top: 8px;\n}\n#captchaImageHelp[data-v-d7679c36] {\n\twidth: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.mt-button[data-v-d7679c36] {\n\tmargin-top: 10px;\n\tpadding-top: 8px;\n}\n#captchaImageHelp[data-v-d7679c36] {\n\twidth: 100%;\n}\n.needs-validation[data-v-d7679c36] {\n\tmargin: 10px;\n}\n", ""]);
 
 // exports
 
@@ -38045,6 +38201,390 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-032eab9c\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    {
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          _vm.onSubmit($event)
+        }
+      }
+    },
+    [
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.skin.skin_category_id,
+                expression: "skin.skin_category_id"
+              }
+            ],
+            staticClass: "form-control",
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.skin,
+                  "skin_category_id",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { value: "default", disabled: "" } }, [
+              _vm._v("皮肤种类")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.skin_categories, function(item) {
+              return _c("option", { domProps: { value: item.id } }, [
+                _vm._v(_vm._s(item.name))
+              ])
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.skin.skin_belong_id,
+                expression: "skin.skin_belong_id"
+              }
+            ],
+            staticClass: "form-control",
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.skin,
+                  "skin_belong_id",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { disabled: "" } }, [_vm._v("皮肤属于")]),
+            _vm._v(" "),
+            _vm._l(_vm.skin_belongs, function(item) {
+              return _c("option", { domProps: { value: item.id } }, [
+                _vm._v(_vm._s(item.name))
+              ])
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.skin.check_time,
+              expression: "skin.check_time"
+            },
+            { name: "validate", rawName: "v-validate" }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "date",
+            name: "check_time",
+            placeholder: "检查时间",
+            "aria-describedby": "check_timeHelp",
+            "data-vv-rules": "required",
+            "data-vv-as": "检查时间"
+          },
+          domProps: { value: _vm.skin.check_time },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.skin, "check_time", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "small",
+          {
+            staticClass: "form-text text-muted",
+            attrs: { id: "check_timeHelp" }
+          },
+          [_vm._v(_vm._s(_vm.errors.first("check_time")))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.skin.characteristics,
+              expression: "skin.characteristics"
+            },
+            { name: "validate", rawName: "v-validate" }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "characteristics",
+            placeholder: "皮肤特征",
+            "aria-describedby": "characteristicsHelp",
+            "data-vv-rules": "required",
+            "data-vv-as": "皮肤特征"
+          },
+          domProps: { value: _vm.skin.characteristics },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.skin, "characteristics", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "small",
+          {
+            staticClass: "form-text text-muted",
+            attrs: { id: "characteristicsHelp" }
+          },
+          [_vm._v(_vm._s(_vm.errors.first("characteristics")))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.skin.makeup_habits,
+              expression: "skin.makeup_habits"
+            },
+            { name: "validate", rawName: "v-validate" }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "makeup_habits",
+            placeholder: "化妆习惯",
+            "aria-describedby": "makeup_habitsHelp",
+            "data-vv-rules": "required",
+            "data-vv-as": "化妆习惯"
+          },
+          domProps: { value: _vm.skin.makeup_habits },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.skin, "makeup_habits", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "small",
+          {
+            staticClass: "form-text text-muted",
+            attrs: { id: "makeup_habitsHelp" }
+          },
+          [_vm._v(_vm._s(_vm.errors.first("makeup_habits")))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.skin.commonly_products,
+              expression: "skin.commonly_products"
+            },
+            { name: "validate", rawName: "v-validate" }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "commonly_products",
+            placeholder: "常用产品",
+            "aria-describedby": "commonly_productsHelp",
+            "data-vv-rules": "required",
+            "data-vv-as": "常用产品"
+          },
+          domProps: { value: _vm.skin.commonly_products },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.skin, "commonly_products", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "small",
+          {
+            staticClass: "form-text text-muted",
+            attrs: { id: "commonly_productsHelp" }
+          },
+          [_vm._v(_vm._s(_vm.errors.first("commonly_products")) + "\n\t\t")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.skin.nursing_advice,
+              expression: "skin.nursing_advice"
+            },
+            { name: "validate", rawName: "v-validate" }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "nursing_advice",
+            placeholder: "护理建议",
+            "aria-describedby": "nursing_adviceHelp",
+            "data-vv-rules": "required",
+            "data-vv-as": "护理建议"
+          },
+          domProps: { value: _vm.skin.nursing_advice },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.skin, "nursing_advice", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "small",
+          {
+            staticClass: "form-text text-muted",
+            attrs: { id: "nursing_adviceHelp" }
+          },
+          [_vm._v(_vm._s(_vm.errors.first("nursing_advice")))]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.skin.condition,
+              expression: "skin.condition"
+            },
+            { name: "validate", rawName: "v-validate" }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "condition",
+            placeholder: "皮肤状态",
+            "aria-describedby": "conditionHelp",
+            "data-vv-rules": "required",
+            "data-vv-as": "皮肤状态"
+          },
+          domProps: { value: _vm.skin.condition },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.skin, "condition", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "small",
+          {
+            staticClass: "form-text text-muted",
+            attrs: { id: "conditionHelp" }
+          },
+          [_vm._v(_vm._s(_vm.errors.first("condition")))]
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "container" },
+        [
+          _c(
+            "mt-button",
+            {
+              staticClass: "mt-button",
+              attrs: { type: "primary", size: "large", plain: "" }
+            },
+            [_vm._v("确认修改")]
+          )
+        ],
+        1
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-032eab9c", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-04360922\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/admins/js/components/aliyuns/Sms.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41020,7 +41560,35 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("mt-cell", { attrs: { title: "=============", value: _vm.skin.name } })
+      _c("mt-cell", {
+        attrs: { title: "皮肤种类", value: _vm.skin.skin_category }
+      }),
+      _vm._v(" "),
+      _c("mt-cell", {
+        attrs: { title: "皮肤属于", value: _vm.skin.skin_belong }
+      }),
+      _vm._v(" "),
+      _c("mt-cell", {
+        attrs: { title: "检查日期", value: _vm.skin.check_time }
+      }),
+      _vm._v(" "),
+      _c("mt-cell", {
+        attrs: { title: "皮肤特征", value: _vm.skin.characteristics }
+      }),
+      _vm._v(" "),
+      _c("mt-cell", {
+        attrs: { title: "化妆习惯", value: _vm.skin.makeup_habits }
+      }),
+      _vm._v(" "),
+      _c("mt-cell", {
+        attrs: { title: "常用产品", value: _vm.skin.commonly_products }
+      }),
+      _vm._v(" "),
+      _c("mt-cell", {
+        attrs: { title: "护理建议", value: _vm.skin.nursing_advice }
+      }),
+      _vm._v(" "),
+      _c("mt-cell", { attrs: { title: "皮肤状态", value: _vm.skin.condition } })
     ],
     1
   )
@@ -42319,7 +42887,7 @@ var render = function() {
               ],
               staticClass: "help-block"
             },
-            [_vm._v(_vm._s(_vm.errors.first("characteristics")))]
+            [_vm._v(_vm._s(_vm.errors.first("commonly_products")))]
           )
         ])
       ]),
@@ -45126,7 +45694,12 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("mt-tab-container-item", { attrs: { id: "edit-skin" } })
+          _c(
+            "mt-tab-container-item",
+            { attrs: { id: "edit-skin" } },
+            [_c("edit-skin")],
+            1
+          )
         ],
         1
       ),
@@ -50356,6 +50929,33 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0066cbe5\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Show.vue", function() {
      var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0066cbe5\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Show.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-032eab9c\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-032eab9c\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("a78cc566", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-032eab9c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./EditSkin.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-032eab9c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./EditSkin.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -66819,6 +67419,58 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-0d5345f6", Component.options)
   } else {
     hotAPI.reload("data-v-0d5345f6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/homes/js/components/skins/EditSkin.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-032eab9c\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-032eab9c\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/homes/js/components/skins/EditSkin.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-032eab9c"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/homes/js/components/skins/EditSkin.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-032eab9c", Component.options)
+  } else {
+    hotAPI.reload("data-v-032eab9c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

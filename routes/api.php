@@ -88,8 +88,8 @@ $api->version('v1',[
 			$api->patch('user','UsersController@update')
 				->name('api.user.update');
 			// 当前登陆用户的皮肤信息
-			$api->get('skin','UsersSkinsController@show')
-				->name('api.skins.show');
+			$api->get('skin','UsersSkinsController@me')
+				->name('api.skins.me');
 			// 创建客户
 			$api->post('clients','ClientsController@store')
 				->name('api.clients.store');
@@ -97,11 +97,17 @@ $api->version('v1',[
 			$api->post('users/{user}/skins','UsersSkinsController@store')
 				->name('api.users.skins.store');
 			// 更新客户皮肤信息
-			$api->patch('users/{user}/skins/{skin}','UsersSkinsController@patch')
-				->name('api.users.skins.patch');
+			$api->patch('users/{user}/skins/{skin}','UsersSkinsController@update')
+				->name('api.users.skins.update'); // 需要修改的路由
 			// 获取客户皮肤信息
 			$api->get('users/{user}/skins','UsersSkinsController@index')
-				->name('api.users.skins.index');
+				->name('api.users.skins.index'); // 需要修改的路由
+			// 获取客户皮肤信息
+			$api->get('user/skin','UsersSkinsController@show')
+				->name('api.user.skin.show');
+			// 更新客户皮肤信息
+			$api->patch('user/skin','UserSkinsController@update')
+				->name('api.user.skin.update');
 		});
 		// 首页管理权限接口
 		$api->group(['middleware' => ['api.auth','role:admin|role:home_management']], function($api) {
