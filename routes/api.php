@@ -52,6 +52,8 @@ $api->version('v1',[
 			->name('api.skins.belongs.index');
 		$api->get('skins-categories', 'SkinsCategoriesController@index')
 			->name('api.skins.categories.index');
+		$api->get('sites', 'SitesController@index')
+			->name('api.sites.index');
 		// 需要 token 验证的接口
 		$api->group(['middleware' => 'api.auth'], function($api) {
 			// 当前登录用户信息
@@ -108,6 +110,9 @@ $api->version('v1',[
 			// 更新客户皮肤信息
 			$api->patch('user/skin','UserSkinsController@update')
 				->name('api.user.skin.update');
+			// 积分查询
+			$api->get('user/integral','UserIntegralsController@index')
+				->name('api.user.integral.index');
 		});
 		// 首页管理权限接口
 		$api->group(['middleware' => ['api.auth','role:admin|role:home_management']], function($api) {
@@ -156,6 +161,18 @@ $api->version('v1',[
 			// 阿里云市场更新
 			$api->patch('aliyuns/markets/{market}','Aliyuns\MarketsController@update')
 				->name('api.aliyuns.markets.patch');
+			// 更新logo
+			$api->patch('sites','SitesController@update')
+				->name('api.sites.patch');
+			// 积分规则列表
+			$api->get('integral-rules','IntegralRulesController@index')
+				->name('api.integral.rules.index');
+			// 更新积分规则
+			$api->patch('integral-rules','IntegralRulesController@update')
+				->name('api.integral.rules.patch');
+			// 更新菜单
+			$api->patch('menus/{menu}','MenusController@update')
+				->name('api.menus.patch');
 		});
 	});
 });

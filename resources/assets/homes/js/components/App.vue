@@ -1,17 +1,13 @@
 <template>
 	<div>
 		<mt-header fixed>
-			<span slot="left">Laravel</span>
-			<span slot="right">Message</span>
+			<img slot="left" :src="site.logo_url">
+			<span slot="right" class="badge badge-pill badge-danger">0</span>
 		</mt-header>
 		<router-view class="router-view"></router-view>
 		<mt-tabbar v-model="main_menu" fixed>
-			<mt-tab-item id="home">
-				<img slot="icon" src="http://localhost/storage/public/lVidFXGxpGcYB2lBsA2HqLtupJu4JsgFWhMaFh3v.jpeg">
-				首页
-			</mt-tab-item>
 			<mt-tab-item v-for="(menu,index) in menus" :id="menu.key" :key="index" v-if="!menu.parent_id">
-				<img slot="icon" src="http://localhost/storage/public/lVidFXGxpGcYB2lBsA2HqLtupJu4JsgFWhMaFh3v.jpeg">
+				<img slot="icon" :src="menu.icon">
 				{{ menu.name }}
 			</mt-tab-item>
 		</mt-tabbar>
@@ -28,6 +24,7 @@
 		},
 		data() {
 			return {
+				site: {},
 				menus: {},
 				main_menu: 'home',
 			}
@@ -41,9 +38,15 @@
 			}
 		},
 		created() {
+			this.getSite();
 			this.getMenus();
 		},
 		methods: {
+			getSite: function () {
+				window.axios.get('sites').then(response => {
+					this.site = response.data;
+				})
+			},
 			getMenus: function () {
 				window.axios.get('menus').then(response => {
 					this.menus = response.data.data;
@@ -67,6 +70,11 @@
 					case 'skins-show':
 						this.main_menu = 'personal';
 						break;
+					case 'integrals-exchange':
+						this.main_menu = 'integral';
+						break;
+					case 'integrals-query':
+						this.main_menu = 'integral';
 				}
 			},
 			changeRouter: function () {
@@ -97,6 +105,19 @@
 								break;
 							default:
 								this.$router.push({name: 'users-show'});
+								break;
+						}
+						break;
+					case 'integral':
+						switch (this.$route.name) {
+							case 'integrals-exchange':
+								this.$router.push({name: 'integrals-exchange'});
+								break;
+							case 'integrals-query':
+								this.$router.push({name: 'integrals-query'});
+								break;
+							default:
+								this.$router.push({name: 'integrals-exchange'});
 								break;
 						}
 						break;

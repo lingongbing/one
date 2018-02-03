@@ -14,6 +14,7 @@ class MenuTransformer extends TransformerAbstract
 			'id' => $menu->id,
 			'key' => $menu->key,
 			'name' => $menu->name,
+			'icon' => $menu->icon,
 			'parent_id' => $menu->parent_id
 		];
 	}

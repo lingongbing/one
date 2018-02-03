@@ -13,12 +13,12 @@ class UserTableSeeder extends Seeder
 	{
 		factory(App\Models\User::class, 15)->create();
 
-		$user            = \App\Models\User::first();
-		$user->username  = 'admin';
-		$user->mobile    = 15766600392;
-		$user->parent_id = 0;
-		$user->password  = bcrypt('admin');
-		$user->save();
-		$user->assignRole('admin');
+//		$user            = \App\Models\User::first();
+//		$user->username  = 'admin';
+//		$user->mobile    = 15766600392;
+//		$user->parent_id = 0;
+//		$user->password  = bcrypt('admin');
+//		$user->save();
+//		$user->assignRole('admin');
 	}
 }

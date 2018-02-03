@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\UserStore;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -60,4 +61,14 @@ class User extends Authenticatable implements JWTSubject
 	{
 		return $this->hasOne(UserSkin::class);
 	}
+
+	public function integralRecord()
+	{
+		return $this->hasMany(IntegralRecord::class);
+	}
+
+	protected $dispatchesEvents = [
+		'created' => UserStore::class,
+		'updated' => UserPatch::class,
+	];
 }

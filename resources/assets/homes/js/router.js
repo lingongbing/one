@@ -46,6 +46,18 @@ const routes = [
 		component: require('./components/skins/Skins'),
 		meta: {authorizations: true},
 	},
+	{
+		path: '/integrals/exchange',
+		name: 'integrals-exchange',
+		component: require('./components/integrals/Exchange'),
+		meta: {authorizations: true},
+	},
+	{
+		path: '/integrals/query',
+		name: 'integrals-query',
+		component: require('./components/integrals/Query'),
+		meta: {authorizations: true},
+	},
 ];
 
 const router = new VueRouter({

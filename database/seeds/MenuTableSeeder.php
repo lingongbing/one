@@ -11,6 +11,11 @@ class MenuTableSeeder extends Seeder
      */
     public function run()
     {
+    	\App\Models\Menu::create([
+    		'name' => '首页',
+		    'key' => 'home'
+	    ]);
+
 	    $buy_record = \App\Models\Menu::create([
 		    'name' => '购买记录',
 		    'key' => 'buy_record'

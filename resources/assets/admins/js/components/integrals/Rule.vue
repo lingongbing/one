@@ -52,7 +52,7 @@
 		},
 		methods: {
 			getConfig: function () {
-				axios.get('/config/integral_rule').then(response => {
+				axios.get('integral-rules').then(response => {
 					this.created_user = response.data.created_user;
 					this.complete_order = response.data.complete_order;
 				});
@@ -60,19 +60,17 @@
 			onSubmit: function () {
 				this.$validator.validateAll().then(result => {
 					if (result) {
-						axios.patch('/config', {
-							name: 'integral_rule',
-							options: {
-								created_user: this.created_user,
-								complete_order: this.complete_order,
-							}
+						axios.patch('integral-rules', {
+							created_user: this.created_user,
+							complete_order: this.complete_order,
 						}).then(response => {
-							this.app_code = response.data.data.app_code;
+							this.created_user = response.data.created_user;
+							this.complete_order = response.data.complete_order;
 							this.alert_class = 'alert-success';
-							this.alert_message = response.data.message;
+							this.alert_message = '更新成功';
 						}).catch(error => {
 							this.alert_class = 'alert-danger';
-							this.alert_message = error.response.data.error;
+							this.alert_message = error.response.data.message;
 						});
 					}
 				});

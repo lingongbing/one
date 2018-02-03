@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\V1\UserRequest;
+use App\Events\UserStore;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 use Dingo\Api\Http\Request;

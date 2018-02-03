@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class IntegralRule extends Model
 {
     protected $fillable = [
-    	'name','icon'
+    	'created_user','complete_order'
     ];
 }

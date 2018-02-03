@@ -13,7 +13,7 @@
 			<form class="form-horizontal" v-on:submit.prevent="onSubmit">
 				<div class="form-group">
 					<div class="col-sm-offset-1 col-sm-8">
-						<label class="help-block" for="logo_file">选择网站logo图片(150x50)</label>
+						<label class="help-block" for="logo_file">选择网站logo图片(80x40)</label>
 						<input type="file" id="logo_file" class="form-control" @change="uploadImg($event)">
 						<img :src="logo_url" v-show="logo_url" class="img-thumbnail">
 					</div>
@@ -21,7 +21,8 @@
 				<div class="form-group">
 					<div class="col-sm-offset-1 col-sm-8">
 						<label class="help-block" for="copyright">网站版权信息设置</label>
-						<textarea class="form-control" id="copyright" v-model="copyright" cols="30" rows="1" placeholder="网站版权信息设置"></textarea>
+						<textarea class="form-control" id="copyright" v-model="copyright" cols="30" rows="1"
+						          placeholder="网站版权信息设置"></textarea>
 					</div>
 				</div>
 				<div class="form-group">
@@ -49,35 +50,33 @@
 		},
 		methods: {
 			getConfig: function () {
-				axios.get('/config/sites').then(response => {
+				window.axios.get('sites').then(response => {
 					this.setData(response.data);
 				});
 			},
 			uploadImg: function (event) {
 				let formData = new FormData();
 				formData.append('key', 'img');
-				formData.append('width', 150);
-				formData.append('height', 50);
+				formData.append('width', 80);
+				formData.append('height', 40);
 				formData.append('img', event.target.files[0]);
-				axios.post('/upload', formData).then(response => {
-					this.logo_url = response.data;
+				axios.post('upload', formData).then(response => {
+					this.logo_url = response.data.path;
 				}).catch(error => {
-					console.log(error.response.data);
+					this.alert_message = error.response.data.message;
 				});
 			},
 			onSubmit: function () {
-				const formData = new FormData();
-				formData.append('_method', 'PATCH');
-				formData.append('name', 'sites');
-				formData.append('options[logo_url]', this.logo_url);
-				formData.append('options[copyright]', this.copyright);
-				axios.post('/config', formData).then(response => {
+				window.axios.patch('sites', {
+					logo_url: this.logo_url,
+					copyright: this.copyright
+				}).then(response => {
 					this.setData(response.data.data);
 					this.alert_class = 'alert-success';
 					this.alert_message = response.data.message;
 				}).catch(error => {
 					this.alert_class = 'alert-danger';
-					this.alert_message = error.response.data.error;
+					this.alert_message = error.response.data.message;
 				});
 			},
 			setData: function (data) {

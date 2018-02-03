@@ -17,5 +17,7 @@ class DatabaseSeeder extends Seeder
     	$this->call(SkinCategoryTableSeeder::class);
     	$this->call(UserTableSeeder::class);
     	$this->call(MarketTableSeeder::class);
+    	$this->call(SiteTableSeeder::class);
+    	$this->call(IntegralRuleTableSeeder::class);
     }
 }

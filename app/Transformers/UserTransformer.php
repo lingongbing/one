@@ -19,6 +19,7 @@ class UserTransformer extends TransformerAbstract
 			'mobile' => $user->mobile,
 			'address' => $user->address,
 			'username' => $user->username,
+			'integral' => $user->integral,
 			'created_at' => $user->created_at->format('Y-m-d H:i:s'),
 			'updated_at' => $user->updated_at->format('Y-m-d H:i:s'),
 			'introduction' => $user->introduction,
