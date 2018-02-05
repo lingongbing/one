@@ -8,6 +8,7 @@ use App\Events\UserStore;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 use Dingo\Api\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -98,8 +99,8 @@ class UsersController extends Controller
 		return $this->response->item($user,new UserTransformer());
 	}
 
-	public function me()
+	public function me(Request $request)
 	{
-		return $this->response->item($this->user(), new UserTransformer());
+		return $this->response->item($request->user(), new UserTransformer());
 	}
 }

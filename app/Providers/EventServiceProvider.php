@@ -19,12 +19,12 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\EventListener',
         ],
 
-	    'App\Events\UserStore' => [
-	    	'App\Listeners\UserStore',
+	    'App\Events\UserCreated' => [
+	    	'App\Listeners\UserCreated',
 	    ],
 
-	    'App\Events\UserPatch' => [
-	    	'App\Listeners\UserPatch',
+	    'App\Events\OrderUpdated' => [
+	    	'App\Listeners\OrderUpdated',
 	    ],
     ];
 

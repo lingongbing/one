@@ -20,21 +20,24 @@ export default {
 	},
 	actions:{
 		authenticate({commit},credentials) {
-			return axios.post('/authorizations',credentials).then(response => {
-				JWT.setToken(response.data.access_token);
-				JWT.setTokenType(response.data.token_type);
-				window.axios.defaults.headers.common['Authorization'] = JWT.getTokenType() + ' ' + JWT.getToken();
+			return window.axios.post('/authorizations',credentials).then(response => {
+				JWT.setToken(response.data.token_type + ' ' + response.data.access_token);
+				// JWT.setTokenType(response.data.token_type);
+				window.axios.defaults.headers.common['Authorization'] = JWT.getToken();
 				commit(AUTHENTICATE);
 			});
 		},
 		unauthenticate({commit}) {
-			JWT.removeToken();
-			JWT.removeTokenType();
-			window.axios.defaults.headers.common['Authorization'] = false;
-			commit(UNAUTHENTICATE);
+			return window.axios.delete('authorizations/current').then(response => {
+				JWT.removeToken();
+				// JWT.removeTokenType();
+				window.axios.defaults.headers.common['Authorization'] = '';
+				commit(UNAUTHENTICATE);
+			});
 		},
-		refreshToken() {
-
+		refreshToken(token) {
+			JWT.setToken(token);
+			window.axios.defaults.headers.common['Authorization'] = JWT.getToken();
 		}
 	}
 }

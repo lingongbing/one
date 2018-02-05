@@ -9,30 +9,20 @@ window.axios.defaults.baseURL = '/api';
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
-if (JWT.getToken() && JWT.getTokenType()) {
-	window.axios.defaults.headers.common['Authorization'] = JWT.getTokenType() + ' ' + JWT.getToken();
+if (JWT.getToken()) {
+	window.axios.defaults.headers.common['Authorization'] = JWT.getToken();
 	store.commit(AUTHENTICATE);
 }
 
-window.axios.interceptors.response.use(
-	response => {
-		return response;
-	},
-	error => {
-		if (error.response) {
-			switch (error.response.status) {
-				case 401:
-					// 返回 401 清除token信息并跳转到登录页面
-					if (store.getters.authenticate) {
-						window.axios.put('authorizations/current').then(response => {
-							JWT.setToken(response.data.access_token);
-							JWT.setTokenType(response.data.token_type);
-							window.axios.defaults.headers.common['Authorization'] = JWT.getTokenType() + ' ' + JWT.getToken();
-						})
-					}else {
-						router.push({name : 'authorizations'});
-					}
-			}
-		}
-		return Promise.reject(error)   // 返回接口返回的错误信息
-	});
+window.axios.interceptors.response.use((response) => {
+	return response
+},(error) => {
+	switch (error.response.status) {
+
+		// 如果响应中的 http code 为 401，那么则此用户可能 token 失效了之类的，我会触发 logout 方法，清除本地的数据并将用户重定向至登录页面
+		case 401:
+			return store.dispatch('unauthenticate');
+			break
+	}
+	return Promise.reject(error)
+});

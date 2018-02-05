@@ -5,7 +5,7 @@ namespace App\Listeners;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class UserPatch
+class UserCreated implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -20,11 +20,11 @@ class UserPatch
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param  UserCreated  $event
      * @return void
      */
-    public function handle(\App\Events\UserPatch $event)
+    public function handle(\App\Events\UserCreated $event)
     {
-
+	    $event->IncreasedIntegral();
     }
 }

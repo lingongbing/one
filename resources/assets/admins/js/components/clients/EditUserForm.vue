@@ -131,8 +131,8 @@
 		},
 		methods: {
 			getUser(user_id) {
-				axios.get('/client/' + user_id + '/edit').then(response => {
-					this.user = response.data.data;
+				window.axios.get('clients/' + user_id).then(response => {
+					this.user = response.data;
 				})
 			},
 			uploadImg: function (event) {
@@ -142,13 +142,13 @@
 				formData.append('height', 200);
 				formData.append('img', event.target.files[0]);
 				axios.post('/upload', formData).then(response => {
-					this.user.avatar = response.data;
+					this.user.avatar = response.data.path;
 				});
 			},
 			onSubmit() {
 				this.$validator.validateAll().then(result => {
 					if (result) {
-						axios.patch('/client/' + this.user_id, {
+						window.axios.patch('clients/' + this.user_id, {
 							name: this.user.name,
 							avatar: this.user.avatar,
 							region: this.user.region,
@@ -157,7 +157,8 @@
 							address: this.user.address,
 							password: this.user.password,
 						}).then(response => {
-							this.messages.message = response.data.message;
+							this.messages.message = '保存成功';
+							this.user = response.data;
 						}).catch(error => {
 							if (error.response.status === 422) {
 								for (let index in error.response.data.errors) {

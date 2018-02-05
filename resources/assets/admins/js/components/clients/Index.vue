@@ -134,7 +134,7 @@
 		},
 		methods: {
 			getClients: function () {
-				axios.get('/es/clients', {params: this.params}).then(response => {
+				axios.get('clients', {params: this.params}).then(response => {
 					this.clients = response.data.data;
 					this.params.size = response.data.size;
 					this.params.total = response.data.total;

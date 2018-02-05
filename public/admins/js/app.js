@@ -2881,14 +2881,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
-			app_code: '',
+			kdi_app_code: '',
 			alert_class: '',
 			alert_message: ''
 		};
@@ -2902,21 +2899,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			var _this = this;
 
 			window.axios.get('aliyuns/markets/kdi').then(function (response) {
-				_this.app_code = response.data.app_code;
-			});
-		},
-		onSubmit: function onSubmit() {
-			var _this2 = this;
-
-			axios.patch('aliyuns/markets/kdi', {
-				app_code: this.app_code
-			}).then(function (response) {
-				_this2.app_code = response.data.app_code;
-				_this2.alert_class = 'alert-success';
-				_this2.alert_message = '保存成功';
-			}).catch(function (error) {
-				_this2.alert_class = 'alert-danger';
-				_this2.alert_message = '保存失败';
+				_this.kdi_app_code = response.data.kdi_app_code;
 			});
 		}
 	}
@@ -2977,12 +2960,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -2990,7 +2967,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			sign_name: '',
 			access_key_id: '',
 			access_key_secret: '',
-			templates: [],
+			templates: {},
 			alert_class: '',
 			alert_message: ''
 		};
@@ -3000,53 +2977,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 
 	methods: {
-		addTemplate: function addTemplate() {
-			var item = new Array();
-			item['name'] = '';
-			item['code'] = '';
-			this.templates.push(item);
-		},
-		deleteTemplate: function deleteTemplate(index) {
-			this.templates.splice(index, 1);
-		},
 		onSubmit: function onSubmit() {
 			var _this = this;
 
-			var formData = new FormData();
-			formData.append('_method', 'PATCH');
-			formData.append('name', 'aliyun_sms');
-			formData.append('options[sign_name]', this.sign_name);
-			formData.append('options[access_key_id]', this.access_key_id);
-			formData.append('options[access_key_secret]', this.access_key_secret);
-			if (Array.isArray(this.templates)) {
-				this.templates.forEach(function (item, index) {
-					formData.append('options[templates][' + index + '][name]', item.name);
-					formData.append('options[templates][' + index + '][code]', item.code);
-				});
-			}
-			axios.post('/config', formData).then(function (response) {
-				_this.setData(response.data.data);
+			window.axios.patch('sms', {
+				sign_name: this.sign_name,
+				access_key_id: this.access_key_id,
+				access_key_secret: this.access_key_secret
+			}).then(function (response) {
 				_this.alert_class = 'alert-success';
-				_this.alert_message = response.data.message;
+				_this.alert_message = '保存成功';
 			}).catch(function (error) {
 				_this.alert_class = 'alert-danger';
-				_this.alert_message = error.response.data.error;
+				_this.alert_message = error.response.data.message;
 			});
 		},
 		getConfig: function getConfig() {
 			var _this2 = this;
 
-			axios.get('/config/aliyun_sms').then(function (response) {
-				_this2.setData(response.data);
+			window.axios.get('sms').then(function (response) {
+				_this2.sign_name = response.data.sign_name;
+				_this2.access_key_id = response.data.access_key_id;
+				_this2.access_key_secret = response.data.access_key_secret;
+				_this2.templates = response.data.templates;
 			});
-		},
-		setData: function setData(data) {
-			this.sign_name = data.sign_name;
-			this.access_key_id = data.access_key_id;
-			this.access_key_secret = data.access_key_secret;
-			if (Array.isArray(data.templates)) {
-				this.templates = data.templates;
-			}
 		}
 	}
 });
@@ -3474,8 +3428,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		getUser: function getUser(user_id) {
 			var _this = this;
 
-			axios.get('/client/' + user_id + '/edit').then(function (response) {
-				_this.user = response.data.data;
+			window.axios.get('clients/' + user_id).then(function (response) {
+				_this.user = response.data;
 			});
 		},
 
@@ -3488,7 +3442,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			formData.append('height', 200);
 			formData.append('img', event.target.files[0]);
 			axios.post('/upload', formData).then(function (response) {
-				_this2.user.avatar = response.data;
+				_this2.user.avatar = response.data.path;
 			});
 		},
 		onSubmit: function onSubmit() {
@@ -3496,7 +3450,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 			this.$validator.validateAll().then(function (result) {
 				if (result) {
-					axios.patch('/client/' + _this3.user_id, {
+					window.axios.patch('clients/' + _this3.user_id, {
 						name: _this3.user.name,
 						avatar: _this3.user.avatar,
 						region: _this3.user.region,
@@ -3505,7 +3459,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 						address: _this3.user.address,
 						password: _this3.user.password
 					}).then(function (response) {
-						_this3.messages.message = response.data.message;
+						_this3.messages.message = '保存成功';
+						_this3.user = response.data;
 					}).catch(function (error) {
 						if (error.response.status === 422) {
 							for (var index in error.response.data.errors) {
@@ -3669,7 +3624,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		getClients: function getClients() {
 			var _this = this;
 
-			axios.get('/es/clients', { params: this.params }).then(function (response) {
+			axios.get('clients', { params: this.params }).then(function (response) {
 				_this.clients = response.data.data;
 				_this.params.size = response.data.size;
 				_this.params.total = response.data.total;
@@ -4184,10 +4139,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		logout: function logout() {
 			var _this2 = this;
 
-			this.$store.dispatch('logout').then(function (response) {
+			this.$store.dispatch('unauthenticate').then(function (response) {
 				_this2.$router.push({ name: 'login' });
 			}).catch(function (error) {
-				_this2.error = error.response.data.error;
+				_this2.error = error.response.data.message;
 			});
 		}
 	}
@@ -6300,13 +6255,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -7040,6 +6988,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EditMobile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__EditMobile__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EditPassword__ = __webpack_require__("./resources/assets/homes/js/components/users/EditPassword.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EditPassword___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__EditPassword__);
+//
 //
 //
 //
@@ -9532,7 +9481,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -9562,7 +9511,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.container[data-v-0d5345f6] {\n\tmargin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -9592,7 +9541,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.input-group[data-v-14c3e815] {\n\tmargin-bottom: 1rem;\n}\n", ""]);
+exports.push([module.i, "\n.input-group[data-v-14c3e815] {\n\tmargin-bottom: 1rem;\n}\n.container[data-v-14c3e815] {\n\tmargin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -9742,7 +9691,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -9967,7 +9916,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.container[data-v-a0585de2] {\n\tmargin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -9982,7 +9931,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -38780,7 +38729,16 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
+            _c(
+              "label",
+              {
+                staticClass: "col-sm-5 control-label",
+                attrs: { for: "sign_name" }
+              },
+              [_vm._v("sign_name(ALIYUN_SMS_SIGN_NAME)")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-6" }, [
               _c("input", {
                 directives: [
                   {
@@ -38810,7 +38768,16 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
+            _c(
+              "label",
+              {
+                staticClass: "col-sm-5 control-label",
+                attrs: { for: "access_key_id" }
+              },
+              [_vm._v("access_key_id(ALIYUN_SMS_ACCESS_KEY_ID)")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-6" }, [
               _c("input", {
                 directives: [
                   {
@@ -38840,7 +38807,16 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
+            _c(
+              "label",
+              {
+                staticClass: "col-sm-5 control-label",
+                attrs: { for: "access_key_secret" }
+              },
+              [_vm._v("access_key_secret(ALIYUN_SMS_ACCESS_KEY_SECRET)")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-6" }, [
               _c("input", {
                 directives: [
                   {
@@ -38869,99 +38845,48 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._l(_vm.templates, function(template, index) {
-            return _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "col-sm-offset-1 col-sm-4" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: template["name"],
-                      expression: "template['name']"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "模版名称(不要用中文)" },
-                  domProps: { value: template["name"] },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(template, "name", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-4" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: template["code"],
-                      expression: "template['code']"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "模板CODE" },
-                  domProps: { value: template["code"] },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(template, "code", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-2" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-default btn-block",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.deleteTemplate(index)
-                      }
-                    }
-                  },
-                  [_vm._v("删除模版\n\t\t\t\t\t")]
-                )
-              ])
-            ])
-          }),
+          _c("hr"),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
-              _c(
-                "button",
-                { staticClass: "btn btn-default", attrs: { type: "submit" } },
-                [_vm._v("保存")]
-              ),
+          _c(
+            "div",
+            { staticClass: "form-group", staticStyle: { margin: "10px" } },
+            [
+              _c("label", { attrs: { for: "send_code" } }, [
+                _vm._v(
+                  "send_code(ALIYUN_SMS_TEMPLATES_SEND_CODE)短信验证码模版(示例:您的验证码是：${code}，如非本人操作，请忽略本短信。)"
+                )
+              ]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      _vm.addTemplate()
-                    }
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.templates.send_code,
+                    expression: "templates.send_code"
                   }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  id: "send_code",
+                  placeholder: "send_code"
                 },
-                [_vm._v("添加模版")]
-              )
-            ])
-          ])
-        ],
-        2
+                domProps: { value: _vm.templates.send_code },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.templates, "send_code", $event.target.value)
+                  }
+                }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
       )
     ])
   ])
@@ -38973,6 +38898,27 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "panel-heading" }, [
       _c("h3", { staticClass: "panel-title" }, [_vm._v("阿里云短信设置")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("div", { staticClass: "col-sm-10" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-default",
+            attrs: { type: "submit", disabled: "" }
+          },
+          [
+            _vm._v(
+              "修改配置需要进入服务器网站根木目录的.env文件修改(默认/var/www/kipahouse.com/.env)"
+            )
+          ]
+        )
+      ])
     ])
   }
 ]
@@ -39217,47 +39163,6 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password,
-                    expression: "password"
-                  },
-                  { name: "validate", rawName: "v-validate" }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "password",
-                  name: "password",
-                  "aria-describedby": "passwordHelp",
-                  "data-vv-rules": "required",
-                  "data-vv-as": "密码",
-                  placeholder: "密码"
-                },
-                domProps: { value: _vm.password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "small",
-                {
-                  staticClass: "form-text text-muted",
-                  attrs: { id: "passwordHelp" }
-                },
-                [_vm._v(_vm._s(_vm.errors.first("password")) + "\n\t\t\t\t\t")]
-              )
-            ]),
-            _vm._v(" "),
             _c(
               "button",
               {
@@ -39276,13 +39181,15 @@ var render = function() {
         [
           _c(
             "router-link",
-            { attrs: { to: { name: "password-reset" }, tag: "a" } },
-            [_vm._v("找回密码")]
+            { attrs: { to: { name: "authorizations" }, tag: "a" } },
+            [_vm._v("登陆")]
           ),
           _vm._v(" "),
-          _c("router-link", { attrs: { to: { name: "home" }, tag: "a" } }, [
-            _vm._v("注册账号")
-          ])
+          _c(
+            "router-link",
+            { attrs: { to: { name: "user-create" }, tag: "a" } },
+            [_vm._v("注册账号")]
+          )
         ],
         1
       )
@@ -39879,13 +39786,15 @@ var render = function() {
         [
           _c(
             "router-link",
-            { attrs: { to: { name: "password-reset" }, tag: "a" } },
-            [_vm._v("找回密码")]
+            { attrs: { to: { name: "authorizations" }, tag: "a" } },
+            [_vm._v("登陆")]
           ),
           _vm._v(" "),
-          _c("router-link", { attrs: { to: { name: "home" }, tag: "a" } }, [
-            _vm._v("登陆")
-          ])
+          _c(
+            "router-link",
+            { attrs: { to: { name: "password-reset" }, tag: "a" } },
+            [_vm._v("找回密码")]
+          )
         ],
         1
       )
@@ -41897,6 +41806,7 @@ var render = function() {
         "form",
         {
           staticClass: "form-horizontal",
+          staticStyle: { margin: "20px" },
           on: {
             submit: function($event) {
               $event.preventDefault()
@@ -41906,29 +41816,43 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.app_code,
-                    expression: "app_code"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "text", id: "AppCode", placeholder: "app_code" },
-                domProps: { value: _vm.app_code },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.app_code = $event.target.value
-                  }
+            _c(
+              "a",
+              {
+                attrs: {
+                  href:
+                    "https://market.aliyun.com/products/56928004/cmapi021863.html?spm=5176.2020520132.101.5.qW2vLO#sku=yuncode1586300000",
+                  target: "_blank"
                 }
-              })
-            ])
+              },
+              [_vm._v("快递查询")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.kdi_app_code,
+                  expression: "kdi_app_code"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                id: "AppCode",
+                placeholder: "快递查询app_code"
+              },
+              domProps: { value: _vm.kdi_app_code },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.kdi_app_code = $event.target.value
+                }
+              }
+            })
           ]),
           _vm._v(" "),
           _vm._m(1)
@@ -41953,13 +41877,18 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
-      _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
-        _c(
-          "button",
-          { staticClass: "btn btn-default", attrs: { type: "submit" } },
-          [_vm._v("保存")]
-        )
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-default",
+          attrs: { type: "submit", disabled: "" }
+        },
+        [
+          _vm._v(
+            "修改配置需要进入服务器网站根木目录的.env文件修改(默认/var/www/kipahouse.com/.env)"
+          )
+        ]
+      )
     ])
   }
 ]
@@ -46281,6 +46210,21 @@ var render = function() {
               }
             },
             [_vm._v("修改密码\n\t\t")]
+          ),
+          _vm._v(" "),
+          _c(
+            "mt-button",
+            {
+              staticClass: "mt-button",
+              attrs: { type: "primary", size: "large", plain: "" },
+              on: {
+                click: function($event) {
+                  _vm.$store.dispatch("unauthenticate"),
+                    _vm.$router.push({ name: "home" })
+                }
+              }
+            },
+            [_vm._v("退出登陆")]
           )
         ],
         1
@@ -64553,22 +64497,21 @@ window.axios = __WEBPACK_IMPORTED_MODULE_0_axios___default.a;
 window.axios.defaults.baseURL = '/api';
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken() && __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType()) {
-	window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
+if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken()) {
+	window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 	__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].commit(__WEBPACK_IMPORTED_MODULE_3__stores_mutation_types__["a" /* AUTHENTICATE */]);
 }
 
 window.axios.interceptors.response.use(function (response) {
+	// console.log(response.headers);
+	// 判断一下响应中是否有 token，如果有就直接使用此 token 替换掉本地的 token。你可以根据你的业务需求自己编写更新 token 的逻辑
+	// let token = response.headers.authorization;
+	// if (token) {
+	// 如果 header 中存在 token，那么触发 refreshToken 方法，替换本地的 token
+	// JWT.setToken(token);
+	// window.axios.defaults.headers.common['Authorization'] = JWT.getToken();
+	// }
 	return response;
-}, function (error) {
-	switch (error.response.status) {
-		// 如果响应中的 http code 为 401，那么则此用户可能 token 失效了之类的，我会触发 logout 方法，清除本地的数据并将用户重定向至登录页面
-		case 401:
-			__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].dispatch('unauthenticate');
-			return __WEBPACK_IMPORTED_MODULE_4__homes_js_router__["a" /* default */].push({ name: 'login' });
-			break;
-	}
-	return Promise.reject(error);
 });
 
 /***/ }),
@@ -67425,7 +67368,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mutation_types__ = __webpack_require__("./resources/assets/admins/js/stores/mutation-types.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__ = __webpack_require__("./resources/assets/admins/js/helpers/jwt.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__homes_js_stores_mutation_types__ = __webpack_require__("./resources/assets/homes/js/stores/mutation-types.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -67448,12 +67393,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 			    dispatch = _ref.dispatch;
 
 			return axios.post('authorizations', credentials).then(function (response) {
-				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(response.data.access_token);
-				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setTokenType(response.data.token_type);
-				window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
+				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(response.data.token_type + ' ' + response.data.access_token);
+				window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */]);
 				dispatch('user');
 			});
+		},
+		unauthenticate: function unauthenticate(_ref2) {
+			var commit = _ref2.commit;
+
+			return window.axios.post('authorizations/current').then(function (response) {
+				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeToken();
+				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeTokenType();
+				window.axios.defaults.headers.common['Authorization'] = false;
+				commit(__WEBPACK_IMPORTED_MODULE_2__homes_js_stores_mutation_types__["b" /* UNAUTHENTICATE */]);
+			});
+		},
+		refreshToken: function refreshToken(_ref3, token) {
+			var commit = _ref3.commit;
+
+			// JWT.setToken(token);
+			console.log(token);
+			window.axios.defaults.headers.common['Authorization'] = token;
 		}
 	}
 });
@@ -68508,22 +68469,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		authenticate: function authenticate(_ref, credentials) {
 			var commit = _ref.commit;
 
-			return axios.post('/authorizations', credentials).then(function (response) {
-				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(response.data.access_token);
-				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setTokenType(response.data.token_type);
-				window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
+			return window.axios.post('/authorizations', credentials).then(function (response) {
+				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(response.data.token_type + ' ' + response.data.access_token);
+				// JWT.setTokenType(response.data.token_type);
+				window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */]);
 			});
 		},
 		unauthenticate: function unauthenticate(_ref2) {
 			var commit = _ref2.commit;
 
-			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeToken();
-			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeTokenType();
-			window.axios.defaults.headers.common['Authorization'] = false;
-			commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */]);
+			return window.axios.delete('authorizations/current').then(function (response) {
+				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeToken();
+				// JWT.removeTokenType();
+				window.axios.defaults.headers.common['Authorization'] = '';
+				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */]);
+			});
 		},
-		refreshToken: function refreshToken() {}
+		refreshToken: function refreshToken(token) {
+			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(token);
+			window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
+		}
 	}
 });
 

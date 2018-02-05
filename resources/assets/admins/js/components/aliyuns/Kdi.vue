@@ -10,16 +10,13 @@
 				</button>
 				{{ alert_message }}
 			</div>
-			<form class="form-horizontal" v-on:submit.prevent="onSubmit">
+			<form class="form-horizontal" v-on:submit.prevent="onSubmit" style="margin: 20px;">
 				<div class="form-group">
-					<div class="col-sm-offset-1 col-sm-10">
-						<input type="text" class="form-control" v-model="app_code" id="AppCode" placeholder="app_code">
-					</div>
+					<a href="https://market.aliyun.com/products/56928004/cmapi021863.html?spm=5176.2020520132.101.5.qW2vLO#sku=yuncode1586300000" target="_blank">快递查询</a>
+					<input type="text" class="form-control" v-model="kdi_app_code" id="AppCode" placeholder="快递查询app_code">
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-1 col-sm-10">
-						<button type="submit" class="btn btn-default">保存</button>
-					</div>
+					<button type="submit" class="btn btn-default" disabled>修改配置需要进入服务器网站根木目录的.env文件修改(默认/var/www/kipahouse.com/.env)</button>
 				</div>
 			</form>
 		</div>
@@ -30,7 +27,7 @@
 	export default {
 		data() {
 			return {
-				app_code: '',
+				kdi_app_code: '',
 				alert_class: '',
 				alert_message: '',
 			}
@@ -41,22 +38,10 @@
 		methods: {
 			getConfig: function () {
 				window.axios.get('aliyuns/markets/kdi').then(response => {
-					this.app_code = response.data.app_code;
+					this.kdi_app_code = response.data.kdi_app_code;
 				});
 				
-			},
-			onSubmit: function () {
-				axios.patch('aliyuns/markets/kdi', {
-					app_code: this.app_code
-				}).then(response => {
-					this.app_code = response.data.app_code;
-					this.alert_class = 'alert-success';
-					this.alert_message = '保存成功';
-				}).catch(error => {
-					this.alert_class = 'alert-danger';
-					this.alert_message = '保存失败';
-				});
-			},
+			}
 		}
 	}
 </script>

@@ -17,6 +17,7 @@ class UserTransformer extends TransformerAbstract
 			'avatar' => $user->avatar,
 			'wechat' => $user->wechat,
 			'mobile' => $user->mobile,
+			'region' => $user->region,
 			'address' => $user->address,
 			'username' => $user->username,
 			'integral' => $user->integral,

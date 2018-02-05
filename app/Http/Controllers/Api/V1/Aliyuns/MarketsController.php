@@ -11,8 +11,11 @@ class MarketsController extends Controller
 {
 	public function show($market)
 	{
-		$market = AliyunMarket::find($market);
-		return $this->response->item($market,new MarketTransformer());
+//		$market = AliyunMarket::find($market);
+//		return $this->response->item($market,new MarketTransformer());
+		return $this->response->array([
+			'kdi_app_code' => env('ALIYUN_MARKET_KDI_APP_CODE')
+		]);
     }
 
 	public function update(Request $request,$market) //隐式绑定不生效

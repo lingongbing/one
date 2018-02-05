@@ -69,8 +69,8 @@
 				</form>
 			</div>
 			<div class="card-footer bg-transparent border-info">
+				<router-link :to="{ name : 'authorizations' }" tag="a">登陆</router-link>
 				<router-link :to="{ name : 'password-reset' }" tag="a">找回密码</router-link>
-				<router-link :to="{ name : 'home' }" tag="a">登陆</router-link>
 			</div>
 		</div>
 	</div>
@@ -159,5 +159,8 @@
 <style scoped>
 	.input-group {
 		margin-bottom: 1rem;
+	}
+	.container {
+		margin-top: 50px;
 	}
 </style>

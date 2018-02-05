@@ -13,16 +13,16 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class UserStore
+class UserCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
 	protected $user;
 
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
+	public function __construct(User $user)
+	{
+		$this->user = $user;
+	}
 
 	public function IncreasedIntegral()
 	{
@@ -35,5 +35,5 @@ class UserStore
 			'user_id' => $this->user->id,
 			'integral' => $integral,
 		]);
-    }
+	}
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Requests\Api\V1\OrdersRequest;
 use App\Http\Controllers\Api\Controller;
 use App\Models\Order;
-use App\Models\User;
 use App\Transformers\OrderTransformer;
 use Illuminate\Http\Request;
 
@@ -59,7 +58,6 @@ class OrdersController extends Controller
 
 		return $this->response->created();
 	}
-
 
 	public function destroy($order) // 隐式绑定不生效
 	{

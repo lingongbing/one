@@ -41,10 +41,10 @@
 		},
 		methods: {
 			logout:function () {
-				this.$store.dispatch('logout').then(response => {
+				this.$store.dispatch('unauthenticate').then(response => {
 					this.$router.push({name: 'login'});
 				}).catch(error => {
-					this.error = error.response.data.error;
+					this.error = error.response.data.message;
 				});
 			}
 		}

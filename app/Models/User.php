@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\UserCreated;
 use App\Events\UserStore;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,7 +69,6 @@ class User extends Authenticatable implements JWTSubject
 	}
 
 	protected $dispatchesEvents = [
-		'created' => UserStore::class,
-		'updated' => UserPatch::class,
+		'created' => UserCreated::class,
 	];
 }

@@ -12,39 +12,33 @@
 			</div>
 			<form class="form-horizontal" v-on:submit.prevent="onSubmit">
 				<div class="form-group">
-					<div class="col-sm-offset-1 col-sm-10">
-						<input type="text" class="form-control" v-model="sign_name" id="sign_name"
-						       placeholder="sign_name">
+					<label for="sign_name" class="col-sm-5 control-label">sign_name(ALIYUN_SMS_SIGN_NAME)</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" v-model="sign_name" id="sign_name" placeholder="sign_name">
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-1 col-sm-10">
+					<label for="access_key_id" class="col-sm-5 control-label">access_key_id(ALIYUN_SMS_ACCESS_KEY_ID)</label>
+					<div class="col-sm-6">
 						<input type="text" class="form-control" v-model="access_key_id" id="access_key_id"
 						       placeholder="access_key_id">
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-1 col-sm-10">
+					<label for="access_key_secret" class="col-sm-5 control-label">access_key_secret(ALIYUN_SMS_ACCESS_KEY_SECRET)</label>
+					<div class="col-sm-6">
 						<input type="text" class="form-control" v-model="access_key_secret" id="access_key_secret"
 						       placeholder="access_key_secret">
 					</div>
 				</div>
-				<div class="form-group" v-for="(template,index) in templates">
-					<div class="col-sm-offset-1 col-sm-4">
-						<input type="text" class="form-control" v-model="template['name']" placeholder="模版名称(不要用中文)">
-					</div>
-					<div class="col-sm-4">
-						<input type="text" class="form-control" v-model="template['code']" placeholder="模板CODE">
-					</div>
-					<div class="col-sm-2">
-						<button type="button" class="btn btn-default btn-block" @click="deleteTemplate(index)">删除模版
-						</button>
-					</div>
+				<hr>
+				<div class="form-group" style="margin: 10px;">
+					<label for="send_code">send_code(ALIYUN_SMS_TEMPLATES_SEND_CODE)短信验证码模版(示例:您的验证码是：${code}，如非本人操作，请忽略本短信。)</label>
+					<input type="text" class="form-control" v-model="templates.send_code" id="send_code" placeholder="send_code">
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-1 col-sm-10">
-						<button type="submit" class="btn btn-default">保存</button>
-						<button type="button" class="btn btn-default" @click="addTemplate()">添加模版</button>
+					<div class="col-sm-10">
+						<button type="submit" class="btn btn-default" disabled>修改配置需要进入服务器网站根木目录的.env文件修改(默认/var/www/kipahouse.com/.env)</button>
 					</div>
 				</div>
 			</form>
@@ -59,7 +53,7 @@
 				sign_name: '',
 				access_key_id: '',
 				access_key_secret: '',
-				templates: [],
+				templates: {},
 				alert_class: '',
 				alert_message: '',
 			}
@@ -68,52 +62,27 @@
 			this.getConfig();
 		},
 		methods: {
-			addTemplate: function () {
-				let item = new Array();
-				item['name'] = '';
-				item['code'] = '';
-				this.templates.push(item);
-			},
-			deleteTemplate: function (index) {
-				this.templates.splice(index, 1);
-			},
 			onSubmit: function () {
-				const formData = new FormData();
-				formData.append('_method', 'PATCH');
-				formData.append('name', 'aliyun_sms');
-				formData.append('options[sign_name]', this.sign_name);
-				formData.append('options[access_key_id]', this.access_key_id);
-				formData.append('options[access_key_secret]', this.access_key_secret);
-				if (Array.isArray(this.templates))
-				{
-					this.templates.forEach(function (item, index) {
-						formData.append(`options[templates][${index}][name]`, item.name);
-						formData.append(`options[templates][${index}][code]`, item.code);
-					});
-				}
-				axios.post('/config', formData).then(response => {
-					this.setData(response.data.data);
+				window.axios.patch('sms', {
+					sign_name: this.sign_name,
+					access_key_id: this.access_key_id,
+					access_key_secret: this.access_key_secret
+				}).then(response => {
 					this.alert_class = 'alert-success';
-					this.alert_message = response.data.message;
+					this.alert_message = '保存成功';
 				}).catch(error => {
 					this.alert_class = 'alert-danger';
-					this.alert_message = error.response.data.error;
+					this.alert_message = error.response.data.message;
 				});
 			},
 			getConfig: function () {
-				axios.get('/config/aliyun_sms').then(response => {
-					this.setData(response.data);
+				window.axios.get('sms').then(response => {
+					this.sign_name = response.data.sign_name;
+					this.access_key_id = response.data.access_key_id;
+					this.access_key_secret = response.data.access_key_secret;
+					this.templates = response.data.templates;
 				});
 			},
-			setData: function (data) {
-				this.sign_name = data.sign_name;
-				this.access_key_id = data.access_key_id;
-				this.access_key_secret = data.access_key_secret;
-				if (Array.isArray(data.templates))
-				{
-					this.templates = data.templates;
-				}
-			}
 		}
 	}
 </script>

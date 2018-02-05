@@ -55,7 +55,7 @@ $api->version('v1',[
 		$api->get('sites', 'SitesController@index')
 			->name('api.sites.index');
 		// 需要 token 验证的接口
-		$api->group(['middleware' => 'api.auth'], function($api) {
+		$api->group(['middleware' => ['api.auth']], function($api) {
 			// 当前登录用户信息
 			$api->get('user', 'UsersController@me')
 				->name('api.user.show');
@@ -92,9 +92,18 @@ $api->version('v1',[
 			// 当前登陆用户的皮肤信息
 			$api->get('skin','UsersSkinsController@me')
 				->name('api.skins.me');
+			// 客户列表
+			$api->get('clients','ClientsController@index')
+				->name('api.clients.index');
 			// 创建客户
 			$api->post('clients','ClientsController@store')
 				->name('api.clients.store');
+			// 客户信息
+			$api->get('clients/{client}','ClientsController@show')
+				->name('api.clients.show');
+			// 更新客户
+			$api->patch('clients/{client}','ClientsController@update')
+				->name('api.clients.update');
 			// 创建客户皮肤信息
 			$api->post('users/{user}/skins','UsersSkinsController@store')
 				->name('api.users.skins.store');
@@ -115,7 +124,7 @@ $api->version('v1',[
 				->name('api.user.integral.index');
 		});
 		// 首页管理权限接口
-		$api->group(['middleware' => ['api.auth','role:admin|role:home_management']], function($api) {
+		$api->group(['middleware' => ['auth:api','role:admin|role:home_management']], function($api) {
 			// 创建轮播图
 			$api->post('carousels', 'CarouselsController@store')
 				->name('api.carousels.store');
@@ -130,7 +139,7 @@ $api->version('v1',[
 				->name('api.homes.destroy');
 		});
 		// 管理员可以访问的接口
-		$api->group(['middleware' => ['api.auth','role:admin']], function($api) {
+		$api->group(['middleware' => ['auth:api','role:admin']], function($api) {
 			// 添加商品
 			$api->post('goods', 'GoodsController@store')
 				->name('api.goods.store');
@@ -173,6 +182,14 @@ $api->version('v1',[
 			// 更新菜单
 			$api->patch('menus/{menu}','MenusController@update')
 				->name('api.menus.patch');
+			// 系统信息
+			$api->get('system','SystemController@index')
+				->name('api.system.index');
+			// 阿里云短信
+			$api->get('sms','Aliyuns\SmsController@show')
+				->name('api.aliyuns.sms.show');
+			$api->patch('sms','Aliyuns\SmsController@update')
+				->name('api.aliyuns.sms.update');
 		});
 	});
 });

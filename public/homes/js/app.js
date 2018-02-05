@@ -2625,13 +2625,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -3365,6 +3358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EditMobile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__EditMobile__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EditPassword__ = __webpack_require__("./resources/assets/homes/js/components/users/EditPassword.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EditPassword___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__EditPassword__);
+//
 //
 //
 //
@@ -7389,7 +7383,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.container[data-v-0d5345f6] {\n\tmargin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -7404,7 +7398,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.input-group[data-v-14c3e815] {\n\tmargin-bottom: 1rem;\n}\n", ""]);
+exports.push([module.i, "\n.input-group[data-v-14c3e815] {\n\tmargin-bottom: 1rem;\n}\n.container[data-v-14c3e815] {\n\tmargin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -7509,7 +7503,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.container[data-v-a0585de2] {\n\tmargin-top: 50px;\n}\n", ""]);
 
 // exports
 
@@ -66558,47 +66552,6 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.password,
-                    expression: "password"
-                  },
-                  { name: "validate", rawName: "v-validate" }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "password",
-                  name: "password",
-                  "aria-describedby": "passwordHelp",
-                  "data-vv-rules": "required",
-                  "data-vv-as": "密码",
-                  placeholder: "密码"
-                },
-                domProps: { value: _vm.password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.password = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "small",
-                {
-                  staticClass: "form-text text-muted",
-                  attrs: { id: "passwordHelp" }
-                },
-                [_vm._v(_vm._s(_vm.errors.first("password")) + "\n\t\t\t\t\t")]
-              )
-            ]),
-            _vm._v(" "),
             _c(
               "button",
               {
@@ -66617,13 +66570,15 @@ var render = function() {
         [
           _c(
             "router-link",
-            { attrs: { to: { name: "password-reset" }, tag: "a" } },
-            [_vm._v("找回密码")]
+            { attrs: { to: { name: "authorizations" }, tag: "a" } },
+            [_vm._v("登陆")]
           ),
           _vm._v(" "),
-          _c("router-link", { attrs: { to: { name: "home" }, tag: "a" } }, [
-            _vm._v("注册账号")
-          ])
+          _c(
+            "router-link",
+            { attrs: { to: { name: "user-create" }, tag: "a" } },
+            [_vm._v("注册账号")]
+          )
         ],
         1
       )
@@ -67043,13 +66998,15 @@ var render = function() {
         [
           _c(
             "router-link",
-            { attrs: { to: { name: "password-reset" }, tag: "a" } },
-            [_vm._v("找回密码")]
+            { attrs: { to: { name: "authorizations" }, tag: "a" } },
+            [_vm._v("登陆")]
           ),
           _vm._v(" "),
-          _c("router-link", { attrs: { to: { name: "home" }, tag: "a" } }, [
-            _vm._v("登陆")
-          ])
+          _c(
+            "router-link",
+            { attrs: { to: { name: "password-reset" }, tag: "a" } },
+            [_vm._v("找回密码")]
+          )
         ],
         1
       )
@@ -68080,6 +68037,21 @@ var render = function() {
               }
             },
             [_vm._v("修改密码\n\t\t")]
+          ),
+          _vm._v(" "),
+          _c(
+            "mt-button",
+            {
+              staticClass: "mt-button",
+              attrs: { type: "primary", size: "large", plain: "" },
+              on: {
+                click: function($event) {
+                  _vm.$store.dispatch("unauthenticate"),
+                    _vm.$router.push({ name: "home" })
+                }
+              }
+            },
+            [_vm._v("退出登陆")]
           )
         ],
         1
@@ -83671,30 +83643,22 @@ window.axios = __WEBPACK_IMPORTED_MODULE_0_axios___default.a;
 window.axios.defaults.baseURL = '/api';
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken() && __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType()) {
-	window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
+if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken()) {
+	window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 	__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].commit(__WEBPACK_IMPORTED_MODULE_3__stores_mutation_types__["a" /* AUTHENTICATE */]);
 }
 
 window.axios.interceptors.response.use(function (response) {
 	return response;
 }, function (error) {
-	if (error.response) {
-		switch (error.response.status) {
-			case 401:
-				// 返回 401 清除token信息并跳转到登录页面
-				if (__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].getters.authenticate) {
-					window.axios.put('authorizations/current').then(function (response) {
-						__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(response.data.access_token);
-						__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setTokenType(response.data.token_type);
-						window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
-					});
-				} else {
-					__WEBPACK_IMPORTED_MODULE_4__router__["a" /* default */].push({ name: 'authorizations' });
-				}
-		}
+	switch (error.response.status) {
+
+		// 如果响应中的 http code 为 401，那么则此用户可能 token 失效了之类的，我会触发 logout 方法，清除本地的数据并将用户重定向至登录页面
+		case 401:
+			return __WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].dispatch('unauthenticate');
+			break;
 	}
-	return Promise.reject(error); // 返回接口返回的错误信息
+	return Promise.reject(error);
 });
 
 /***/ }),
@@ -84805,22 +84769,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		authenticate: function authenticate(_ref, credentials) {
 			var commit = _ref.commit;
 
-			return axios.post('/authorizations', credentials).then(function (response) {
-				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(response.data.access_token);
-				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setTokenType(response.data.token_type);
-				window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getTokenType() + ' ' + __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
+			return window.axios.post('/authorizations', credentials).then(function (response) {
+				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(response.data.token_type + ' ' + response.data.access_token);
+				// JWT.setTokenType(response.data.token_type);
+				window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */]);
 			});
 		},
 		unauthenticate: function unauthenticate(_ref2) {
 			var commit = _ref2.commit;
 
-			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeToken();
-			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeTokenType();
-			window.axios.defaults.headers.common['Authorization'] = false;
-			commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */]);
+			return window.axios.delete('authorizations/current').then(function (response) {
+				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeToken();
+				// JWT.removeTokenType();
+				window.axios.defaults.headers.common['Authorization'] = '';
+				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */]);
+			});
 		},
-		refreshToken: function refreshToken() {}
+		refreshToken: function refreshToken(token) {
+			__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].setToken(token);
+			window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
+		}
 	}
 });
 

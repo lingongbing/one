@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Events\CompleteOrder;
+use App\Events\OrderUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -17,4 +19,8 @@ class Order extends Model
 	{
 		return $this->belongsTo('App\Models\Good','goods_id');
 	}
+
+	protected $dispatchesEvents = [
+		'updated' => OrderUpdated::class,
+	];
 }

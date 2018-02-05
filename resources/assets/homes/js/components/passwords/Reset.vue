@@ -12,19 +12,12 @@
 						<small id="usernameHelp" class="form-text text-muted">{{ errors.first('username') }}
 						</small>
 					</div>
-					<div class="form-group">
-						<input type="password" class="form-control" v-model="password" name="password"
-						       aria-describedby="passwordHelp"
-						       v-validate data-vv-rules="required" data-vv-as="密码" placeholder="密码">
-						<small id="passwordHelp" class="form-text text-muted">{{ errors.first('password') }}
-						</small>
-					</div>
 					<button type="submit" class="btn btn-primary btn-block">登陆</button>
 				</form>
 			</div>
 			<div class="card-footer bg-transparent border-info">
-				<router-link :to="{ name : 'password-reset' }" tag="a">找回密码</router-link>
-				<router-link :to="{ name : 'home' }" tag="a">注册账号</router-link>
+				<router-link :to="{ name : 'authorizations' }" tag="a">登陆</router-link>
+				<router-link :to="{ name : 'user-create' }" tag="a">注册账号</router-link>
 			</div>
 		</div>
 	</div>
@@ -37,5 +30,7 @@
 </script>
 
 <style scoped>
-
+	.container {
+		margin-top: 50px;
+	}
 </style>

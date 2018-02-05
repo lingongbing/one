@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\V1\VerificationCodeRequest;
-use Illuminate\Http\Request;
 use Overtrue\EasySms\EasySms;
 
 class VerificationCodesController extends Controller
@@ -30,9 +29,9 @@ class VerificationCodesController extends Controller
 
 		try {
 			$easySms->send($mobile, [
-				'template' => 'SMS_102315001',
+				'template' => env('ALIYUN_TEMPLATES_SEND_CODE'),
 				'data' => [
-					'code' => 6379
+					'code' => $code
 				],
 			]);
 		} catch (\Overtrue\EasySms\Exceptions\NoGatewayAvailableException $exception) {

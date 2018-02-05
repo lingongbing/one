@@ -32,6 +32,7 @@
 			<mt-button class="mt-button" type="primary" size="large" plain @click="active = 'edit-password'"
 			           :disabled="active === 'edit-password'">修改密码
 			</mt-button>
+			<mt-button class="mt-button" type="primary" size="large" plain @click="$store.dispatch('unauthenticate'),$router.push({name:'home'})">退出登陆</mt-button>
 		</div>
 	</div>
 </template>
