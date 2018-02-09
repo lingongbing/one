@@ -88,10 +88,9 @@
 						</router-link>
 					</li>
 					<li>
-						<a href="#">
-							<router-link :to="{ name: 'index', params: { userId: 123 }}" tag="span">积分兑换商品设置
-							</router-link>
-						</a>
+						<router-link :to="{ name: 'integrals-goods'}" tag="a">
+							<span>积分商品</span>
+						</router-link>
 					</li>
 				</ul>
 			</li>

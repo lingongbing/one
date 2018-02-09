@@ -2318,11 +2318,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
-			selected: 'integral_exchange'
+			good: {},
+			show: false,
+			items: true,
+			goods: {},
+			selected: 'integral_exchange',
+			CreateOrder: false,
+			number: 1
 		};
 	},
 
@@ -2337,6 +2377,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 					break;
 			}
 		}
+	},
+	mounted: function mounted() {
+		var _this = this;
+
+		window.axios.get('integral-goods').then(function (response) {
+			_this.goods = response.data.data;
+		});
 	}
 });
 
@@ -2698,14 +2745,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return {
 			user: {},
 			skin: {
-				condition: '皮肤特征',
+				condition: '',
 				check_time: '',
-				makeup_habits: '化妆习惯',
-				skin_belong_id: 0,
-				nursing_advice: '常用产品',
-				skin_category_id: 0,
-				characteristics: '护理建议',
-				commonly_products: '皮肤状态'
+				makeup_habits: '',
+				skin_belong_id: 1,
+				nursing_advice: '',
+				skin_category_id: 1,
+				characteristics: '',
+				commonly_products: ''
 			},
 			skin_belongs: {},
 			skin_categories: {},
@@ -7473,7 +7520,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.mt-navbar[data-v-53838c9d] {\n\tmargin-bottom: 10px;\n}\n.row[data-v-53838c9d] {\n\tmargin-right: 0;\n\tmargin-left: 0;\n}\n.card-body[data-v-53838c9d] {\n\tpadding: 1.25rem 0 0 0;\n}\n.card[data-v-53838c9d] {\n\tmargin-bottom: 10px;\n}\n.mt-swipe[data-v-53838c9d] {\n\twidth: 100%;\n\theight: 200px;\n}\n.fixed[data-v-53838c9d] {\n\tposition: fixed;\n\tbottom: 55px;\n\tbackground-color: white;\n}\n", ""]);
 
 // exports
 
@@ -66075,9 +66122,7 @@ var render = function() {
             }
           },
           [
-            _c("option", { attrs: { value: "default", disabled: "" } }, [
-              _vm._v("皮肤种类")
-            ]),
+            _c("option", { attrs: { disabled: "" } }, [_vm._v("皮肤种类")]),
             _vm._v(" "),
             _vm._l(_vm.skin_categories, function(item) {
               return _c("option", { domProps: { value: item.id } }, [
@@ -67345,6 +67390,7 @@ var render = function() {
       _c(
         "mt-navbar",
         {
+          staticClass: "mt-navbar",
           model: {
             value: _vm.selected,
             callback: function($$v) {
@@ -67363,7 +67409,148 @@ var render = function() {
           ])
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _vm.items
+        ? _c(
+            "div",
+            { staticClass: "row" },
+            _vm._l(_vm.goods, function(item, index) {
+              return item.images.length
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "card col-6",
+                      on: {
+                        click: function($event) {
+                          ;(_vm.items = false),
+                            (_vm.show = true),
+                            (_vm.good = item)
+                        }
+                      }
+                    },
+                    [
+                      _c("img", {
+                        staticClass: "card-img-top",
+                        attrs: { src: item.images[0].image }
+                      }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("h6", { staticClass: "card-title" }, [
+                          _vm._v(_vm._s(item.name))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "text-muted" }, [
+                        _vm._v("\n\t\t\t\t兑换积分："),
+                        _c("span", { staticStyle: { color: "red" } }, [
+                          _vm._v(_vm._s(item.integral))
+                        ])
+                      ])
+                    ]
+                  )
+                : _vm._e()
+            })
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.show
+        ? _c(
+            "div",
+            { staticClass: "row" },
+            [
+              _c(
+                "mt-swipe",
+                {
+                  staticClass: "mt-swipe",
+                  attrs: { "show-indicators": false }
+                },
+                _vm._l(_vm.good.images, function(image, index) {
+                  return _c("mt-swipe-item", { key: index }, [
+                    _c("img", { attrs: { src: image.image } })
+                  ])
+                })
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "card" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(_vm.good.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v("\n\t\t\t\t兑换积分："),
+                  _c("span", { staticStyle: { color: "red" } }, [
+                    _vm._v(_vm._s(_vm.good.integral))
+                  ]),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _c("div", {
+                    domProps: { innerHTML: _vm._s(_vm.good.introduction) }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-default fixed",
+                  staticStyle: { left: "0" },
+                  on: {
+                    click: function($event) {
+                      ;(_vm.items = true), (_vm.show = false), (_vm.good = {})
+                    }
+                  }
+                },
+                [_vm._v("返回")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning fixed",
+                  staticStyle: { right: "0" },
+                  on: {
+                    click: function($event) {
+                      ;(_vm.show = false), (_vm.CreateOrder = true)
+                    }
+                  }
+                },
+                [_vm._v("我要兑换")]
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.CreateOrder
+        ? _c(
+            "div",
+            { staticClass: "row" },
+            [
+              _c("mt-cell", {
+                attrs: { title: "商品名称", value: _vm.good.name }
+              }),
+              _vm._v(" "),
+              _c("mt-field", {
+                attrs: {
+                  label: "数量",
+                  placeholder: "请输入数量",
+                  type: "number"
+                },
+                model: {
+                  value: _vm.number,
+                  callback: function($$v) {
+                    _vm.number = $$v
+                  },
+                  expression: "number"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e()
     ],
     1
   )
@@ -83652,8 +83839,6 @@ window.axios.interceptors.response.use(function (response) {
 	return response;
 }, function (error) {
 	switch (error.response.status) {
-
-		// 如果响应中的 http code 为 401，那么则此用户可能 token 失效了之类的，我会触发 logout 方法，清除本地的数据并将用户重定向至登录页面
 		case 401:
 			return __WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].dispatch('unauthenticate');
 			break;

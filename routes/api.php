@@ -54,6 +54,12 @@ $api->version('v1',[
 			->name('api.skins.categories.index');
 		$api->get('sites', 'SitesController@index')
 			->name('api.sites.index');
+		$api->post('simditors', 'SimditorsController@store')
+			->name('api.simditors.store');
+		$api->get('integral-goods','IntegralGoodsController@index')
+			->name('api.integral.goods.index');
+		$api->get('integral-goods/{integral_good}/images','IntegralGoodImagesController@index')
+			->name('api.integral.goods.index');
 		// 需要 token 验证的接口
 		$api->group(['middleware' => ['api.auth']], function($api) {
 			// 当前登录用户信息
@@ -116,6 +122,9 @@ $api->version('v1',[
 			// 获取客户皮肤信息
 			$api->get('user/skin','UsersSkinsController@show')
 				->name('api.user.skin.show');
+			// 更新客户皮肤信息
+			$api->post('user/skin','UserSkinsController@store')
+				->name('api.user.skin.store');
 			// 更新客户皮肤信息
 			$api->patch('user/skin','UserSkinsController@update')
 				->name('api.user.skin.update');
@@ -190,6 +199,24 @@ $api->version('v1',[
 				->name('api.aliyuns.sms.show');
 			$api->patch('sms','Aliyuns\SmsController@update')
 				->name('api.aliyuns.sms.update');
+			// 添加积分商品
+			$api->post('integral-goods','IntegralGoodsController@store')
+				->name('api.integral.goods.store');
+			// 删除积分商品
+			$api->delete('integral-goods/{integral_good}','IntegralGoodsController@destroy')
+				->name('api.integral.goods.destroy');
+			// 积分商品信息
+			$api->get('integral-goods/{integral_good}','IntegralGoodsController@show')
+				->name('api.integral.goods.show');
+			// 更新积分商品
+			$api->patch('integral-goods/{integral_good}','IntegralGoodsController@update')
+				->name('api.integral.goods.patch');
+			// 更新商品图片
+			$api->patch('integral-goods/{integral_good}/images/{image}','IntegralGoodImagesController@update')
+				->name('api.integral.goods.image.update');
+			// 创建商品图片
+			$api->post('integral-goods/{integral_good}/images','IntegralGoodImagesController@store')
+				->name('api.integral.goods.image.store');
 		});
 	});
 });

@@ -16,5 +16,3 @@ mix.js('resources/assets/homes/js/app.js', 'public/homes/js')
 
 mix.js('resources/assets/admins/js/app.js', 'public/admins/js')
     .sass('resources/assets/admins/sass/app.scss', 'public/admins/css').version();
-
-mix.browserSync('one.com');

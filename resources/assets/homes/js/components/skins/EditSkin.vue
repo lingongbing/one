@@ -2,7 +2,7 @@
 	<form v-on:submit.prevent="onSubmit">
 		<div class="form-group">
 			<select class="form-control" v-model="skin.skin_category_id">
-				<option value="default" disabled>皮肤种类</option>
+				<option disabled>皮肤种类</option>
 				<option :value="item.id" v-for="item in skin_categories">{{ item.name }}</option>
 			</select>
 		</div>
@@ -61,14 +61,14 @@
 			return {
 				user: {},
 				skin: {
-					condition: '皮肤特征',
+					condition: '',
 					check_time: '',
-					makeup_habits: '化妆习惯',
-					skin_belong_id: 0,
-					nursing_advice: '常用产品',
-					skin_category_id: 0,
-					characteristics: '护理建议',
-					commonly_products: '皮肤状态',
+					makeup_habits: '',
+					skin_belong_id: 1,
+					nursing_advice: '',
+					skin_category_id: 1,
+					characteristics: '',
+					commonly_products: '',
 				},
 				skin_belongs: {},
 				skin_categories: {},

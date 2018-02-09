@@ -12,6 +12,7 @@ class IntegralGoodTransformer extends TransformerAbstract
 		return [
 			'id' => $good->id,
 			'name' => $good->name,
+			'images' => $good->image,
 			'integral' => $good->integral,
 			'introduction' => $good->introduction
 		];

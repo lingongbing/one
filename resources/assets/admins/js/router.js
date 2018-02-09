@@ -123,6 +123,12 @@ const routes = [
 		meta: {authenticate: true,is_admin: true},
 	},
 	{
+		path: '/integrals-goods',
+		name: 'integrals-goods',
+		component: require('./components/integrals_goods/Index'),
+		meta: {authenticate: true,is_admin: true},
+	},
+	{
 		path: '/homes-swipe',
 		name: 'homes-swipe',
 		component: require('./components/homes/Swipe'),
