@@ -29,7 +29,7 @@ class VerificationCodesController extends Controller
 
 		try {
 			$easySms->send($mobile, [
-				'template' => env('ALIYUN_TEMPLATES_SEND_CODE'),
+				'template' => env('ALIYUN_SMS_TEMPLATES_SEND_CODE'),
 				'data' => [
 					'code' => $code
 				],
