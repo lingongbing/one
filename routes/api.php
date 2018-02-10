@@ -131,6 +131,15 @@ $api->version('v1',[
 			// 积分查询
 			$api->get('user/integral','UserIntegralsController@index')
 				->name('api.user.integral.index');
+			// 收货地址列表
+			$api->get('shipping-addresses','ShippingAddressesController@index')
+				->name('api.shipping.addresses.index');
+			// 创建收货地址
+			$api->post('shipping-addresses','ShippingAddressesController@store')
+				->name('api.shipping.addresses.store');
+			// 删除收货地址
+			$api->delete('shipping-addresses/{shippingAddress}','ShippingAddressesController@destroy')
+				->name('api.shipping.addresses.destroy');
 		});
 		// 首页管理权限接口
 		$api->group(['middleware' => ['auth:api','role:admin|role:home_management']], function($api) {

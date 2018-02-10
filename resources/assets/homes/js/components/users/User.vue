@@ -17,6 +17,9 @@
 			<mt-tab-container-item id="edit-password">
 				<edit-password></edit-password>
 			</mt-tab-container-item>
+			<mt-tab-container-item id="edit-shipping-addresses">
+				<edit-shipping-addresses></edit-shipping-addresses>
+			</mt-tab-container-item>
 		</mt-tab-container>
 		<hr>
 		<div class="container">
@@ -32,6 +35,9 @@
 			<mt-button class="mt-button" type="primary" size="large" plain @click="active = 'edit-password'"
 			           :disabled="active === 'edit-password'">修改密码
 			</mt-button>
+			<mt-button class="mt-button" type="primary" size="large" plain @click="active = 'edit-shipping-addresses'"
+			           :disabled="active === 'edit-shipping-addresses'">收货地址
+			</mt-button>
 			<mt-button class="mt-button" type="primary" size="large" plain @click="$store.dispatch('unauthenticate'),$router.push({name:'home'})">退出登陆</mt-button>
 		</div>
 	</div>
@@ -42,9 +48,10 @@
 	import EditUser from './EditUser';
 	import EditMobile from './EditMobile';
 	import EditPassword from './EditPassword';
+	import EditShippingAddresses from './EditShippingAddresses';
 	export default {
 		components: {
-			ShowUser,EditUser,EditMobile,EditPassword
+			ShowUser,EditUser,EditMobile,EditPassword,EditShippingAddresses
 		},
 		data() {
 			return {

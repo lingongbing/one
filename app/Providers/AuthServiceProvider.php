@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Order;
+use App\Models\ShippingAddress;
 use App\Models\User;
 use App\Policies\Api\V1\OrderPolicy;
+use App\Policies\Api\V1\ShippingAddressPolicy;
 use App\Policies\Api\V1\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -20,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Model' => 'App\Policies\ModelPolicy',
 	    Order::class => OrderPolicy::class,
 	    User::class => UserPolicy::class,
+	    ShippingAddress::class => ShippingAddressPolicy::class,
     ];
 
     /**

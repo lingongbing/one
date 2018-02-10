@@ -68,6 +68,11 @@ class User extends Authenticatable implements JWTSubject
 		return $this->hasMany(IntegralRecord::class);
 	}
 
+	public function shippingAddresses()
+	{
+		return $this->hasMany(ShippingAddress::class);
+	}
+
 	protected $dispatchesEvents = [
 		'created' => UserCreated::class,
 	];
