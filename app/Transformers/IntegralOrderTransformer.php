@@ -23,7 +23,7 @@ class IntegralOrderTransformer extends TransformerAbstract
 			'address' => $order->address,
 			'created_at' => $order->created_at->toDateTimeString(),
 			'updated_at' => $order->updated_at->toDateTimeString(),
-			'state' => $order->state == 1 ? '未发货' : '已发货',
+			'state' => $order->state,
 			'courier_order_no' => $order->courier_order_no
 		];
 	}

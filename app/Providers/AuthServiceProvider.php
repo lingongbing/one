@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\IntegralOrder;
 use App\Models\Order;
 use App\Models\ShippingAddress;
 use App\Models\User;
+use App\Policies\Api\V1\IntegralOrderPolicy;
 use App\Policies\Api\V1\OrderPolicy;
 use App\Policies\Api\V1\ShippingAddressPolicy;
 use App\Policies\Api\V1\UserPolicy;
@@ -23,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
 	    Order::class => OrderPolicy::class,
 	    User::class => UserPolicy::class,
 	    ShippingAddress::class => ShippingAddressPolicy::class,
+	    IntegralOrder::class => IntegralOrderPolicy::class,
     ];
 
     /**

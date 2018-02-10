@@ -4966,6 +4966,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: ['integral_order_id'],
@@ -4982,6 +4989,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			order: {
 				user: {},
 				good: {}
+			},
+			messages: {
+				courier_order_no: false
 			},
 			express_status: {
 				result: {
@@ -5015,7 +5025,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 					_this2.queryCourier();
 				}
 			}).catch(function (error) {
-				console.log(error);
+				if (error.response.data.status_code != 422) {
+					_this2.messages.courier_order_no = error.response.data.message;
+				} else {
+					_this2.messages.courier_order_no = error.response.data.errors.courier_order_no[0];
+				}
 			});
 		},
 		queryCourier: function queryCourier() {
@@ -92343,7 +92357,9 @@ var render = function() {
         _vm._v(" "),
         _c("p", [
           _vm._v("订单状态："),
-          _c("span", [_vm._v(_vm._s(_vm.order.state))])
+          _c("span", [
+            _vm._v(_vm._s(_vm.order.state == 1 ? "未发货" : "已发货"))
+          ])
         ]),
         _vm._v(" "),
         _c("p", [
@@ -92365,14 +92381,54 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
-            value: !_vm.order.courier_order_no,
-            expression: "!order.courier_order_no"
+            value: _vm.order.state == 1,
+            expression: "order.state == 1"
           }
         ],
         staticClass: "panel panel-default"
       },
       [
         _c("div", { staticClass: "panel-body" }, [
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.messages.courier_order_no,
+                  expression: "messages.courier_order_no"
+                }
+              ],
+              staticClass: "alert alert-info",
+              attrs: { role: "alert" }
+            },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: { type: "button", "aria-label": "Close" },
+                  on: {
+                    click: function($event) {
+                      _vm.messages.courier_order_no = false
+                    }
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              ),
+              _vm._v(
+                "\n\t\t\t\t" +
+                  _vm._s(_vm.messages.courier_order_no) +
+                  "\n\t\t\t"
+              )
+            ]
+          ),
+          _vm._v(" "),
           _c("input", {
             directives: [
               {
@@ -92411,7 +92467,9 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm.order.courier_order_no && _vm.express_status.status == 0
+    _vm.order.courier_order_no &&
+    _vm.express_status.status == 0 &&
+    _vm.order.state == 2
       ? _c("div", { staticClass: "panel panel-default" }, [
           _c("div", { staticClass: "panel-heading" }, [
             _vm._v(
@@ -92421,7 +92479,8 @@ var render = function() {
                 " " +
                 _vm._s(
                   _vm.express_status.result.issign == 1 ? "已签收" : "未签收"
-                )
+                ) +
+                "\n\t\t"
             )
           ]),
           _vm._v(" "),
@@ -92443,7 +92502,7 @@ var render = function() {
             )
           ])
         ])
-      : _vm.order.courier_order_no
+      : _vm.order.courier_order_no && _vm.order.state == 2
         ? _c("div", { staticClass: "panel panel-default" }, [
             _c("div", { staticClass: "panel-body" }, [
               _c("ul", { staticClass: "list-group" }, [

@@ -25,12 +25,15 @@ class IntegralOrdersController extends Controller
 
 	public function show(Request $request,$integral_order)
 	{
-		return $this->response->item(IntegralOrder::find($integral_order),new IntegralOrderTransformer());
+		$integral_order = IntegralOrder::find($integral_order);
+		$this->authorize('update',$integral_order);
+		return $this->response->item($integral_order,new IntegralOrderTransformer());
 	}
 
 	public function update(IntegralOrderRequest $request,$integral_order)
 	{
 		$integral_order = IntegralOrder::find($integral_order);
+		$this->authorize('update',$integral_order);
 		$integral_order->update([
 			'state' => 2,
 			'courier_order_no' => $request->courier_order_no
