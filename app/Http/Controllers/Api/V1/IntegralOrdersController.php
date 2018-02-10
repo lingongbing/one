@@ -6,12 +6,39 @@ use App\Http\Requests\Api\V1\IntegralOrderRequest;
 use App\Models\IntegralGood;
 use App\Models\IntegralOrder;
 use App\Models\IntegralRecord;
+use App\Transformers\IntegralOrderTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\DB;
 
 class IntegralOrdersController extends Controller
 {
+	public function index(Request $request)
+	{
+		$conditions   = [];
+		if (!$request->user()->hasRole('admin')) {
+			$conditions[] = ['user_id',$request->user()->id];
+		}
+
+		return $this->response->paginator(IntegralOrder::where($conditions)->with('user','good')->orderBy('id','desc')->paginate(10),new IntegralOrderTransformer());
+	}
+
+	public function show(Request $request,$integral_order)
+	{
+		return $this->response->item(IntegralOrder::find($integral_order),new IntegralOrderTransformer());
+	}
+
+	public function update(IntegralOrderRequest $request,$integral_order)
+	{
+		$integral_order = IntegralOrder::find($integral_order);
+		$integral_order->update([
+			'state' => 2,
+			'courier_order_no' => $request->courier_order_no
+		]);
+
+		return $this->response->item($integral_order,new IntegralOrderTransformer());
+	}
+
 	public function store(IntegralOrderRequest $request,IntegralOrder $integralOrder)
 	{
 		$integral_good = IntegralGood::find($request->integral_good_id);

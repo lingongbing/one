@@ -146,6 +146,15 @@ $api->version('v1',[
 			// 创建积分订单
 			$api->post('integral-orders','IntegralOrdersController@store')
 				->name('api.integral.orders.store');
+			// 积分订单列表
+			$api->get('integral-orders','IntegralOrdersController@index')
+				->name('api.integral.orders.index');
+			// 订单详情
+			$api->get('integral-orders/{integral_order_id}','IntegralOrdersController@show')
+				->name('api.integral.orders.show');
+			// 更新订单
+			$api->patch('integral-orders/{integral_order_id}','IntegralOrdersController@update')
+				->name('api.integral.orders.update');
 		});
 		// 首页管理权限接口
 		$api->group(['middleware' => ['auth:api','role:admin|role:home_management']], function($api) {

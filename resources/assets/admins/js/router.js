@@ -129,6 +129,12 @@ const routes = [
 		meta: {authenticate: true,is_admin: true},
 	},
 	{
+		path: '/integrals-orders',
+		name: 'integrals-orders',
+		component: require('./components/integral_orders/Index'),
+		meta: {authenticate: true,is_admin: true},
+	},
+	{
 		path: '/homes-swipe',
 		name: 'homes-swipe',
 		component: require('./components/homes/Swipe'),

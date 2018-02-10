@@ -95,7 +95,9 @@
 					}
 				}).then(response => {
 					this.goods = response.data.data;
-					this.pagination = response.data.meta.pagination;
+					if (response.data.meta.length) {
+						this.pagination = response.data.meta.pagination;
+					}
 				})
 			},
 			deleteGood: function (good) {

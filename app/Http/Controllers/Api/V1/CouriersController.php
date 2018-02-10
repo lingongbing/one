@@ -13,7 +13,7 @@ class CouriersController extends Controller
 		try {
 			$response = $client->get('https://wuliu.market.alicloudapi.com/kdi',[
 				'headers' => [
-					'Authorization' => 'APPCODE ' . env('ALIYUN_MARKET_KDI_APPCODE'),
+					'Authorization' => 'APPCODE ' . env('ALIYUN_MARKET_KDI_APP_CODE'),
 				],
 				'query' => [
 					'no' => $courier,
@@ -25,7 +25,6 @@ class CouriersController extends Controller
 			} else {
 				return $this->response->errorInternal($exception->getMessage());
 			}
-
 		}
 
 		return $this->response->array($response->getBody()->getContents());

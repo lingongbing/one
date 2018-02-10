@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Dingo\Api\Http\FormRequest;
 
 class IntegralOrderRequest extends FormRequest
 {
@@ -23,16 +23,25 @@ class IntegralOrderRequest extends FormRequest
 	 */
 	public function rules()
 	{
-		return [
-			'integral_good_id' => 'required|exists:integral_goods,id',
-			'number' => 'required|numeric|integer',
-			'consignee' => 'required|max:255',
-			'phone' => 'required|regex:/^1[34578]\d{9}$/',
-			'province' => 'required|max:255',
-			'city' => 'required|max:255',
-			'area' => 'required|max:255',
-			'address' => 'required|max:255'
-		];
+		switch ($this->method()) {
+			case 'POST':
+				return [
+					'integral_good_id' => 'required|exists:integral_goods,id',
+					'number' => 'required|numeric|integer',
+					'consignee' => 'required|max:255',
+					'phone' => 'required|regex:/^1[34578]\d{9}$/',
+					'province' => 'required|max:255',
+					'city' => 'required|max:255',
+					'area' => 'required|max:255',
+					'address' => 'required|max:255'
+				];
+				break;
+			case 'PATCH':
+				return [
+					'courier_order_no' => 'required|numeric'
+				];
+				break;
+		}
 	}
 
 	public function attributes()
@@ -46,6 +55,7 @@ class IntegralOrderRequest extends FormRequest
 			'city' => '收货地址',
 			'area' => '收货地址',
 			'address' => '收货地址',
+			'courier_order_no' => '快递单号'
 		];
 	}
 }

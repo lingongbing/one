@@ -92,6 +92,11 @@
 							<span>积分商品</span>
 						</router-link>
 					</li>
+					<li>
+						<router-link :to="{ name: 'integrals-orders'}" tag="a">
+							<span>积分订单</span>
+						</router-link>
+					</li>
 				</ul>
 			</li>
 			<li class="nav-item"
