@@ -140,6 +140,12 @@ $api->version('v1',[
 			// 删除收货地址
 			$api->delete('shipping-addresses/{shippingAddress}','ShippingAddressesController@destroy')
 				->name('api.shipping.addresses.destroy');
+			// 获取积分订单
+			$api->get('integral-orders','IntegralOrdersController@index')
+				->name('api.integral.orders.index');
+			// 创建积分订单
+			$api->post('integral-orders','IntegralOrdersController@store')
+				->name('api.integral.orders.store');
 		});
 		// 首页管理权限接口
 		$api->group(['middleware' => ['auth:api','role:admin|role:home_management']], function($api) {

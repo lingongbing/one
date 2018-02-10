@@ -35,14 +35,17 @@
 			<button class="btn btn-warning fixed" style="right: 0;" @click="show = false,CreateOrder = true">我要兑换</button>
 		</div>
 		<div class="row" v-if="CreateOrder">
-			<mt-cell title="商品名称" :value="good.name"></mt-cell>
-			<mt-field label="数量" placeholder="请输入数量" type="number" v-model="number"></mt-field>
+			<create-order :good="good"></create-order>
 		</div>
 	</div>
 </template>
 
 <script>
+	import CreateOrder from './CreateOrder'
 	export default {
+		components: {
+			CreateOrder
+		},
 		data() {
 			return {
 				good: {},
