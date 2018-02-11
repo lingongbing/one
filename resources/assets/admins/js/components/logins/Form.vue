@@ -1,5 +1,6 @@
 <template>
 	<form action="#" class="fh5co-form animate-box" data-animate-effect="fadeInRight" v-on:submit.prevent="onSubmit">
+		<div class="alert alert-info" role="alert" v-show="message">{{ message }}</div>
 		<h2>Sign In</h2>
 		<div class="form-group">
 			<label for="username" class="sr-only">账号</label>
@@ -30,7 +31,7 @@
 			return {
 				username: '',
 				password: '',
-				error: '',
+				message: '',
 			}
 		},
 		methods: {
@@ -43,7 +44,7 @@
 						this.$store.dispatch('authenticate', formData).then(response => {
 							this.$router.push({name: 'index'});
 						}).catch(error => {
-						
+							this.message = '登陆失败';
 						});
 					}
 				});

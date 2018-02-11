@@ -35,7 +35,7 @@ class VerificationCodesController extends Controller
 				],
 			]);
 		} catch (\Overtrue\EasySms\Exceptions\NoGatewayAvailableException $exception) {
-			return $this->response->errorInternal($exception->results['aliyun']['exception']->getMessage());
+			return $this->response->errorInternal('验证码发送失败');
 		}
 
 		$key = 'verificationCode_'.str_random(15);

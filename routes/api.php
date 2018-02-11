@@ -29,6 +29,15 @@ $api->version('v1',[
 		// 删除token
 		$api->delete('authorizations/current', 'AuthorizationsController@destroy')
 			->name('api.authorizations.destroy');
+		// 忘记密码/创建图形验证码
+		$api->post('passwords/captcha','ForgotPasswordController@storeCaptcha')
+			->name('api.passwords.storeCaptcha');
+		// 忘记密码/创建手机验证码
+		$api->post('passwords/verificationCodes','ForgotPasswordController@storeVerificationCodes')
+			->name('api.passwords.storeVerificationCodes');
+		// 忘记密码/重置密码
+		$api->post('passwords/resetPassword','ForgotPasswordController@resetPassword')
+			->name('api.passwords.resetPassword');
 	});
 	$api->group([
 		'middleware' => 'api.throttle',

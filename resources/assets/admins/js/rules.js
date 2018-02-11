@@ -21,7 +21,7 @@ export const usernameIsExist = {
 };
 
 export const mobile = {
-	getMessage:'格式错误',
+	getMessage:'手机格式错误',
 	validate(value) {
 		return /^1[34578]\d{9}$/.test(value)
 	}

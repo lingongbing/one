@@ -5649,13 +5649,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
 			username: '',
 			password: '',
-			error: ''
+			message: ''
 		};
 	},
 
@@ -5670,7 +5671,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 					formData.append('password', _this.password);
 					_this.$store.dispatch('authenticate', formData).then(function (response) {
 						_this.$router.push({ name: 'index' });
-					}).catch(function (error) {});
+					}).catch(function (error) {
+						_this.message = '登陆失败';
+					});
 				}
 			});
 		}
@@ -6211,6 +6214,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__xkeshi_vue_countdown__ = __webpack_require__("./node_modules/@xkeshi/vue-countdown/dist/vue-countdown.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__xkeshi_vue_countdown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__xkeshi_vue_countdown__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6264,98 +6281,87 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+	components: {
+		VueCountdown: __WEBPACK_IMPORTED_MODULE_0__xkeshi_vue_countdown___default.a
+	},
 	data: function data() {
 		return {
-			is_send: false,
-			is_validation: false,
-			code: '',
-			username: this.$store.getters.username,
-			lock_username: false,
-			alert_class: '',
-			alert_message: '',
+			mobile: '',
+			message: '',
 			password: '',
-			confirmed_password: ''
+			counting: false,
+			captcha_key: '',
+			captcha_code: '',
+			captcha_image: '',
+			show_captcha: false,
+			verification_key: '',
+			verification_code: ''
 		};
 	},
 	created: function created() {
-		console.log(this.$store.getters.username == true);
+		this.username = this.$store.getters.username;
 	},
 
 	methods: {
-		sendMobileCode: function sendMobileCode() {
+		onSubmit: function onSubmit() {
 			var _this = this;
 
-			this.$validator.validateAll({ 'username': this.username }).then(function (result) {
+			this.$validator.validateAll().then(function (result) {
 				if (result) {
-					var formData = new FormData();
-					formData.append('username', _this.username);
-					axios.post('/password/mobile', formData).then(function (response) {
-						_this.is_send = true;
-						_this.lock_username = true;
-						_this.alert_class = 'alert-success';
-						_this.alert_message = response.data.message;
-						_this.$store.dispatch('setCodeTimeCountDown', 120);
-						_this.$store.dispatch('codeTimeCountDown');
+					window.axios.post('passwords/resetPassword', {
+						password: _this.password,
+						verification_key: _this.verification_key,
+						verification_code: _this.verification_code
+					}).then(function (response) {
+						_this.$store.dispatch('resetPasswordAuthenticate', response.data);
+						window.location.href = '/';
 					}).catch(function (error) {
-						_this.is_send = true;
-						_this.lock_username = true;
-						_this.$store.dispatch('setCodeTimeCountDown', 120);
-						_this.$store.dispatch('codeTimeCountDown');
-						_this.alert_class = 'alert-danger';
-						if (error.response.status === 422) {
-							_this.alert_message = error.response.data.errors.username[0];
-						} else {
-							_this.alert_message = error.response.data.error;
-						}
+						_this.message = error.response.data.message;
 					});
 				}
 			});
 		},
-		validationCode: function validationCode() {
+		storeCaptcha: function storeCaptcha() {
 			var _this2 = this;
 
-			this.$validator.validateAll({ 'code': this.code }).then(function (result) {
+			this.$validator.validate('mobile', this.mobile).then(function (result) {
 				if (result) {
-					var formData = new FormData();
-					formData.append('code', _this2.code);
-					formData.append('username', _this2.username);
-					axios.post('/password/mobile/validation', formData).then(function (response) {
-						_this2.is_validation = true;
-						_this2.alert_class = 'alert-success';
-						_this2.alert_message = response.data.message;
-					}).catch(function (error) {
-						_this2.alert_class = 'alert-danger';
-						if (error.response.status === 422) {
-							_this2.alert_message = error.response.data.errors.username[0];
-						} else {
-							_this2.alert_message = error.response.data.error;
-						}
+					window.axios.post('passwords/captcha', {
+						mobile: _this2.mobile
+					}).then(function (response) {
+						_this2.show_captcha = true;
+						_this2.captcha_key = response.data.captcha_key;
+						_this2.captcha_image = response.data.captcha_image_content;
 					});
 				}
 			});
 		},
-		changePassword: function changePassword() {
+		storeMobileCaptcha: function storeMobileCaptcha() {
 			var _this3 = this;
 
-			this.$validator.validateAll({ 'password': this.password, 'confirmed_password': this.confirmed_password }).then(function (result) {
+			this.$validator.validate('captcha_code', this.captcha_code).then(function (result) {
 				if (result) {
-					var formData = new FormData();
-					formData.append('username', _this3.username);
-					formData.append('password', _this3.password);
-					axios.post('/password/reset', formData).then(function (response) {
-						_this3.alert_message = response.data.message;
-						_this3.$router.push({ name: 'login' });
+					window.axios.post('passwords/verificationCodes', {
+						captcha_key: _this3.captcha_key,
+						captcha_code: _this3.captcha_code
+					}).then(function (response) {
+						_this3.countdown();
+						_this3.verification_key = response.data.key;
 					}).catch(function (error) {
-						_this3.alert_class = 'alert-danger';
-						if (error.response.status === 422) {
-							_this3.alert_message = error.response.data.errors.username[0];
-						} else {
-							_this3.alert_message = error.response.data.error;
-						}
+						_this3.storeCaptcha();
+						_this3.message = error.response.data.message;
 					});
 				}
 			});
+		},
+		countdown: function countdown() {
+			this.counting = true;
+		},
+		countdownend: function countdownend() {
+			this.counting = false;
 		}
 	}
 });
@@ -10713,7 +10719,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -88794,44 +88800,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "panel panel-default" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "panel-body" }, [
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.alert_message,
-              expression: "alert_message"
-            }
-          ],
-          staticClass: "alert",
-          class: _vm.alert_class,
-          attrs: { role: "alert" }
-        },
-        [
-          _c(
-            "button",
-            {
-              staticClass: "close",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  _vm.alert_message = ""
-                }
-              }
-            },
-            [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-          ),
-          _vm._v("\n\t\t\t" + _vm._s(_vm.alert_message) + "\n\t\t")
-        ]
-      ),
+  return _c(
+    "div",
+    { staticClass: "panel panel-default col-sm-offset-3 col-sm-6" },
+    [
+      _vm._m(0),
       _vm._v(" "),
-      _c("form", { staticClass: "form-horizontal" }, [
+      _c("div", { staticClass: "panel-body" }, [
         _c(
           "div",
           {
@@ -88839,42 +88814,54 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: !_vm.is_send,
-                expression: "!is_send"
+                value: _vm.message,
+                expression: "message"
               }
             ],
-            staticClass: "form-group",
-            class: { "has-error": _vm.errors.has("username") }
+            staticClass: "alert alert-info",
+            attrs: { role: "alert" }
           },
-          [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
+          [_vm._v(_vm._s(_vm.message))]
+        ),
+        _vm._v(" "),
+        _c("form", { staticClass: "form-horizontal" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "label",
+              {
+                staticClass: "col-sm-4 control-label",
+                attrs: { for: "mobile" }
+              },
+              [_vm._v("输入手机号")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-6" }, [
               _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.username,
-                    expression: "username"
+                    value: _vm.mobile,
+                    expression: "mobile"
                   },
                   { name: "validate", rawName: "v-validate" }
                 ],
                 staticClass: "form-control",
                 attrs: {
-                  type: "text",
-                  name: "username",
-                  id: "username",
-                  placeholder: "账号",
-                  "data-vv-rules": "required",
-                  "data-vv-as": "账号",
-                  disabled: _vm.lock_username || this.$store.getters.username
+                  type: "email",
+                  id: "mobile",
+                  name: "mobile",
+                  placeholder: "输入手机号",
+                  "data-vv-rules": "required|mobile",
+                  "data-vv-as": "手机号"
                 },
-                domProps: { value: _vm.username },
+                domProps: { value: _vm.mobile },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.username = $event.target.value
+                    _vm.mobile = $event.target.value
                   }
                 }
               }),
@@ -88886,102 +88873,28 @@ var render = function() {
                     {
                       name: "show",
                       rawName: "v-show",
-                      value: _vm.errors.has("username"),
-                      expression: "errors.has('username')"
+                      value: _vm.errors.has("mobile"),
+                      expression: "errors.has('mobile')"
                     }
                   ],
                   staticClass: "help-block"
                 },
-                [_vm._v(_vm._s(_vm.errors.first("username")))]
+                [_vm._v(_vm._s(_vm.errors.first("mobile")))]
               )
             ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "label",
               {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.is_send && !_vm.is_validation,
-                expression: "is_send && !is_validation"
-              }
-            ],
-            staticClass: "form-group",
-            class: { "has-error": _vm.errors.has("code") }
-          },
-          [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.code,
-                    expression: "code"
-                  },
-                  { name: "validate", rawName: "v-validate" }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "code",
-                  id: "code",
-                  placeholder: "验证码",
-                  "data-vv-rules": "required",
-                  "data-vv-as": "验证码"
-                },
-                domProps: { value: _vm.code },
-                on: {
-                  change: function($event) {
-                    _vm.validationCode()
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.code = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "span",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.errors.has("code"),
-                      expression: "errors.has('code')"
-                    }
-                  ],
-                  staticClass: "help-block"
-                },
-                [_vm._v(_vm._s(_vm.errors.first("code")))]
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.is_validation,
-                expression: "is_validation"
-              }
-            ],
-            staticClass: "form-group",
-            class: { "has-error": _vm.errors.has("password") }
-          },
-          [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
+                staticClass: "col-sm-4 control-label",
+                attrs: { for: "mobile" }
+              },
+              [_vm._v("输入新密码")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-6" }, [
               _c("input", {
                 directives: [
                   {
@@ -88995,10 +88908,10 @@ var render = function() {
                 staticClass: "form-control",
                 attrs: {
                   type: "password",
-                  name: "password",
                   id: "password",
-                  placeholder: "新密码",
-                  "data-vv-rules": "required",
+                  name: "password",
+                  placeholder: "输入新密码",
+                  "data-vv-rules": "required|min:6",
                   "data-vv-as": "新密码"
                 },
                 domProps: { value: _vm.password },
@@ -89028,133 +88941,205 @@ var render = function() {
                 [_vm._v(_vm._s(_vm.errors.first("password")))]
               )
             ])
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.is_validation,
-                expression: "is_validation"
-              }
-            ],
-            staticClass: "form-group",
-            class: { "has-error": _vm.errors.has("confirmed_password") }
-          },
-          [
-            _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.confirmed_password,
-                    expression: "confirmed_password"
-                  },
-                  { name: "validate", rawName: "v-validate" }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "password",
-                  name: "confirmed_password",
-                  id: "confirmed_password",
-                  placeholder: "确认新密码",
-                  "data-vv-rules": "required|confirmed:password",
-                  "data-vv-as": "确认新密码"
-                },
-                domProps: { value: _vm.confirmed_password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.confirmed_password = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "span",
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
                 {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.show_captcha,
+                  expression: "show_captcha"
+                }
+              ],
+              staticClass: "form-group"
+            },
+            [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-4 control-label",
+                  attrs: { for: "captcha" }
+                },
+                [_vm._v("图形验证码")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6" }, [
+                _c("input", {
                   directives: [
                     {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.errors.has("confirmed_password"),
-                      expression: "errors.has('confirmed_password')"
-                    }
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.captcha_code,
+                      expression: "captcha_code"
+                    },
+                    { name: "validate", rawName: "v-validate" }
                   ],
-                  staticClass: "help-block"
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "email",
+                    id: "captcha",
+                    name: "captcha_code",
+                    placeholder: "图形验证码",
+                    "data-vv-rules": "required",
+                    "data-vv-as": "图形验证码"
+                  },
+                  domProps: { value: _vm.captcha_code },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.captcha_code = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("img", {
+                  attrs: { src: _vm.captcha_image },
+                  on: {
+                    click: function($event) {
+                      _vm.storeCaptcha()
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("small", { staticClass: "help-block" }, [
+                  _vm._v(
+                    "\n\t\t\t\t\t\t" +
+                      _vm._s(_vm.errors.first("captcha_code")) +
+                      "\n\t\t\t\t\t"
+                  )
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.captcha_key && _vm.captcha_image,
+                  expression: "captcha_key && captcha_image"
+                }
+              ],
+              staticClass: "form-group"
+            },
+            [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-4 control-label",
+                  attrs: { for: "mobile" }
                 },
-                [_vm._v(_vm._s(_vm.errors.first("confirmed_password")))]
-              )
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("div", { staticClass: "col-sm-offset-1 col-sm-10" }, [
+                [_vm._v("手机验证码")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.verification_code,
+                      expression: "verification_code"
+                    },
+                    { name: "validate", rawName: "v-validate" }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    name: "verification_code",
+                    "aria-describedby": "verificationCodeHelp",
+                    "data-vv-rules": "required",
+                    "data-vv-as": "手机验证码",
+                    placeholder: "手机验证码"
+                  },
+                  domProps: { value: _vm.verification_code },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.verification_code = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { type: "button", disabled: _vm.counting },
+                    on: {
+                      click: function($event) {
+                        _vm.storeMobileCaptcha()
+                      }
+                    }
+                  },
+                  [
+                    _vm.counting
+                      ? _c("vue-countdown", {
+                          attrs: { time: 60000 },
+                          on: { countdownend: _vm.countdownend },
+                          scopedSlots: _vm._u([
+                            {
+                              key: "default",
+                              fn: function(props) {
+                                return [
+                                  _vm._v(
+                                    _vm._s(props.seconds || 60) +
+                                      "秒后再次发送验证码"
+                                  )
+                                ]
+                              }
+                            }
+                          ])
+                        })
+                      : _c("span", [_vm._v("发送验证码")])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("small", { staticClass: "help-block" }, [
+                  _vm._v(
+                    "\n\t\t\t\t\t\t" +
+                      _vm._s(_vm.errors.first("verification_code")) +
+                      "\n\t\t\t\t\t"
+                  )
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-offset-4" }, [
             _c(
               "button",
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.is_validation,
-                    expression: "!is_validation"
-                  }
-                ],
                 staticClass: "btn btn-default",
-                attrs: {
-                  type: "button",
-                  disabled: this.$store.getters.time > 0
-                },
+                attrs: { type: "button" },
                 on: {
                   click: function($event) {
-                    _vm.sendMobileCode()
+                    _vm.storeCaptcha()
                   }
                 }
               },
-              [
-                _vm._v("发送验证码到手机"),
-                _c(
-                  "span",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: this.$store.getters.time,
-                        expression: "this.$store.getters.time"
-                      }
-                    ]
-                  },
-                  [_vm._v("(" + _vm._s(this.$store.getters.time) + ")")]
-                )
-              ]
+              [_vm._v("获取验证码")]
             ),
             _vm._v(" "),
             _c(
               "button",
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.is_validation,
-                    expression: "is_validation"
-                  }
-                ],
                 staticClass: "btn btn-default",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
-                    _vm.changePassword()
+                    _vm.onSubmit()
                   }
                 }
               },
@@ -89163,8 +89148,8 @@ var render = function() {
           ])
         ])
       ])
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -94602,6 +94587,23 @@ var render = function() {
       }
     },
     [
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.message,
+              expression: "message"
+            }
+          ],
+          staticClass: "alert alert-info",
+          attrs: { role: "alert" }
+        },
+        [_vm._v(_vm._s(_vm.message))]
+      ),
+      _vm._v(" "),
       _c("h2", [_vm._v("Sign In")]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
@@ -113062,11 +113064,6 @@ if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken()) {
 window.axios.interceptors.response.use(function (response) {
 	return response;
 }, function (error) {
-	switch (error.response.status) {
-		case 401:
-			return __WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].dispatch('unauthenticate');
-			break;
-	}
 	return Promise.reject(error);
 });
 
@@ -116187,7 +116184,7 @@ var usernameIsExist = {
 };
 
 var mobile = {
-	getMessage: '格式错误',
+	getMessage: '手机格式错误',
 	validate: function validate(value) {
 		return (/^1[34578]\d{9}$/.test(value)
 		);
@@ -116256,9 +116253,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mutation_types__ = __webpack_require__("./resources/assets/admins/js/stores/mutation-types.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__ = __webpack_require__("./resources/assets/admins/js/helpers/jwt.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__homes_js_stores_mutation_types__ = __webpack_require__("./resources/assets/homes/js/stores/mutation-types.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var _mutations;
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -116267,9 +116264,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 	state: {
 		authenticate: false
 	},
-	mutations: _defineProperty({}, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */], function (state) {
+	mutations: (_mutations = {}, _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["a" /* AUTHENTICATE */], function (state) {
 		state.authenticate = true;
-	}),
+	}), _defineProperty(_mutations, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */], function (state) {
+		state.authenticate = false;
+	}), _mutations),
 	getters: {
 		authenticate: function authenticate(state) {
 			return state.authenticate;
@@ -116290,19 +116289,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		unauthenticate: function unauthenticate(_ref2) {
 			var commit = _ref2.commit;
 
-			return window.axios.post('authorizations/current').then(function (response) {
+			return window.axios.delete('authorizations/current').then(function (response) {
 				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeToken();
 				__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].removeTokenType();
 				window.axios.defaults.headers.common['Authorization'] = false;
-				commit(__WEBPACK_IMPORTED_MODULE_2__homes_js_stores_mutation_types__["b" /* UNAUTHENTICATE */]);
+				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* UNAUTHENTICATE */]);
 			});
 		},
 		refreshToken: function refreshToken(_ref3, token) {
 			var commit = _ref3.commit;
 
 			// JWT.setToken(token);
-			console.log(token);
+			// console.log(token);
 			window.axios.defaults.headers.common['Authorization'] = token;
+		},
+		resetPasswordAuthenticate: function resetPasswordAuthenticate(_ref4, user) {
+			var commit = _ref4.commit;
+
+			window.axios.defaults.headers.common['Authorization'] = user.meta.token_type + ' ' + user.meta.access_token;
 		}
 	}
 });
@@ -116323,7 +116327,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 		role: '',
 		username: ''
 	},
-	mutations: _defineProperty({}, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* USER */], function (state, user) {
+	mutations: _defineProperty({}, __WEBPACK_IMPORTED_MODULE_0__mutation_types__["c" /* USER */], function (state, user) {
 		state.role = user.role;
 		state.username = user.username;
 	}),
@@ -116340,7 +116344,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 			var commit = _ref.commit;
 
 			return axios.get('user').then(function (response) {
-				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["b" /* USER */], response.data);
+				commit(__WEBPACK_IMPORTED_MODULE_0__mutation_types__["c" /* USER */], response.data);
 			});
 		}
 	}
@@ -116352,16 +116356,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AUTHENTICATE; });
 /* unused harmony export SETAUTHUSER */
 /* unused harmony export CODETIMECOUNTDOWN */
 /* unused harmony export SETCODETIMECOUNTDOWN */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UNAUTHENTICATE; });
 var USER = 'USER';
 var AUTHENTICATE = 'AUTHENTICATE';
 var SETAUTHUSER = 'SETAUTHUSER';
 var CODETIMECOUNTDOWN = 'CODETIMECOUNTDOWN';
 var SETCODETIMECOUNTDOWN = 'SETCODETIMECOUNTDOWN';
+var UNAUTHENTICATE = 'UNAUTHENTICATE';
 
 /***/ }),
 

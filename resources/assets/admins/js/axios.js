@@ -17,10 +17,5 @@ if (JWT.getToken()) {
 window.axios.interceptors.response.use((response) => {
 	return response;
 },(error) => {
-	switch (error.response.status) {
-		case 401:
-			return store.dispatch('unauthenticate');
-			break;
-	}
 	return Promise.reject(error)
 });
