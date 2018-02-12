@@ -22,7 +22,6 @@ export default {
 		authenticate({commit},credentials) {
 			return window.axios.post('/authorizations',credentials).then(response => {
 				JWT.setToken(response.data.token_type + ' ' + response.data.access_token);
-				// JWT.setTokenType(response.data.token_type);
 				window.axios.defaults.headers.common['Authorization'] = JWT.getToken();
 				commit(AUTHENTICATE);
 			});
@@ -30,7 +29,6 @@ export default {
 		unauthenticate({commit}) {
 			return window.axios.delete('authorizations/current').then(response => {
 				JWT.removeToken();
-				// JWT.removeTokenType();
 				window.axios.defaults.headers.common['Authorization'] = '';
 				commit(UNAUTHENTICATE);
 			});
@@ -38,6 +36,10 @@ export default {
 		refreshToken(token) {
 			JWT.setToken(token);
 			window.axios.defaults.headers.common['Authorization'] = JWT.getToken();
+		},
+		resetPasswordAuthenticate({commit},user){
+			JWT.setToken(user.meta.token_type + ' ' + user.meta.access_token);
+			window.axios.defaults.headers.common['Authorization'] = user.meta.token_type + ' ' + user.meta.access_token;
 		}
 	}
 }

@@ -36,11 +36,10 @@ export default {
 			});
 		},
 		refreshToken({commit},token) {
-			// JWT.setToken(token);
-			// console.log(token);
 			window.axios.defaults.headers.common['Authorization'] = token;
 		},
 		resetPasswordAuthenticate({commit},user){
+			JWT.setToken(user.meta.token_type + ' ' + user.meta.access_token);
 			window.axios.defaults.headers.common['Authorization'] = user.meta.token_type + ' ' + user.meta.access_token;
 		}
 	}

@@ -83,9 +83,6 @@
 				verification_code: ''
 			}
 		},
-		created() {
-			this.username = this.$store.getters.username;
-		},
 		methods: {
 			onSubmit: function () {
 				this.$validator.validateAll().then(result => {
