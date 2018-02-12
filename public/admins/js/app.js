@@ -3599,8 +3599,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				username: ''
 			},
 			parent_id: 0,
-			agent: { 'label': '输入姓名手机或账号搜索代理', 'value': 0 },
-			agents: [{ 'label': '输入姓名手机或账号搜索代理', 'value': 0 }],
+			agent: { 'label': '输入账号搜索代理的客户', 'value': 0 },
+			agents: [{ 'label': '输入账号搜索代理的客户', 'value': 0 }],
 			client: {},
 			clients: {},
 			agents_index: 0
@@ -3652,9 +3652,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		agentSearch: function agentSearch(search) {
 			var _this2 = this;
 
-			axios.get('/es/agents', {
+			axios.get('agents', {
 				params: {
-					keyword: search
+					username: search
 				}
 			}).then(function (response) {
 				_this2.agents = response.data.data;
@@ -86539,7 +86539,7 @@ var render = function() {
               _c("small", { staticClass: "form-text text-muted" }, [
                 _vm._v(
                   "\n\t\t\t\t\t\t" +
-                    _vm._s(_vm.errors.first("form-text text-muted")) +
+                    _vm._s(_vm.errors.first("verification_code")) +
                     "\n\t\t\t\t\t"
                 )
               ])
@@ -113374,12 +113374,6 @@ if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken()) {
 	window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 	__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].commit(__WEBPACK_IMPORTED_MODULE_3__stores_mutation_types__["a" /* AUTHENTICATE */]);
 }
-
-window.axios.interceptors.response.use(function (response) {
-	return response;
-}, function (error) {
-	return Promise.reject(error);
-});
 
 /***/ }),
 

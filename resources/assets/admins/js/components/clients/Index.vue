@@ -110,9 +110,9 @@
 					username: '',
 				},
 				parent_id: 0,
-				agent: {'label':'输入姓名手机或账号搜索代理','value':0},
+				agent: {'label':'输入账号搜索代理的客户','value':0},
 				agents: [
-					{'label':'输入姓名手机或账号搜索代理','value':0}
+					{'label':'输入账号搜索代理的客户','value':0}
 				],
 				client: {},
 				clients: {},
@@ -160,9 +160,9 @@
 				this.getClients();
 			},
 			agentSearch:function (search) {
-				axios.get('/es/agents',{
+				axios.get('agents',{
 					params:{
-						keyword:search
+						username:search
 					}
 				}).then(response => {
 					this.agents = response.data.data;

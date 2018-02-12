@@ -67107,7 +67107,7 @@ var render = function() {
               _c("small", { staticClass: "form-text text-muted" }, [
                 _vm._v(
                   "\n\t\t\t\t\t\t" +
-                    _vm._s(_vm.errors.first("form-text text-muted")) +
+                    _vm._s(_vm.errors.first("verification_code")) +
                     "\n\t\t\t\t\t"
                 )
               ])
@@ -84692,17 +84692,6 @@ if (__WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken()) {
 	window.axios.defaults.headers.common['Authorization'] = __WEBPACK_IMPORTED_MODULE_1__helpers_jwt__["a" /* default */].getToken();
 	__WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].commit(__WEBPACK_IMPORTED_MODULE_3__stores_mutation_types__["a" /* AUTHENTICATE */]);
 }
-
-window.axios.interceptors.response.use(function (response) {
-	return response;
-}, function (error) {
-	switch (error.response.status) {
-		case 401:
-			return __WEBPACK_IMPORTED_MODULE_2__stores_index__["a" /* default */].dispatch('unauthenticate');
-			break;
-	}
-	return Promise.reject(error);
-});
 
 /***/ }),
 

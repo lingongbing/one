@@ -38,7 +38,7 @@
 							<span v-else>发送验证码</span>
 						</button>
 						<small class="form-text text-muted">
-							{{errors.first('form-text text-muted') }}
+							{{errors.first('verification_code') }}
 						</small>
 					</div>
 					<button type="button" class="btn btn-primary" @click="storeCaptcha()">获取验证码</button>
