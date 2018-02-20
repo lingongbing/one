@@ -68492,40 +68492,46 @@ var render = function() {
                 })
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "card" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "card-body",
-                    staticStyle: { "padding-top": "5px" }
-                  },
-                  [
-                    _c("span", [_vm._v("商品名称：" + _vm._s(_vm.good.name))]),
-                    _vm._v(" "),
-                    _c("hr", { staticStyle: { margin: "0" } }),
-                    _vm._v("\n\t\t\t\t兑换积分："),
-                    _c("span", { staticStyle: { color: "red" } }, [
-                      _vm._v(_vm._s(_vm.good.integral))
-                    ]),
-                    _vm._v(" 市场参考价："),
-                    _c("span", { staticStyle: { color: "red" } }, [
-                      _vm._v(_vm._s(_vm.good.reference_price))
-                    ]),
-                    _vm._v(" "),
-                    _c("hr", { staticStyle: { margin: "0" } }),
-                    _vm._v("\n\t\t\t\t商品描述："),
-                    _c("span", { staticStyle: { color: "#666666" } }, [
-                      _vm._v(_vm._s(_vm.good.description))
-                    ]),
-                    _vm._v(" "),
-                    _c("hr", { staticStyle: { margin: "0" } }),
-                    _vm._v("\n\t\t\t\t商品详情：\n\t\t\t\t"),
-                    _c("div", {
-                      domProps: { innerHTML: _vm._s(_vm.good.introduction) }
-                    })
-                  ]
-                )
-              ]),
+              _c(
+                "div",
+                { staticClass: "card", staticStyle: { width: "100%" } },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "card-body",
+                      staticStyle: { "padding-top": "5px" }
+                    },
+                    [
+                      _c("span", [
+                        _vm._v("商品名称：" + _vm._s(_vm.good.name))
+                      ]),
+                      _vm._v(" "),
+                      _c("hr", { staticStyle: { margin: "0" } }),
+                      _vm._v("\n\t\t\t\t兑换积分："),
+                      _c("span", { staticStyle: { color: "red" } }, [
+                        _vm._v(_vm._s(_vm.good.integral))
+                      ]),
+                      _vm._v(" 市场参考价："),
+                      _c("span", { staticStyle: { color: "red" } }, [
+                        _vm._v(_vm._s(_vm.good.reference_price))
+                      ]),
+                      _vm._v(" "),
+                      _c("hr", { staticStyle: { margin: "0" } }),
+                      _vm._v("\n\t\t\t\t商品描述："),
+                      _c("span", { staticStyle: { color: "#666666" } }, [
+                        _vm._v(_vm._s(_vm.good.description))
+                      ]),
+                      _vm._v(" "),
+                      _c("hr", { staticStyle: { margin: "0" } }),
+                      _vm._v("\n\t\t\t\t商品详情：\n\t\t\t\t"),
+                      _c("div", {
+                        domProps: { innerHTML: _vm._s(_vm.good.introduction) }
+                      })
+                    ]
+                  )
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "fixed" }, [
                 _c(

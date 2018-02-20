@@ -25,7 +25,7 @@
 					<img :src="image.image">
 				</mt-swipe-item>
 			</mt-swipe>
-			<div class="card">
+			<div class="card" style="width: 100%;">
 				<div class="card-body" style="padding-top: 5px;">
 					<span>商品名称：{{ good.name }}</span>
 					<hr style="margin: 0;">
