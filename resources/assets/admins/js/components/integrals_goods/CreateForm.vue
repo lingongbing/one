@@ -22,6 +22,23 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-12">
+				<input type="text" class="form-control" v-model="reference_price" name="reference_price"
+				       placeholder="市场参考价"
+				       v-validate data-vv-rules="required|numeric|max:10" data-vv-as="市场参考价">
+				<span class="help-block"
+				      v-show="errors.has('reference_price')">{{ errors.first('reference_price') }}</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-12">
+				<textarea v-model="description" class="form-control" name="description" v-validate data-vv-rules="required"
+				          data-vv-as="描述" placeholder="描述"></textarea>
+				<span class="help-block"
+				      v-show="errors.has('description')">{{ errors.first('description') }}</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-12">
 				<textarea id="editor" placeholder="商品简介"></textarea>
 			</div>
 		</div>
@@ -36,14 +53,17 @@
 <script>
 	import $ from 'jquery'
 	import Simditor from 'simditor'
+
 	export default {
 		data() {
 			return {
-				name:'',
+				name: '',
 				editor: {},
 				message: false,
 				integral: '',
-				introduction: ''
+				description: '',
+				introduction: '',
+				reference_price: '',
 			}
 		},
 		mounted() {
@@ -77,18 +97,20 @@
 			});
 		},
 		methods: {
-			onSubmit:function () {
+			onSubmit: function () {
 				this.$validator.validateAll().then(result => {
 					if (result) {
-						window.axios.post('integral-goods',{
-							name:this.name,
-							integral:this.integral,
-							introduction:this.editor.getValue()
+						window.axios.post('integral-goods', {
+							name: this.name,
+							integral: this.integral,
+							integral: this.integral,
+							description: this.description,
+							introduction: this.editor.getValue(),
+							reference_price: this.reference_price
 						}).then(response => {
 							this.message = this.name + '添加成功';
 						}).catch(error => {
-							if (error.response.data.status_code === 422)
-							{
+							if (error.response.data.status_code === 422) {
 								this.message = error.response.data.errors[0][0];
 							} else {
 								this.message = error.response.data.message;

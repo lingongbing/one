@@ -2439,6 +2439,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2498,11 +2509,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
 			user: {},
+			order: {
+				good: {
+					name: ''
+				},
+				number: '',
+				integral: '',
+				consignee: '',
+				phone: '',
+				province: '',
+				city: '',
+				area: '',
+				address: '',
+				state: '',
+				created_at: '',
+				updated_at: '',
+				courier_order_no: ''
+			},
+			express_status: {
+				result: {
+					list: {}
+				}
+			},
+			show: false,
+			lists: true,
+			integral_orders: {},
 			integral_records: {},
 			selected: 'integral_query'
 		};
@@ -2518,6 +2577,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 					this.$router.push({ name: 'integrals-query' });
 					break;
 			}
+		},
+		order: function order() {
+			if (this.order.courier_order_no) {
+				this.queryCourier();
+			}
 		}
 	},
 	created: function created() {
@@ -2530,6 +2594,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		window.axios.get('user').then(function (response) {
 			_this.user = response.data;
 		});
+
+		window.axios.get('integral-orders').then(function (response) {
+			_this.integral_orders = response.data.data;
+		});
+	},
+
+	methods: {
+		showOrder: function showOrder(index) {
+			this.order = this.integral_orders[index];
+		},
+		queryCourier: function queryCourier() {
+			var _this2 = this;
+
+			window.axios.get('couriers/' + this.order.courier_order_no).then(function (response) {
+				_this2.express_status = response.data;
+			});
+		}
 	}
 });
 
@@ -7797,7 +7878,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -7842,7 +7923,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.mt-navbar[data-v-53838c9d] {\n\tmargin-bottom: 10px;\n}\n.row[data-v-53838c9d] {\n\tmargin-right: 0;\n\tmargin-left: 0;\n}\n.card-body[data-v-53838c9d] {\n\tpadding: 1.25rem 0 0 0;\n}\n.card[data-v-53838c9d] {\n\tmargin-bottom: 10px;\n}\n.mt-swipe[data-v-53838c9d] {\n\twidth: 100%;\n\theight: 200px;\n}\n.fixed[data-v-53838c9d] {\n\tposition: fixed;\n\tbottom: 55px;\n\tbackground-color: white;\n}\n", ""]);
+exports.push([module.i, "\n.mt-navbar[data-v-53838c9d] {\n\tmargin-bottom: 10px;\n}\n.row[data-v-53838c9d] {\n\tmargin-right: 0;\n\tmargin-left: 0;\n}\n.card-body[data-v-53838c9d] {\n\tpadding: 1.25rem 0 0 0;\n}\n.card[data-v-53838c9d] {\n\tmargin-bottom: 10px;\n}\n.mt-swipe[data-v-53838c9d] {\n\twidth: 100%;\n\theight: 200px;\n}\n.fixed[data-v-53838c9d] {\n\twidth: 100%;\n\tposition: fixed;\n\tbottom: 55px;\n\tbackground-color: white;\n}\n", ""]);
 
 // exports
 
@@ -67962,27 +68043,167 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.lists,
+              expression: "lists"
+            }
+          ]
+        },
         [
           _c("mt-cell", {
             attrs: { title: "剩余积分:", value: _vm.user.integral }
           }),
           _vm._v(" "),
-          _vm._l(_vm.integral_records, function(item, index) {
-            return _c("mt-cell", {
-              key: index,
-              attrs: {
-                title: "积分记录:",
-                value:
-                  "" +
-                  item.event +
-                  (item.action == "increase" ? "增加" : "减少") +
-                  item.integral +
-                  "积分"
-              }
+          _c(
+            "ul",
+            { staticClass: "list-group" },
+            _vm._l(_vm.integral_orders, function(item, index) {
+              return _c(
+                "li",
+                {
+                  staticClass: "list-group-item",
+                  on: {
+                    click: function($event) {
+                      _vm.showOrder(index),
+                        (_vm.lists = false),
+                        (_vm.show = true)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(item.good.name))]
+              )
             })
-          })
+          )
         ],
-        2
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.show,
+              expression: "show"
+            }
+          ],
+          staticStyle: { "margin-top": "10px" }
+        },
+        [
+          _c("div", { staticClass: "card" }, [
+            _c("div", { staticClass: "card-body" }, [
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("商品名称："),
+                _c("span", [_vm._v(_vm._s(_vm.order.good.name))])
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("兑换数量："),
+                _c("span", [_vm._v(_vm._s(_vm.order.number))])
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("兑换积分："),
+                _c("span", [_vm._v(_vm._s(_vm.order.integral))])
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("收货人： "),
+                _c("span", [_vm._v(_vm._s(_vm.order.consignee))]),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("手机号："),
+                _c("span", [_vm._v(_vm._s(_vm.order.phone))]),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("收货地址："),
+                _c("span", [
+                  _vm._v(
+                    _vm._s(_vm.order.province) +
+                      "," +
+                      _vm._s(_vm.order.city) +
+                      "," +
+                      _vm._s(_vm.order.area) +
+                      "," +
+                      _vm._s(_vm.order.address)
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("订单状态："),
+                _c("span", [
+                  _vm._v(_vm._s(_vm.order.state == 1 ? "未发货" : "已发货"))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("兑换时间："),
+                _c("span", [_vm._v(_vm._s(_vm.order.created_at))])
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("更新时间："),
+                _c("span", [_vm._v(_vm._s(_vm.order.updated_at))])
+              ]),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.order.courier_order_no,
+                      expression: "order.courier_order_no"
+                    }
+                  ],
+                  staticClass: "card-text"
+                },
+                [
+                  _vm._v("快递单号："),
+                  _c("span", [_vm._v(_vm._s(_vm.order.courier_order_no))])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "ul",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.order.courier_order_no,
+                      expression: "order.courier_order_no"
+                    }
+                  ],
+                  staticClass: "list-group"
+                },
+                _vm._l(_vm.express_status.result.list, function(item) {
+                  return _c("li", { staticClass: "list-group-item" }, [
+                    _vm._v(
+                      "\n\t\t\t\t\t\t" +
+                        _vm._s(item.time) +
+                        " " +
+                        _vm._s(item.status) +
+                        "\n\t\t\t\t\t"
+                    )
+                  ])
+                })
+              )
+            ])
+          ])
+        ]
       )
     ],
     1
@@ -68220,19 +68441,30 @@ var render = function() {
                     [
                       _c("img", {
                         staticClass: "card-img-top",
+                        staticStyle: { "margin-top": "10px" },
                         attrs: { src: item.images[0].image }
                       }),
                       _vm._v(" "),
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("h6", { staticClass: "card-title" }, [
-                          _vm._v(_vm._s(item.name))
-                        ])
-                      ]),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card-body",
+                          staticStyle: { padding: "0" }
+                        },
+                        [_c("span", [_vm._v(_vm._s(item.name))])]
+                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "text-muted" }, [
                         _vm._v("\n\t\t\t\t兑换积分："),
                         _c("span", { staticStyle: { color: "red" } }, [
                           _vm._v(_vm._s(item.integral))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "text-muted" }, [
+                        _vm._v("\n\t\t\t\t市场参考价："),
+                        _c("span", { staticStyle: { color: "red" } }, [
+                          _vm._v(_vm._s(item.reference_price))
                         ])
                       ])
                     ]
@@ -68261,52 +68493,69 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("div", { staticClass: "card" }, [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(_vm.good.name))
-                  ]),
-                  _vm._v(" "),
-                  _c("hr"),
-                  _vm._v("\n\t\t\t\t兑换积分："),
-                  _c("span", { staticStyle: { color: "red" } }, [
-                    _vm._v(_vm._s(_vm.good.integral))
-                  ]),
-                  _vm._v(" "),
-                  _c("hr"),
-                  _vm._v(" "),
-                  _c("div", {
-                    domProps: { innerHTML: _vm._s(_vm.good.introduction) }
-                  })
-                ])
+                _c(
+                  "div",
+                  {
+                    staticClass: "card-body",
+                    staticStyle: { "padding-top": "5px" }
+                  },
+                  [
+                    _c("span", [_vm._v("商品名称：" + _vm._s(_vm.good.name))]),
+                    _vm._v(" "),
+                    _c("hr", { staticStyle: { margin: "0" } }),
+                    _vm._v("\n\t\t\t\t兑换积分："),
+                    _c("span", { staticStyle: { color: "red" } }, [
+                      _vm._v(_vm._s(_vm.good.integral))
+                    ]),
+                    _vm._v(" 市场参考价："),
+                    _c("span", { staticStyle: { color: "red" } }, [
+                      _vm._v(_vm._s(_vm.good.reference_price))
+                    ]),
+                    _vm._v(" "),
+                    _c("hr", { staticStyle: { margin: "0" } }),
+                    _vm._v("\n\t\t\t\t商品描述："),
+                    _c("span", { staticStyle: { color: "#666666" } }, [
+                      _vm._v(_vm._s(_vm.good.description))
+                    ]),
+                    _vm._v(" "),
+                    _c("hr", { staticStyle: { margin: "0" } }),
+                    _vm._v("\n\t\t\t\t商品详情：\n\t\t\t\t"),
+                    _c("div", {
+                      domProps: { innerHTML: _vm._s(_vm.good.introduction) }
+                    })
+                  ]
+                )
               ]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default fixed",
-                  staticStyle: { left: "0" },
-                  on: {
-                    click: function($event) {
-                      ;(_vm.items = true), (_vm.show = false), (_vm.good = {})
+              _c("div", { staticClass: "fixed" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-default",
+                    staticStyle: { width: "50%" },
+                    on: {
+                      click: function($event) {
+                        ;(_vm.items = true), (_vm.show = false), (_vm.good = {})
+                      }
                     }
-                  }
-                },
-                [_vm._v("返回")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-warning fixed",
-                  staticStyle: { right: "0" },
-                  on: {
-                    click: function($event) {
-                      ;(_vm.show = false), (_vm.CreateOrder = true)
+                  },
+                  [_vm._v("返回\n\t\t\t")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-warning",
+                    staticStyle: { float: "right", width: "50%" },
+                    on: {
+                      click: function($event) {
+                        ;(_vm.show = false), (_vm.CreateOrder = true)
+                      }
                     }
-                  }
-                },
-                [_vm._v("我要兑换")]
-              )
+                  },
+                  [_vm._v("我要兑换\n\t\t\t")]
+                )
+              ])
             ],
             1
           )

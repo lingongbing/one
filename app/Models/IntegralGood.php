@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class IntegralGood extends Model
 {
 	protected $fillable = [
-		'name','integral','introduction'
+		'name','integral','description','introduction','reference_price'
 	];
 
 	public function image()

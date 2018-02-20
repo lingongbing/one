@@ -6,13 +6,16 @@
 		</mt-navbar>
 		<div class="row" v-if="items">
 			<div class="card col-6" v-for="(item,index) in goods" v-if="item.images.length"
-				@click="items = false,show = true,good = item">
-				<img class="card-img-top" :src="item.images[0].image">
-				<div class="card-body">
-					<h6 class="card-title">{{ item.name }}</h6>
+			     @click="items = false,show = true,good = item">
+				<img class="card-img-top" :src="item.images[0].image" style="margin-top: 10px;">
+				<div class="card-body" style="padding: 0;">
+					<span>{{ item.name }}</span>
 				</div>
 				<div class="text-muted">
 					兑换积分：<span style="color: red;">{{ item.integral }}</span>
+				</div>
+				<div class="text-muted">
+					市场参考价：<span style="color: red;">{{ item.reference_price }}</span>
 				</div>
 			</div>
 		</div>
@@ -23,16 +26,23 @@
 				</mt-swipe-item>
 			</mt-swipe>
 			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title">{{ good.name }}</h5>
-					<hr>
-					兑换积分：<span style="color: red;">{{ good.integral }}</span>
-					<hr>
+				<div class="card-body" style="padding-top: 5px;">
+					<span>商品名称：{{ good.name }}</span>
+					<hr style="margin: 0;">
+					兑换积分：<span style="color: red;">{{ good.integral }}</span> 市场参考价：<span style="color: red;">{{ good.reference_price }}</span>
+					<hr style="margin: 0;">
+					商品描述：<span style="color: #666666;">{{ good.description }}</span>
+					<hr style="margin: 0;">
+					商品详情：
 					<div v-html="good.introduction"></div>
 				</div>
 			</div>
-			<button class="btn btn-default fixed" @click="items = true,show = false,good = {}" style="left: 0;">返回</button>
-			<button class="btn btn-warning fixed" style="right: 0;" @click="show = false,CreateOrder = true">我要兑换</button>
+			<div class="fixed">
+				<button class="btn btn-default" @click="items = true,show = false,good = {}" style="width: 50%;">返回
+				</button>
+				<button class="btn btn-warning" style="float: right;width: 50%;" @click="show = false,CreateOrder = true">我要兑换
+				</button>
+			</div>
 		</div>
 		<div class="row" v-if="CreateOrder">
 			<create-order :good="good"></create-order>
@@ -42,6 +52,7 @@
 
 <script>
 	import CreateOrder from './CreateOrder'
+
 	export default {
 		components: {
 			CreateOrder
@@ -81,21 +92,27 @@
 	.mt-navbar {
 		margin-bottom: 10px;
 	}
+	
 	.row {
 		margin-right: 0;
 		margin-left: 0;
 	}
+	
 	.card-body {
 		padding: 1.25rem 0 0 0;
 	}
+	
 	.card {
 		margin-bottom: 10px;
 	}
+	
 	.mt-swipe {
 		width: 100%;
 		height: 200px;
 	}
+	
 	.fixed {
+		width: 100%;
 		position: fixed;
 		bottom: 55px;
 		background-color: white;

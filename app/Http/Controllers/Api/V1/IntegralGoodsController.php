@@ -11,7 +11,7 @@ class IntegralGoodsController extends Controller
 {
 	public function index()
 	{
-		return $this->response->paginator(IntegralGood::with('image')->paginate(10),new IntegralGoodTransformer());
+		return $this->response->collection(IntegralGood::with('image')->get(),new IntegralGoodTransformer());
     }
 
 	public function store(IntegralGoodRequest $request,IntegralGood $good)

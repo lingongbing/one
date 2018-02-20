@@ -14,7 +14,9 @@ class IntegralGoodTransformer extends TransformerAbstract
 			'name' => $good->name,
 			'images' => $good->image,
 			'integral' => $good->integral,
-			'introduction' => $good->introduction
+			'description' => $good->description,
+			'introduction' => $good->introduction,
+			'reference_price' => $good->reference_price
 		];
 	}
 }
