@@ -5568,22 +5568,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -5598,14 +5582,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			edit: false,
 			index: true,
 			image: false,
-			create: false,
-			pagination: {
-				links: {
-					next: false,
-					previous: false
-				},
-				current_page: 1
-			}
+			create: false
 		};
 	},
 	created: function created() {
@@ -5624,9 +5601,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				}
 			}).then(function (response) {
 				_this.goods = response.data.data;
-				if (response.data.meta.length) {
-					_this.pagination = response.data.meta.pagination;
-				}
 			});
 		},
 		deleteGood: function deleteGood(good) {
@@ -6473,7 +6447,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				logo_url: this.logo_url,
 				copyright: this.copyright
 			}).then(function (response) {
-				_this3.setData(response.data.data);
+				_this3.setData(response.data);
 				_this3.alert_class = 'alert-success';
 				_this3.alert_message = response.data.message;
 			}).catch(function (error) {
@@ -10841,7 +10815,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -87852,65 +87826,7 @@ var render = function() {
                     ])
                   ])
                 })
-              ),
-              _vm._v(" "),
-              _c("tfoot", [
-                _c("tr", { staticClass: "text-center" }, [
-                  _c("td", { attrs: { colspan: "10" } }, [
-                    _c("nav", { attrs: { "aria-label": "..." } }, [
-                      _c("ul", { staticClass: "pager" }, [
-                        _c(
-                          "li",
-                          {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: _vm.pagination.links.previous,
-                                expression: "pagination.links.previous"
-                              }
-                            ],
-                            on: {
-                              click: function($event) {
-                                _vm.getGoods(--_vm.pagination.current_page)
-                              }
-                            }
-                          },
-                          [
-                            _c("a", { attrs: { href: "javascript:;" } }, [
-                              _vm._v("Previous")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: _vm.pagination.links.next,
-                                expression: "pagination.links.next"
-                              }
-                            ],
-                            on: {
-                              click: function($event) {
-                                _vm.getGoods(++_vm.pagination.current_page)
-                              }
-                            }
-                          },
-                          [
-                            _c("a", { attrs: { href: "javascript:;" } }, [
-                              _vm._v("Next")
-                            ])
-                          ]
-                        )
-                      ])
-                    ])
-                  ])
-                ])
-              ])
+              )
             ])
           ])
         : _vm._e()
@@ -88388,7 +88304,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
+  return _c("div", { staticClass: "card", staticStyle: { width: "100%" } }, [
     _c("div", { staticClass: "card-body" }, [
       _c("h5", { staticClass: "card-title" }, [_vm._v("创建订单")]),
       _vm._v(" "),

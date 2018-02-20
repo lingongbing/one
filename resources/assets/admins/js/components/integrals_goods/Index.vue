@@ -38,22 +38,6 @@
 						</td>
 					</tr>
 					</tbody>
-					<tfoot>
-					<tr class="text-center">
-						<td colspan="10">
-							<nav aria-label="...">
-								<ul class="pager">
-									<li v-show="pagination.links.previous" @click="getGoods(--pagination.current_page)">
-										<a href="javascript:;">Previous</a>
-									</li>
-									<li v-show="pagination.links.next" @click="getGoods(++pagination.current_page)">
-										<a href="javascript:;">Next</a>
-									</li>
-								</ul>
-							</nav>
-						</td>
-					</tr>
-					</tfoot>
 				</table>
 			</div>
 		</div>
@@ -75,13 +59,6 @@
 				index: true,
 				image: false,
 				create: false,
-				pagination: {
-					links: {
-						next: false,
-						previous: false
-					},
-					current_page: 1
-				},
 			}
 		},
 		created() {
@@ -95,9 +72,6 @@
 					}
 				}).then(response => {
 					this.goods = response.data.data;
-					if (response.data.meta.length) {
-						this.pagination = response.data.meta.pagination;
-					}
 				})
 			},
 			deleteGood: function (good) {

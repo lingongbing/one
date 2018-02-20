@@ -71,7 +71,7 @@
 					logo_url: this.logo_url,
 					copyright: this.copyright
 				}).then(response => {
-					this.setData(response.data.data);
+					this.setData(response.data);
 					this.alert_class = 'alert-success';
 					this.alert_message = response.data.message;
 				}).catch(error => {

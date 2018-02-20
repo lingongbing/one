@@ -1,5 +1,5 @@
 <template>
-	<div class="card">
+	<div class="card" style="width: 100%;">
 		<div class="card-body">
 			<h5 class="card-title">创建订单</h5>
 			<h6 class="card-subtitle mb-2 text-muted">{{ good.name }}</h6>
