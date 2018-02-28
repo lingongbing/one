@@ -12,8 +12,7 @@ class IntegralGoodImagesController extends Controller
 {
 	public function index($integral_good)
 	{
-		$integral_good = IntegralGood::find($integral_good);
-		return $this->response->collection($integral_good->image,new IntegralGoodImageTransformer());
+		return $this->response->collection(IntegralGood::find($integral_good)->image,new IntegralGoodImageTransformer());
     }
 
 	public function update(IntegralGoodImageRequest $request,$integral_good,$image)
