@@ -5,11 +5,11 @@
 			<mt-tab-item id="has_been_completed">已经完成</mt-tab-item>
 		</mt-navbar>
 		<mt-loadmore v-if="orders" :top-method="getOrders" :bottom-method="getOrders" :bottom-all-loaded="allLoaded">
-			<div class="table table-dark table-responsive-sm">
+			<div class="table table-responsive-sm">
 				<thead>
 					<tr>
-						<th scope="col">商品名称</th>
-						<th scope="col">创建时间</th>
+						<th scope="col" style="width: 70%;">商品名称</th>
+						<th scope="col" style="width: 30%;">创建时间</th>
 					</tr>
 				</thead>
 				<tbody>

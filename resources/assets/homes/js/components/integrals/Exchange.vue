@@ -6,7 +6,7 @@
 		</mt-navbar>
 		<div class="row" v-if="items">
 			<div class="card col-6" v-for="(item,index) in goods" v-if="item.images.length"
-			     @click="items = false,show = true,good = item">
+			     @click="items = false,show = true,good = item" style="padding: 0;">
 				<img class="card-img-top" :src="item.images[0].image" style="margin-top: 10px;">
 				<div class="card-body" style="padding: 0;">
 					<span>{{ item.name }}</span>

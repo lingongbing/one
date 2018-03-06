@@ -68318,55 +68318,61 @@ var render = function() {
               }
             },
             [
-              _c(
-                "div",
-                { staticClass: "table table-dark table-responsive-sm" },
-                [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", { attrs: { scope: "col" } }, [
-                        _vm._v("商品名称")
-                      ]),
+              _c("div", { staticClass: "table table-responsive-sm" }, [
+                _c("thead", [
+                  _c("tr", [
+                    _c(
+                      "th",
+                      {
+                        staticStyle: { width: "70%" },
+                        attrs: { scope: "col" }
+                      },
+                      [_vm._v("商品名称")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "th",
+                      {
+                        staticStyle: { width: "30%" },
+                        attrs: { scope: "col" }
+                      },
+                      [_vm._v("创建时间")]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.orders, function(order) {
+                    return _c("tr", [
+                      _c(
+                        "th",
+                        { attrs: { scope: "row" } },
+                        [
+                          _c(
+                            "router-link",
+                            {
+                              attrs: {
+                                to: {
+                                  name: "orders-show",
+                                  params: { order: order.id }
+                                },
+                                tag: "span"
+                              }
+                            },
+                            [_vm._v(_vm._s(order.goods_name))]
+                          )
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
-                      _c("th", { attrs: { scope: "col" } }, [
-                        _vm._v("创建时间")
+                      _c("th", { attrs: { scope: "row" } }, [
+                        _vm._v(_vm._s(order.created_at))
                       ])
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.orders, function(order) {
-                      return _c("tr", [
-                        _c(
-                          "th",
-                          { attrs: { scope: "row" } },
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                attrs: {
-                                  to: {
-                                    name: "orders-show",
-                                    params: { order: order.id }
-                                  },
-                                  tag: "span"
-                                }
-                              },
-                              [_vm._v(_vm._s(order.goods_name))]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("th", { attrs: { scope: "row" } }, [
-                          _vm._v(_vm._s(order.created_at))
-                        ])
-                      ])
-                    })
-                  )
-                ]
-              )
+                  })
+                )
+              ])
             ]
           )
         : _vm._e()
@@ -68430,6 +68436,7 @@ var render = function() {
                     "div",
                     {
                       staticClass: "card col-6",
+                      staticStyle: { padding: "0" },
                       on: {
                         click: function($event) {
                           ;(_vm.items = false),
