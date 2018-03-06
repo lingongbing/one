@@ -2648,6 +2648,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -7908,7 +7912,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -68324,7 +68328,16 @@ var render = function() {
                     _c(
                       "th",
                       {
-                        staticStyle: { width: "70%" },
+                        staticStyle: { width: "10%" },
+                        attrs: { scope: "col" }
+                      },
+                      [_vm._v("序号")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "th",
+                      {
+                        staticStyle: { width: "60%" },
                         attrs: { scope: "col" }
                       },
                       [_vm._v("商品名称")]
@@ -68343,10 +68356,16 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "tbody",
-                  _vm._l(_vm.orders, function(order) {
+                  _vm._l(_vm.orders, function(order, index) {
                     return _c("tr", [
+                      _c("td", { attrs: { scope: "row" } }, [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t" + _vm._s(index) + "\n\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
                       _c(
-                        "th",
+                        "td",
                         { attrs: { scope: "row" } },
                         [
                           _c(
@@ -68366,7 +68385,7 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c("th", { attrs: { scope: "row" } }, [
+                      _c("td", { attrs: { scope: "row" } }, [
                         _vm._v(_vm._s(order.created_at))
                       ])
                     ])
@@ -68436,7 +68455,6 @@ var render = function() {
                     "div",
                     {
                       staticClass: "card col-6",
-                      staticStyle: { padding: "0" },
                       on: {
                         click: function($event) {
                           ;(_vm.items = false),
@@ -68448,7 +68466,11 @@ var render = function() {
                     [
                       _c("img", {
                         staticClass: "card-img-top",
-                        staticStyle: { "margin-top": "10px" },
+                        staticStyle: {
+                          "margin-top": "10px",
+                          width: "150px",
+                          height: "150px"
+                        },
                         attrs: { src: item.images[0].image }
                       }),
                       _vm._v(" "),

@@ -65,18 +65,14 @@
 			this.getGoods();
 		},
 		methods: {
-			getGoods: function (page = null) {
-				window.axios.get('integral-goods', {
-					params: {
-						page: page
-					}
-				}).then(response => {
+			getGoods: function () {
+				window.axios.get('integral-goods').then(response => {
 					this.goods = response.data.data;
 				})
 			},
 			deleteGood: function (good) {
 				window.axios.delete('integral-goods/' + good).then(response => {
-					this.getGoods(this.pagination.current_page);
+					this.getGoods();
 				})
 			}
 		}

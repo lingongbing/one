@@ -8,16 +8,20 @@
 			<div class="table table-responsive-sm">
 				<thead>
 					<tr>
-						<th scope="col" style="width: 70%;">商品名称</th>
+						<th scope="col" style="width: 10%;">序号</th>
+						<th scope="col" style="width: 60%;">商品名称</th>
 						<th scope="col" style="width: 30%;">创建时间</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="order in orders">
-						<th scope="row">
+					<tr v-for="(order,index) in orders">
+						<td scope="row">
+							{{ index }}
+						</td>
+						<td scope="row">
 							<router-link :to="{ name: 'orders-show', params:{order:order.id} }" tag="span">{{ order.goods_name }}</router-link>
-						</th>
-						<th scope="row">{{ order.created_at }}</th>
+						</td>
+						<td scope="row">{{ order.created_at }}</td>
 					</tr>
 				</tbody>
 			</div>
