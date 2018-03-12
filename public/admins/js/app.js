@@ -91644,7 +91644,7 @@ var render = function() {
             staticClass: "col-md-8",
             class: { "col-md-12": !this.$store.getters.authenticate }
           },
-          [_c("router-view", { staticStyle: { height: "100vh" } })],
+          [_c("router-view")],
           1
         )
       ],
@@ -93073,9 +93073,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row style-3" }, [
-    _c("div", { staticClass: "col-md-3 col-md-push-7" }, [_c("login-form")], 1)
-  ])
+  return _c(
+    "div",
+    { staticClass: "row style-3", staticStyle: { height: "100vh" } },
+    [
+      _c(
+        "div",
+        { staticClass: "col-md-3 col-md-push-7" },
+        [_c("login-form")],
+        1
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
