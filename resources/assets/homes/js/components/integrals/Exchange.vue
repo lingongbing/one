@@ -1,13 +1,14 @@
 <template>
 	<div>
-		<mt-navbar v-model="selected" class="mt-navbar">
+		<mt-navbar v-model="selected" class="mt-navbar" v-if="!show">
 			<mt-tab-item id="integral_exchange">积分兑换</mt-tab-item>
 			<mt-tab-item id="integral_query">积分查询</mt-tab-item>
 		</mt-navbar>
 		<div class="row" v-if="items">
 			<div class="card col-6" v-for="(item,index) in goods" v-if="item.images.length"
 			     @click="items = false,show = true,good = item">
-				<img class="card-img-top" :src="item.images[0].image" style="margin-top: 10px;width: 150px;height: 150px;">
+				<img class="card-img-top" :src="item.images[0].image"
+				     style="margin-top: 10px;width: 150px;height: 150px;">
 				<div class="card-body" style="padding: 0;">
 					<span>{{ item.name }}</span>
 				</div>
@@ -25,22 +26,25 @@
 					<img :src="image.image">
 				</mt-swipe-item>
 			</mt-swipe>
-			<div class="card" style="width: 100%;">
-				<div class="card-body" style="padding-top: 5px;">
-					<span>商品名称：{{ good.name }}</span>
-					<hr style="margin: 0;">
-					兑换积分：<span style="color: red;">{{ good.integral }}</span> 市场参考价：<span style="color: red;">{{ good.reference_price }}</span>
-					<hr style="margin: 0;">
-					商品描述：<span style="color: #666666;">{{ good.description }}</span>
-					<hr style="margin: 0;">
-					商品详情：
-					<div v-html="good.introduction"></div>
+			<div class="col-12">
+				<div class="card" style="width: 100%;">
+					<div class="card-body" style="padding-top: 5px;">
+						<span>商品名称：{{ good.name }}</span>
+						<br>
+						兑换积分：<span style="color: red;">{{ good.integral }}</span> 市场参考价：<span style="color: red;">{{ good.reference_price }}</span>
+						<br>
+						商品描述：<span style="color: #666666;">{{ good.description }}</span>
+						<br>
+						商品详情：
+						<div v-html="good.introduction"></div>
+					</div>
 				</div>
 			</div>
 			<div class="fixed">
 				<button class="btn btn-default" @click="items = true,show = false,good = {}" style="width: 50%;">返回
 				</button>
-				<button class="btn btn-warning" style="float: right;width: 50%;" @click="show = false,CreateOrder = true">我要兑换
+				<button class="btn btn-warning" style="float: right;width: 50%;"
+				        @click="show = false,CreateOrder = true">我要兑换
 				</button>
 			</div>
 		</div>

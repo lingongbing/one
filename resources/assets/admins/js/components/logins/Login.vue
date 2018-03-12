@@ -12,14 +12,5 @@
 		components: {
 			LoginForm,
 		},
-		created:function () {
-
-		}
 	}
 </script>
-
-<style scoped>
-	.left-menu {
-		padding: 0;
-	}
-</style>

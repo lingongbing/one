@@ -6,7 +6,7 @@
 				<left-menu></left-menu>
 			</div>
 			<div class="col-md-8" :class="{'col-md-12': !this.$store.getters.authenticate}">
-				<router-view></router-view>
+				<router-view style="height: 100vh"></router-view>
 			</div>
 		</div>
 		<div class="text-center">
@@ -28,7 +28,9 @@
 			LeftMenu,HeaderMenu
 		},
 		mounted() {
-
+			window.axios.get('sites').then(response => {
+				this.copyright = response.data.copyright;
+			})
 		}
 	}
 </script>
