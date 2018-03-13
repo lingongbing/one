@@ -121,4 +121,7 @@
 		bottom: 55px;
 		background-color: white;
 	}
+	.card {
+		border-width: 0px;
+	}
 </style>
