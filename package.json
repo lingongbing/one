@@ -25,6 +25,7 @@
     "dependencies": {
         "@xkeshi/vue-countdown": "^0.5.0",
         "antd": "^3.2.0",
+        "bootstrap-datepicker": "^1.7.1",
         "mint-ui": "^2.2.13",
         "quill": "^1.3.5",
         "simditor": "^2.3.6",
