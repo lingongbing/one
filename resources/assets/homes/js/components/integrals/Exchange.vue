@@ -8,7 +8,7 @@
 			<div class="card col-6" v-for="(item,index) in goods" v-if="item.images.length"
 			     @click="items = false,show = true,good = item">
 				<img class="card-img-top" :src="item.images[0].image"
-				     style="margin-top: 10px;width: 150px;height: 150px;">
+				     style="margin-top: 10px;height: 150px;">
 				<div class="card-body" style="padding: 0;">
 					<span>{{ item.name }}</span>
 				</div>
