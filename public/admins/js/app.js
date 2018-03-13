@@ -7311,7 +7311,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -7323,6 +7322,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			message: '',
 			password: '',
 			counting: false,
+			can_submit: false,
 			captcha_key: '',
 			captcha_code: '',
 			captcha_image: '',
@@ -7362,6 +7362,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 						_this2.show_captcha = true;
 						_this2.captcha_key = response.data.captcha_key;
 						_this2.captcha_image = response.data.captcha_image_content;
+					}).catch(function (error) {
+						if (error.response.data.status_code === 422) {
+							_this2.message = error.response.data.errors.mobile[0];
+						} else {
+							_this2.message = error.response.data.message;
+						}
 					});
 				}
 			});
@@ -10811,7 +10817,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.container[data-v-0d5345f6] {\n\tmargin-top: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.container[data-v-0d5345f6] {\n\tmargin-top: 70px;\n}\n", ""]);
 
 // exports
 
@@ -10856,7 +10862,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.input-group[data-v-14c3e815] {\n\tmargin-bottom: 1rem;\n}\n.container[data-v-14c3e815] {\n\tmargin-top: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.input-group[data-v-14c3e815] {\n\tmargin-bottom: 1rem;\n}\n.container[data-v-14c3e815] {\n\tmargin-top: 70px;\n}\n", ""]);
 
 // exports
 
@@ -11276,7 +11282,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.container[data-v-a0585de2] {\n\tmargin-top: 50px;\n}\n", ""]);
+exports.push([module.i, "\n.container[data-v-a0585de2] {\n\tmargin-top: 70px;\n}\n", ""]);
 
 // exports
 
@@ -86702,7 +86708,7 @@ var render = function() {
               attrs: { type: "button" },
               on: {
                 click: function($event) {
-                  _vm.storeCaptcha()
+                  _vm.storeCaptcha(), (_vm.can_submit = true)
                 }
               }
             },
@@ -86712,6 +86718,14 @@ var render = function() {
           _c(
             "button",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.can_submit,
+                  expression: "can_submit"
+                }
+              ],
               staticClass: "btn btn-primary",
               attrs: { type: "button" },
               on: {

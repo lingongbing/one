@@ -161,6 +161,6 @@
 		margin-bottom: 1rem;
 	}
 	.container {
-		margin-top: 50px;
+		margin-top: 70px;
 	}
 </style>

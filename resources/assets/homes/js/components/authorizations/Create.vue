@@ -60,6 +60,6 @@
 
 <style scoped>
 	.container {
-		margin-top: 50px;
+		margin-top: 70px;
 	}
 </style>

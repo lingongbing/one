@@ -41,15 +41,14 @@
 							{{errors.first('verification_code') }}
 						</small>
 					</div>
-					<button type="button" class="btn btn-primary" @click="storeCaptcha()">获取验证码</button>
-					<button type="button" class="btn btn-primary" @click="onSubmit()">修改密码</button>
+					<button type="button" class="btn btn-primary" @click="storeCaptcha(),can_submit = true;">获取验证码</button>
+					<button type="button" class="btn btn-primary" @click="onSubmit()" v-show="can_submit">修改密码</button>
 				</form>
 			</div>
 			<div class="card-footer bg-transparent border-info">
 				<router-link :to="{ name : 'authorizations' }" tag="a">登陆</router-link>
 				<router-link :to="{ name : 'user-create' }" tag="a">注册账号</router-link>
 			</div>
-		
 		</div>
 	</div>
 </template>
@@ -66,6 +65,7 @@
 				message: '',
 				password: '',
 				counting: false,
+				can_submit: false,
 				captcha_key: '',
 				captcha_code: '',
 				captcha_image: '',
@@ -100,6 +100,13 @@
 							this.show_captcha = true;
 							this.captcha_key = response.data.captcha_key;
 							this.captcha_image = response.data.captcha_image_content;
+						}).catch(error => {
+							if (error.response.data.status_code === 422) {
+								this.message = error.response.data.errors.mobile[0];
+							}else {
+								this.message = error.response.data.message;
+							}
+							
 						})
 					}
 				});
@@ -132,6 +139,6 @@
 
 <style scoped>
 	.container {
-		margin-top: 50px;
+		margin-top: 70px;
 	}
 </style>
