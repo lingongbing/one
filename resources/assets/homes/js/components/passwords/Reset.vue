@@ -41,8 +41,7 @@
 							{{errors.first('verification_code') }}
 						</small>
 					</div>
-					<button type="button" class="btn btn-primary" @click="storeCaptcha(),can_submit = true;">获取验证码</button>
-					<button type="button" class="btn btn-primary" @click="onSubmit()" v-show="can_submit">修改密码</button>
+					<button type="button" class="btn btn-primary" @click="onSubmit()" v-show="can_submit" :style="style">修改密码</button>
 				</form>
 			</div>
 			<div class="card-footer bg-transparent border-info">
@@ -71,8 +70,27 @@
 				captcha_image: '',
 				show_captcha: false,
 				verification_key: '',
-				verification_code: ''
+				verification_code: '',
+				style: {
+					'background-color': 'red',
+					'border-color': 'red'
+				},
 			}
+		},
+		watch : {
+			mobile: function () {
+				this.$validator.validate('mobile', this.mobile).then(result => {
+					if (result) {
+						this.storeCaptcha();
+					}
+				});
+			}
+		},
+		created() {
+			window.axios.get('html-style').then(response => {
+				this.style['border-color'] = response.data['background-color'];
+				this.style['background-color'] = response.data['background-color'];
+			});
 		},
 		methods: {
 			onSubmit: function () {
@@ -97,6 +115,7 @@
 						window.axios.post('passwords/captcha', {
 							mobile: this.mobile
 						}).then(response => {
+							this.can_submit = true;
 							this.show_captcha = true;
 							this.captcha_key = response.data.captcha_key;
 							this.captcha_image = response.data.captcha_image_content;

@@ -19,7 +19,7 @@
 						<small id="passwordHelp" class="form-text text-muted">{{ errors.first('password') }}
 						</small>
 					</div>
-					<button type="submit" class="btn btn-primary btn-block">登陆</button>
+					<button type="submit" class="btn btn-primary btn-block" :style="style">登陆</button>
 				</form>
 			</div>
 			<div class="card-footer bg-transparent border-info">
@@ -34,10 +34,20 @@
 	export default {
 		data() {
 			return {
+				style: {
+					'background-color': 'red',
+					'border-color': 'red'
+				},
 				message: '',
 				username: '',
 				password: ''
 			}
+		},
+		created() {
+			window.axios.get('html-style').then(response => {
+				this.style['border-color'] = response.data['background-color'];
+				this.style['background-color'] = response.data['background-color'];
+			});
 		},
 		methods: {
 			onSubmit: function () {

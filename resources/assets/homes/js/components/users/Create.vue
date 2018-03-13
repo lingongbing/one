@@ -6,40 +6,39 @@
 				<h5 class="card-title" v-if="message">{{ message }}</h5>
 				<form class="needs-validation" novalidate v-on:submit.prevent="onSubmit()">
 					<div class="form-group">
-						<input type="text" class="form-control" v-model="mobile" name="mobile"
-						       aria-describedby="mobileHelp"
-						       v-validate data-vv-rules="required|mobile|unique_mobile" data-vv-as="手机"
-						       placeholder="手机">
-						<small id="mobileHelp" class="form-text text-muted">{{ errors.first('mobile') }}</small>
-					</div>
-					
-					<div class="form-group">
 						<input type="text" class="form-control" v-model="username" name="username"
 						       aria-describedby="usernameHelp"
-						       v-validate data-vv-rules="required|unique_username" data-vv-as="账号" placeholder="账号">
+						       v-validate data-vv-rules="required|unique_username" data-vv-as="账号" placeholder="请输入账号">
 						<small id="usernameHelp" class="form-text text-muted">{{ errors.first('username') }}</small>
 					</div>
 					
 					<div class="form-group">
 						<input type="password" class="form-control" v-model="password" name="password"
 						       aria-describedby="passwordeHelp"
-						       v-validate data-vv-rules="required|min:6" data-vv-as="密码" placeholder="密码">
+						       v-validate data-vv-rules="required|min:6" data-vv-as="密码" placeholder="请输入密码">
 						<small id="passwordeHelp" class="form-text text-muted">{{ errors.first('password') }}</small>
 					</div>
 					
 					<div class="form-group">
 						<input type="password" class="form-control" name="confirmed_password"
 						       aria-describedby="confirmedPasswordHelp"
-						       v-validate data-vv-rules="required|min:6" data-vv-as="确认密码" placeholder="确认密码">
+						       v-validate data-vv-rules="required|min:6" data-vv-as="确认密码" placeholder="请输入确认密码">
 						<small id="confirmedPasswordHelp" class="form-text text-muted">{{
 							errors.first('confirmed_password') }}
 						</small>
 					</div>
 					
+					<div class="form-group">
+						<input type="text" class="form-control" v-model="mobile" name="mobile"
+						       aria-describedby="mobileHelp"
+						       v-validate data-vv-rules="required|mobile|unique_mobile" data-vv-as="手机" placeholder="请输入手机">
+						<small id="mobileHelp" class="form-text text-muted">{{ errors.first('mobile') }}</small>
+					</div>
+					
 					<div class="input-group" v-show="captcha_key && captcha_image">
 						<input type="text" class="form-control" v-model="captcha_code" name="captcha_code"
 						       aria-describedby="captchaImageHelp"
-						       v-validate data-vv-rules="required" data-vv-as="图形验证码" placeholder="图形验证码">
+						       v-validate data-vv-rules="required" data-vv-as="图形验证码" placeholder="请输入图形验证码">
 						<img :src="captcha_image" class="input-group-addon" @click="storeCaptcha()">
 						<small id="captchaImageHelp" class="form-text text-muted">{{ errors.first('captcha_code') }}
 						</small>
@@ -48,7 +47,7 @@
 					<div class="input-group" v-show="captcha_key && captcha_image">
 						<input type="text" class="form-control" v-model="verification_code" name="verification_code"
 						       aria-describedby="verificationCodeHelp"
-						       v-validate data-vv-rules="required" data-vv-as="手机验证码" placeholder="手机验证码">
+						       v-validate data-vv-rules="required" data-vv-as="手机验证码" placeholder="请输入手机验证码">
 						<button class="btn btn-default" type="button" :disabled="counting"
 						        @click="storeMobileCaptcha()">
 							<vue-countdown v-if="counting" :time="60000" @countdownend="countdownend">
@@ -62,8 +61,7 @@
 					</div>
 					
 					<div class="form-group">
-						<button type="button" class="btn btn-primary btn-block" @click="storeCaptcha()">获取验证码</button>
-						<button type="submit" class="btn btn-primary btn-block">注册</button>
+						<button type="submit" class="btn btn-primary btn-block" :style="style">注册</button>
 						<small class="form-text text-muted" v-show="errors.first('verification_code')">请先输入验证码</small>
 					</div>
 				</form>
@@ -97,8 +95,27 @@
 				captcha_image: '',
 				verification_key: '',
 				verification_text: '发送短信验证码',
-				verification_code: ''
+				verification_code: '',
+				style: {
+					'background-color': 'red',
+					'border-color': 'red'
+				},
 			}
+		},
+		watch : {
+			mobile: function () {
+				this.$validator.validate('mobile', this.mobile).then(result => {
+					if (result) {
+						this.storeCaptcha();
+					}
+				});
+			}
+		},
+		created() {
+			window.axios.get('html-style').then(response => {
+				this.style['border-color'] = response.data['background-color'];
+				this.style['background-color'] = response.data['background-color'];
+			});
 		},
 		methods: {
 			onSubmit: function () {

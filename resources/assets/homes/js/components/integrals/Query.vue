@@ -4,7 +4,7 @@
 			<mt-tab-item id="integral_exchange">积分兑换</mt-tab-item>
 			<mt-tab-item id="integral_query">积分查询</mt-tab-item>
 		</mt-navbar>
-		<div v-show="lists">
+		<div v-show="lists" style="margin-top: 10px;">
 			<mt-cell title="剩余积分:" :value="user.integral"></mt-cell>
 			<ul class="list-group">
 				<li class="list-group-item" v-for="(item,index) in integral_orders" @click="showOrder(index),lists = false,show = true">{{ item.good.name }}</li>
