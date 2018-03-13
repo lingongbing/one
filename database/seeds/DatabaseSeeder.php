@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
     	$this->call(IntegralRuleTableSeeder::class);
     	$this->call(SmsTableSeeder::class);
     	$this->call(SmsTemplateTableSeeder::class);
+    	$this->call(HtmlStyleTableSeeder::class);
     }
 }

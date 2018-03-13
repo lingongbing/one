@@ -155,6 +155,11 @@
 							<span>系统运行状态</span>
 						</router-link>
 					</li>
+					<li>
+						<router-link :to="{ name: 'html-style'}" tag="a">
+							<span>网站样式设置</span>
+						</router-link>
+					</li>
 				</ul>
 			</li>
 		</ul>

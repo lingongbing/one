@@ -65,7 +65,7 @@
 				lists: true,
 				integral_orders: {},
 				integral_records: {},
-				selected: 'integral_query'
+				selected: 'integral_query',
 			}
 		},
 		watch: {

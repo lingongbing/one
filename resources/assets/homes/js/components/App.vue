@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<mt-header fixed>
+		<mt-header fixed :style="header_style">
 			<img slot="left" :src="site.logo_url">
 			<span slot="right" class="badge badge-pill badge-danger">0</span>
 		</mt-header>
-		<router-view class="router-view"></router-view>
+		<router-view class="router-view" :is_selected_style="header_style['selected-style']"></router-view>
 		<mt-tabbar v-model="main_menu" fixed>
 			<mt-tab-item v-for="(menu,index) in menus" :id="menu.key" :key="index" v-if="!menu.parent_id">
 				<img slot="icon" :src="menu.icon">
@@ -27,6 +27,10 @@
 				site: {},
 				menus: {},
 				main_menu: 'home',
+				header_style: {
+					'selected-style' : '#ffffff',
+					'background-color': '#ffffff'
+				},
 			}
 		},
 		watch: {
@@ -40,6 +44,7 @@
 		created() {
 			this.getSite();
 			this.getMenus();
+			this.getBackgroundColor();
 		},
 		methods: {
 			getSite: function () {
@@ -122,6 +127,11 @@
 						}
 						break;
 				}
+			},
+			getBackgroundColor: function(){
+				window.axios.get('html-style').then(response => {
+					this.header_style["background-color"] = response.data["background-color"];
+				})
 			}
 		}
 	}
@@ -129,7 +139,11 @@
 
 <style scoped>
 	.router-view {
-		margin-top: 40px;
+		margin-top: 60px;
 		margin-bottom: 60px;
+	}
+	
+	.mint-header {
+		height: 60px;
 	}
 </style>

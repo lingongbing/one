@@ -13,7 +13,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-4 control-label">图片(420x200)</label>
+						<label class="col-sm-4 control-label">图片(宽度420px)</label>
 						<div class="col-sm-8">
 							<input type="file" class="form-control" name="form_image" v-validate data-vv-rules="required|mimes:image/*"
 							       data-vv-as="图片" @change="uploadImg($event)">
@@ -89,7 +89,6 @@
 				let formData = new FormData();
 				formData.append('key', 'image');
 				formData.append('width', '420');
-				formData.append('height', '200');
 				formData.append('image', event.target.files[0]);
 				window.axios.post('upload', formData).then(response => {
 					this.image = response.data.path;

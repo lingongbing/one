@@ -2052,7 +2052,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		return {
 			site: {},
 			menus: {},
-			main_menu: 'home'
+			main_menu: 'home',
+			header_style: {
+				'selected-style': '#ffffff',
+				'background-color': '#ffffff'
+			}
 		};
 	},
 
@@ -2067,6 +2071,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	created: function created() {
 		this.getSite();
 		this.getMenus();
+		this.getBackgroundColor();
 	},
 
 	methods: {
@@ -2154,6 +2159,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 					}
 					break;
 			}
+		},
+		getBackgroundColor: function getBackgroundColor() {
+			var _this3 = this;
+
+			window.axios.get('html-style').then(function (response) {
+				_this3.header_style["background-color"] = response.data["background-color"];
+			});
 		}
 	}
 });
@@ -7796,7 +7808,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.router-view[data-v-0449ba42] {\n\tmargin-top: 40px;\n\tmargin-bottom: 60px;\n}\n", ""]);
+exports.push([module.i, "\n.router-view[data-v-0449ba42] {\n\tmargin-top: 60px;\n\tmargin-bottom: 60px;\n}\n.mint-header[data-v-0449ba42] {\n\theight: 60px;\n}\n", ""]);
 
 // exports
 
@@ -49789,7 +49801,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("mt-header", { attrs: { fixed: "" } }, [
+      _c("mt-header", { style: _vm.header_style, attrs: { fixed: "" } }, [
         _c("img", {
           attrs: { slot: "left", src: _vm.site.logo_url },
           slot: "left"
@@ -49806,7 +49818,10 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("router-view", { staticClass: "router-view" }),
+      _c("router-view", {
+        staticClass: "router-view",
+        attrs: { is_selected_style: _vm.header_style["selected-style"] }
+      }),
       _vm._v(" "),
       _c(
         "mt-tabbar",

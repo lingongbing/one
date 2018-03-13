@@ -17,7 +17,7 @@ class UploadsController extends Controller
 
 		$path =  $request->file($request->key)->store('public');
 
-		if ($request->width && $request->height)
+		if ($request->width || $request->height)
 		{
 			try {
 				$disk_path = public_path('storage') . '/' .$path;

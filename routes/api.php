@@ -69,6 +69,8 @@ $api->version('v1',[
 			->name('api.integral.goods.index');
 		$api->get('integral-goods/{integral_good}/images','IntegralGoodImagesController@index')
 			->name('api.integral.goods.index');
+		$api->get('html-style',"HtmlStylesController@index")
+			->name('api.heml.style.index');
 		// 需要 token 验证的接口
 		$api->group(['middleware' => ['api.auth']], function($api) {
 			// 当前登录用户信息
@@ -250,6 +252,9 @@ $api->version('v1',[
 			// 创建商品图片
 			$api->post('integral-goods/{integral_good}/images','IntegralGoodImagesController@store')
 				->name('api.integral.goods.image.store');
+			// 更新网站样式
+			$api->patch('html-style','HtmlStylesController@update')
+				->name('api.html.style.update');
 		});
 	});
 });

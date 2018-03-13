@@ -12,7 +12,7 @@ class IntegralOrderTransformer extends TransformerAbstract
 		return [
 			'id' => $order->id,
 			'user' => $order->user,
-			'good' => $order->good,
+			'good' => $order->good ? $order->good : ['name' => '商品不存在'],
 			'number' => $order->number,
 			'integral' => $order->integral,
 			'consignee' => $order->consignee,

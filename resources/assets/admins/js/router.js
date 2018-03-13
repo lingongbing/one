@@ -146,6 +146,12 @@ const routes = [
 		component: require('./components/homes/Content'),
 		meta: {authenticate: true,home_management:true},
 	},
+	{
+		path: '/html-style',
+		name: 'html-style',
+		component: require('./components/html_styles/Index'),
+		meta: {authenticate: true,home_management:true},
+	},
 ];
 
 const router = new VueRouter({

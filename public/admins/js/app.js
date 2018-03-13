@@ -4324,6 +4324,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
@@ -4671,7 +4676,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			var formData = new FormData();
 			formData.append('key', 'image');
 			formData.append('width', '420');
-			formData.append('height', '200');
 			formData.append('image', event.target.files[0]);
 			window.axios.post('upload', formData).then(function (response) {
 				_this4.image = response.data.path;
@@ -4810,6 +4814,81 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			formData.append('image', event.target.files[0]);
 			axios.post('/upload', formData).then(function (response) {
 				_this4.image = response.data.path;
+			});
+		}
+	}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/admins/js/components/html_styles/Index.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			html_style: {
+				"background-color": "#ffffff"
+			},
+			alert_class: '',
+			alert_message: ''
+		};
+	},
+	created: function created() {
+		this.getHtmlStyle();
+	},
+
+	methods: {
+		getHtmlStyle: function getHtmlStyle() {
+			var _this = this;
+
+			axios.get('html-style').then(function (response) {
+				_this.html_style = response.data;
+			});
+		},
+		updateHtmlStyle: function updateHtmlStyle() {
+			var _this2 = this;
+
+			window.axios.patch('html-style', {
+				"background_color": this.html_style["background-color"]
+			}).then(function (response) {
+				_this2.alert_class = 'alert-success';
+				_this2.alert_message = '修改成功';
+			}).catch(function (error) {
+				_this2.alert_class = 'alert-danger';
+				_this2.alert_message = error.response.data.error;
 			});
 		}
 	}
@@ -10807,7 +10886,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -87536,7 +87615,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c("label", { staticClass: "col-sm-4 control-label" }, [
-                _vm._v("图片(420x200)")
+                _vm._v("图片(宽度420px)")
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-sm-8" }, [
@@ -89772,6 +89851,135 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-34387425", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3503f29f\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/admins/js/components/html_styles/Index.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "panel panel-default" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "panel-body" }, [
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.alert_message,
+              expression: "alert_message"
+            }
+          ],
+          staticClass: "alert",
+          class: _vm.alert_class,
+          attrs: { role: "alert" }
+        },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "close",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  _vm.alert_message = ""
+                }
+              }
+            },
+            [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+          ),
+          _vm._v("\n\t\t\t" + _vm._s(_vm.alert_message) + "\n\t\t")
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "form-horizontal",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.onSubmit($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("头部背景颜色")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-4" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.html_style["background-color"],
+                    expression: "html_style['background-color']"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.html_style["background-color"] },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.html_style,
+                      "background-color",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-2" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-default btn-block",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.updateHtmlStyle()
+                  }
+                }
+              },
+              [_vm._v("\n\t\t\t\t\t确认修改\n\t\t\t\t")]
+            )
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel-heading" }, [
+      _c("h3", { staticClass: "panel-title" }, [_vm._v("网站背景颜色设置")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3503f29f", module.exports)
   }
 }
 
@@ -96430,6 +96638,18 @@ var render = function() {
                   "router-link",
                   { attrs: { to: { name: "system" }, tag: "a" } },
                   [_c("span", [_vm._v("系统运行状态")])]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              [
+                _c(
+                  "router-link",
+                  { attrs: { to: { name: "html-style" }, tag: "a" } },
+                  [_c("span", [_vm._v("网站样式设置")])]
                 )
               ],
               1
@@ -114782,6 +115002,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/admins/js/components/html_styles/Index.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/admins/js/components/html_styles/Index.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3503f29f\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/admins/js/components/html_styles/Index.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/admins/js/components/html_styles/Index.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3503f29f", Component.options)
+  } else {
+    hotAPI.reload("data-v-3503f29f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/admins/js/components/integral_orders/Index.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -115763,6 +116031,11 @@ var routes = [{
 	path: '/homes-contents',
 	name: 'homes-contents',
 	component: __webpack_require__("./resources/assets/admins/js/components/homes/Content.vue"),
+	meta: { authenticate: true, home_management: true }
+}, {
+	path: '/html-style',
+	name: 'html-style',
+	component: __webpack_require__("./resources/assets/admins/js/components/html_styles/Index.vue"),
 	meta: { authenticate: true, home_management: true }
 }];
 
